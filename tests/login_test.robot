@@ -44,10 +44,10 @@ Chamar Gemini e Criar Issue
     ${actor}          Get Environment Variable    GITHUB_ACTOR
 
     ${prompt}    Catenate
-    ...    Você é um engenheiro DevOps. Ocorreu um erro de login no portal SESI.\n
+    ...    Você é um engenheiro DevOps. Ocorreu um erro de login no portal SESI.  \n
     ...    Erro: "${error_message}"\n
     ...    Commit: ${commit_sha}, Autor: ${actor}.\n
-    ...    Liste 3 causas técnicas prováveis e 2 ações de debug rápido.
+    ...    Liste 3 causas técnicas prováveis e 2 ações de debug rápido para resolver.
 
     ${ai_response}    Ask Gemini    ${prompt}
     Log    Resposta do Gemini: ${ai_response}    level=INFO
