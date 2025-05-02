@@ -39,23 +39,17 @@ jobs:
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get -f install -y
 
-          CHROME_VERSION=$(google-chrome --version)
-          echo "Chrome instalado: $CHROME_VERSION"
+          echo "Chrome instalado: $(google-chrome --version)"
 
-          CHROME_MAJOR_VERSION=$(echo "$CHROME_VERSION" | grep -oP '\d+' | head -1)
-          DRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_MAJOR_VERSION})
-          
-          if [[ "$DRIVER_VERSION" == *"<Error>"* ]]; then
-            echo "ChromeDriver para versão $CHROME_MAJOR_VERSION não encontrado. Usando versão mais recente disponível."
-            DRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
-          fi
-
-          echo "ChromeDriver a ser instalado: $DRIVER_VERSION"
+          # Instalar ChromeDriver manualmente para versão 136
+          DRIVER_VERSION=136.0.7103.39
+          echo "Instalando ChromeDriver v${DRIVER_VERSION}"
           wget -O chromedriver.zip https://chromedriver.storage.googleapis.com/${DRIVER_VERSION}/chromedriver_linux64.zip
           unzip chromedriver.zip
           sudo mv chromedriver /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
 
+          chromedriver --version
 
       - name: Validar versões
         run: |
