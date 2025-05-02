@@ -32,17 +32,19 @@ jobs:
           pip install --upgrade pip
           pip install robotframework robotframework-seleniumlibrary robotframework-requests requests
 
-      - name: Instalar Google Chrome e ChromeDriver compatível
+      - name: Instalar Chrome e ChromeDriver compatível
         run: |
           sudo apt update
           sudo apt install -y wget unzip curl xvfb google-chrome-stable
 
-          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
-          DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION}" || curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
-          wget -O chromedriver.zip "https://chromedriver.storage.googleapis.com/${DRIVER_VERSION}/chromedriver_linux64.zip"
+          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+' | head -1)
+          DRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION} || curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+          
+          wget -O chromedriver.zip https://chromedriver.storage.googleapis.com/${DRIVER_VERSION}/chromedriver_linux64.zip
           unzip chromedriver.zip
           sudo mv chromedriver /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
+
 
       - name: Validar versões
         run: |
