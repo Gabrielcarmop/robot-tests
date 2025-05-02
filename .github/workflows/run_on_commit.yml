@@ -32,25 +32,53 @@ jobs:
           pip install --upgrade pip
           pip install robotframework robotframework-seleniumlibrary robotframework-requests requests
 
-      - name: Instalar Google Chrome e ChromeDriver compatível
+      - name: Instalar Chrome e ChromeDriver compatível
         run: |
-          sudo apt update
-          sudo apt install -y wget unzip curl xvfb
-          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get -f install -y
-
-          echo "Chrome instalado: $(google-chrome --version)"
-
-          # Instalar ChromeDriver manualmente para versão 136
-          DRIVER_VERSION=136.0.7103.39
-          echo "Instalando ChromeDriver v${DRIVER_VERSION}"
-          wget -O chromedriver.zip https://chromedriver.storage.googleapis.com/${DRIVER_VERSION}/chromedriver_linux64.zip
-          unzip chromedriver.zip
-          sudo mv chromedriver /usr/local/bin/
-          sudo chmod +x /usr/local/bin/chromedriver
-
+          # Remover instalações existentes
+          sudo apt-get remove -y google-chrome-stable
+          sudo rm -f /usr/local/bin/chromedriver
+          
+          # Instalar dependências
+          sudo apt-get update
+          sudo apt-get install -y wget unzip curl xvfb
+          
+          # Instalar Chrome (método alternativo mais confiável)
+          wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo apt-get install -y ./google-chrome-stable_current_amd64.deb
+          rm google-chrome-stable_current_amd64.deb
+          
+          # Obter versão completa do Chrome (ex: 136.0.7103.59)
+          CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
+          echo "Versão instalada do Chrome: $CHROME_VERSION"
+          
+          # Extrair versão principal (ex: 136)
+          CHROME_MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d'.' -f1)
+          
+          # Obter versão EXATA do ChromeDriver
+          echo "Obtendo versão compatível do ChromeDriver..."
+          DRIVER_VERSION=$(wget -qO- "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAJOR_VERSION")
+          
+          # Verificar se obteve a versão correta
+          if [[ -z "$DRIVER_VERSION" ]]; then
+            echo "Falha ao obter versão específica, tentando versão geral mais recente"
+            DRIVER_VERSION=$(wget -qO- "https://chromedriver.storage.googleapis.com/LATEST_RELEASE")
+          fi
+          
+          echo "Versão do ChromeDriver a ser instalada: $DRIVER_VERSION"
+          
+          # Baixar e instalar ChromeDriver
+          wget -N https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip -P ~/
+          unzip ~/chromedriver_linux64.zip -d ~/
+          rm ~/chromedriver_linux64.zip
+          sudo mv -f ~/chromedriver /usr/local/bin/chromedriver
+          sudo chown root:root /usr/local/bin/chromedriver
+          sudo chmod 0755 /usr/local/bin/chromedriver
+          
+          # Verificar instalação
+          echo "Versões instaladas:"
+          google-chrome --version
           chromedriver --version
-
+          
       - name: Validar versões
         run: |
           google-chrome --version
