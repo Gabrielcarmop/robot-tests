@@ -34,6 +34,11 @@ jobs:
 
       - name: Instalar Chrome e ChromeDriver compatível
         run: |
+          # Remover instalações existentes
+          sudo apt-get remove -y google-chrome-stable
+          sudo rm -f /usr/local/bin/chromedriver
+          
+          # Instalar dependências
           sudo apt-get update
           sudo apt-get install -y wget unzip curl xvfb
           
@@ -43,13 +48,13 @@ jobs:
           sudo apt-get -y update
           sudo apt-get -y install google-chrome-stable
           
-          # Instalar ChromeDriver
-          CHROME_MAJOR_VERSION=$(google-chrome --version | awk '{print $3}' | cut -d '.' -f 1)
-          echo "Versão principal do Chrome: $CHROME_MAJOR_VERSION"
+          # Obter versão exata do Chrome
+          CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
+          echo "Versão instalada do Chrome: $CHROME_VERSION"
           
-          # Tentar obter a versão específica primeiro, depois fallback para a última geral
-          DRIVER_VERSION=$(wget -qO- "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAJOR_VERSION" || wget -qO- "https://chromedriver.storage.googleapis.com/LATEST_RELEASE")
-          echo "Versão do ChromeDriver a ser instalada: $DRIVER_VERSION"
+          # Instalar ChromeDriver correspondente
+          DRIVER_VERSION=$(echo $CHROME_VERSION | awk -F. '{print $1"."$2"."$3}')
+          echo "Tentando baixar ChromeDriver versão: $DRIVER_VERSION"
           
           wget -N https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip -P ~/
           unzip ~/chromedriver_linux64.zip -d ~/
