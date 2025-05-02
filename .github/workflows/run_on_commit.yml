@@ -32,36 +32,26 @@ jobs:
           pip install --upgrade pip
           pip install robotframework robotframework-seleniumlibrary robotframework-requests requests
 
-      - name: Instalar Chrome e ChromeDriver compatível
+      - name: Instalar Google Chrome e ChromeDriver compatível
         run: |
-          # Remover instalações existentes
-          sudo apt-get remove -y google-chrome-stable
-          sudo rm -f /usr/local/bin/chromedriver
-          
-          # Instalar dependências
-          sudo apt-get update
-          sudo apt-get install -y wget unzip curl xvfb
-          
-          # Instalar Chrome
-          curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-          echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
-          sudo apt-get -y update
-          sudo apt-get -y install google-chrome-stable
-          
-          # Obter versão exata do Chrome
-          CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
-          echo "Versão instalada do Chrome: $CHROME_VERSION"
-          
-          # Instalar ChromeDriver correspondente
-          DRIVER_VERSION=$(echo $CHROME_VERSION | awk -F. '{print $1"."$2"."$3}')
-          echo "Tentando baixar ChromeDriver versão: $DRIVER_VERSION"
-          
-          wget -N https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip -P ~/
-          unzip ~/chromedriver_linux64.zip -d ~/
-          rm ~/chromedriver_linux64.zip
-          sudo mv -f ~/chromedriver /usr/local/bin/chromedriver
-          sudo chown root:root /usr/local/bin/chromedriver
-          sudo chmod 0755 /usr/local/bin/chromedriver
+          sudo apt update
+          sudo apt install -y wget unzip curl xvfb
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get -f install -y
+
+          # Obter a versão principal do Chrome (ex: 136)
+          CHROME_MAJOR_VERSION=$(google-chrome --version | grep -oP '\d+' | head -1)
+          echo "Chrome instalado: Versão $CHROME_MAJOR_VERSION"
+
+          # Baixar o último ChromeDriver para a major version
+          DRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_MAJOR_VERSION})
+          echo "Última versão do ChromeDriver para v$CHROME_MAJOR_VERSION: $DRIVER_VERSION"
+
+          wget -O chromedriver.zip https://chromedriver.storage.googleapis.com/${DRIVER_VERSION}/chromedriver_linux64.zip
+          unzip chromedriver.zip
+          sudo mv chromedriver /usr/local/bin/
+          sudo chmod +x /usr/local/bin/chromedriver
+
 
       - name: Validar versões
         run: |
