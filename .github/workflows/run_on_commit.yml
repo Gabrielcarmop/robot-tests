@@ -32,22 +32,22 @@ jobs:
           pip install --upgrade pip
           pip install robotframework robotframework-seleniumlibrary robotframework-requests requests
 
-          - name: Instalar ChromeDriver compatível sem reinstalar o Chrome
-          run: |
-            sudo apt-get update
-            sudo apt-get install -y wget unzip curl xvfb google-chrome-stable
+      - name: Instalar ChromeDriver compatível sem reinstalar o Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget unzip curl xvfb google-chrome-stable
         
-            CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
-            echo "Chrome instalado: $CHROME_VERSION"
+          CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
+          echo "Chrome instalado: $CHROME_VERSION"
         
-            # Forçar versão conhecida compatível com Chrome 135
-            DRIVER_VERSION=114.0.5735.90
-            echo "ChromeDriver a ser instalado manualmente: $DRIVER_VERSION"
+          # Forçar versão conhecida compatível com Chrome 135
+          DRIVER_VERSION=114.0.5735.90
+          echo "ChromeDriver a ser instalado manualmente: $DRIVER_VERSION"
         
-            wget -N https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip -P ~/
-            unzip -o ~/chromedriver_linux64.zip -d ~/
-            sudo mv -f ~/chromedriver /usr/local/bin/chromedriver
-            sudo chmod +x /usr/local/bin/chromedriver
+          wget -N https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip -P ~/
+          unzip -o ~/chromedriver_linux64.zip -d ~/
+          sudo mv -f ~/chromedriver /usr/local/bin/chromedriver
+          sudo chmod +x /usr/local/bin/chromedriver
         
 
       - name: Validar versões
