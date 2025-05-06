@@ -32,34 +32,23 @@ jobs:
           pip install --upgrade pip
           pip install robotframework robotframework-seleniumlibrary robotframework-requests requests
 
-      - name: Instalar ChromeDriver compatível sem reinstalar o Chrome
-        run: |
-          # Garantir dependências
-          sudo apt-get update
-          sudo apt-get install -y wget unzip curl xvfb google-chrome-stable
-
-          # Obter versão instalada do Chrome
-          CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
-          echo "Chrome instalado: $CHROME_VERSION"
-
-          # Obter apenas a major version (ex: 136)
-          CHROME_MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d'.' -f1)
-
-          # Buscar versão exata do ChromeDriver compatível
-          DRIVER_VERSION=$(wget -qO- "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAJOR_VERSION")
-
-          # Fallback para última versão se falhar
-          if [[ "$DRIVER_VERSION" == *"<Error>"* || -z "$DRIVER_VERSION" ]]; then
-            echo "Fallback: usando última versão disponível do ChromeDriver"
-            DRIVER_VERSION=$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
-          fi
-
-          echo "ChromeDriver a ser instalado: $DRIVER_VERSION"
-
-          wget -N https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip -P ~/
-          unzip -o ~/chromedriver_linux64.zip -d ~/
-          sudo mv -f ~/chromedriver /usr/local/bin/chromedriver
-          sudo chmod +x /usr/local/bin/chromedriver
+          - name: Instalar ChromeDriver compatível sem reinstalar o Chrome
+          run: |
+            sudo apt-get update
+            sudo apt-get install -y wget unzip curl xvfb google-chrome-stable
+        
+            CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
+            echo "Chrome instalado: $CHROME_VERSION"
+        
+            # Forçar versão conhecida compatível com Chrome 135
+            DRIVER_VERSION=114.0.5735.90
+            echo "ChromeDriver a ser instalado manualmente: $DRIVER_VERSION"
+        
+            wget -N https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip -P ~/
+            unzip -o ~/chromedriver_linux64.zip -d ~/
+            sudo mv -f ~/chromedriver /usr/local/bin/chromedriver
+            sudo chmod +x /usr/local/bin/chromedriver
+        
 
       - name: Validar versões
         run: |
