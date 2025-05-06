@@ -40,8 +40,8 @@ jobs:
           CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
           echo "Chrome instalado: $CHROME_VERSION"
         
-          # Forçar versão conhecida compatível com Chrogit me 135
-          DRIVER_VERSION=114.0.5735.90
+          # Versão correta para o Chrome 135
+          DRIVER_VERSION=135.0.7049.114
           echo "ChromeDriver a ser instalado manualmente: $DRIVER_VERSION"
         
           wget -N https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip -P ~/
