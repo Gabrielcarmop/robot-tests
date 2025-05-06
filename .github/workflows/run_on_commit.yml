@@ -32,31 +32,23 @@ jobs:
           pip install --upgrade pip
           pip install robotframework robotframework-seleniumlibrary robotframework-requests requests
 
-      - name: Instalar Chrome e ChromeDriver compatível
+      - name: Instalar ChromeDriver compatível sem reinstalar o Chrome
         run: |
-          # Remover instalações antigas
-          sudo apt-get remove -y google-chrome-stable || true
-          sudo rm -f /usr/local/bin/chromedriver || true
-
+          # Garantir dependências
           sudo apt-get update
-          sudo apt-get install -y wget unzip curl xvfb
-
-          # Instalar Chrome estável
-          wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo apt-get install -y ./google-chrome-stable_current_amd64.deb
-          rm google-chrome-stable_current_amd64.deb
+          sudo apt-get install -y wget unzip curl xvfb google-chrome-stable
 
           # Obter versão instalada do Chrome
           CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
           echo "Chrome instalado: $CHROME_VERSION"
 
-          # Obter apenas o major version (ex: 136)
+          # Obter apenas a major version (ex: 136)
           CHROME_MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d'.' -f1)
 
           # Buscar versão exata do ChromeDriver compatível
           DRIVER_VERSION=$(wget -qO- "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAJOR_VERSION")
 
-          # Se falhar, usar a última versão disponível
+          # Fallback para última versão se falhar
           if [[ "$DRIVER_VERSION" == *"<Error>"* || -z "$DRIVER_VERSION" ]]; then
             echo "Fallback: usando última versão disponível do ChromeDriver"
             DRIVER_VERSION=$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
