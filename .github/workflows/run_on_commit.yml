@@ -38,7 +38,6 @@ jobs:
           sudo apt-get remove -y google-chrome-stable || true
           sudo rm -f /usr/local/bin/chromedriver || true
 
-          # Instalar dependências do sistema
           sudo apt-get update
           sudo apt-get install -y wget unzip curl xvfb
 
