@@ -1,4 +1,4 @@
-*** Settings ***
+*** Settings *** 
 Library    SeleniumLibrary
 Library    RequestsLibrary
 Library    OperatingSystem
@@ -6,11 +6,11 @@ Library    String
 
 *** Variables ***
 # --- Página de Login Real ---
-${LOGIN_URL}         https://sesigoias.com.br/portaldodocente/identificacao/
+${LOGIN_URL}         https://senaigoias.com.br/portaldodocente/identificacao/
 ${BROWSER}           chrome
-${USERNAME_FIELD}    id=txtLogin
-${PASSWORD_FIELD}    id=txtSenha
-${LOGIN_BUTTON}      xpath=//input[@type='submit']
+${USERNAME_FIELD}    name=txtLogin
+${PASSWORD_FIELD}    name=txtSenha
+${LOGIN_BUTTON}      xpath=//input[@type='submit' and @value='Entrar']
 
 # --- Integração Gemini ---
 ${GEMINI_API_KEY}    %{GEMINI_TOKEN}
@@ -24,6 +24,8 @@ ${GITHUB_REPO}       Gabrielcarmop/robot-tests
 Fazer Login
     [Arguments]    ${username}    ${password}
     Go To    ${LOGIN_URL}
+    Capture Page Screenshot
+    Wait Until Element Is Visible    ${USERNAME_FIELD}    timeout=10s
     Input Text    ${USERNAME_FIELD}    ${username}
     Input Text    ${PASSWORD_FIELD}    ${password}
     Click Button    ${LOGIN_BUTTON}
@@ -65,7 +67,7 @@ Ask Gemini
     ...            headers=${headers}    params=${params}
 
     ${response_json}    Set Variable    ${response.json()}
-    [Return]    ${response_json['candidates'][0]['content']['parts'][0]['text']}
+    RETURN    ${response_json['candidates'][0]['content']['parts'][0]['text']}
 
 Criar Issue no GitHub
     [Arguments]    ${title}    ${body}
