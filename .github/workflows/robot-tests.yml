@@ -5,55 +5,96 @@ on: [push]
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      
     env:
       GEMINI_TOKEN: ${{ secrets.GEMINI_TOKEN }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN || github.token }}
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-    - name: Set up Python
+    - name: Set up Python 3.10
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
+        cache: 'pip'
 
-    - name: Install dependencies
+    - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y wget unzip curl xvfb libgbm-dev
-        wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-        sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get install -yf
-        rm google-chrome-stable_current_amd64.deb
+        sudo apt-get install -y --no-install-recommends \
+          wget unzip curl xvfb libgbm-dev gconf-service \
+          libasound2 libatk1.0-0 libc6 libcairo2 libcups2 \
+          libdbus-1-3 libexpat1 libfontconfig1 libgcc1 \
+          libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 \
+          libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 \
+          libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 \
+          libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 \
+          libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates \
+          fonts-liberation libappindicator1 libnss3 lsb-release \
+          xdg-utils
+
+    - name: Install Chrome Stable
+      run: |
+        wget -q -O chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        sudo dpkg -i chrome.deb || sudo apt-get install -yf
+        rm chrome.deb
+        google-chrome-stable --version
 
     - name: Install ChromeDriver
       run: |
-        # Fallback method for ChromeDriver installation
-        CHROME_MAJOR_VERSION=$(google-chrome-stable --version | awk '{print $3}' | cut -d'.' -f1)
-        CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$((CHROME_MAJOR_VERSION-1))")
-        echo "Using ChromeDriver version: $CHROMEDRIVER_VERSION"
+        # More reliable ChromeDriver installation method
+        CHROME_VERSION=$(google-chrome-stable --version | awk '{print $3}')
+        CHROME_MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d'.' -f1)
+        echo "Installed Chrome version: $CHROME_VERSION"
+        
+        # Try to get matching ChromeDriver version
+        CHROMEDRIVER_VERSION=$(wget -q -O- https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_MAJOR_VERSION})
+        echo "Attempting ChromeDriver version: $CHROMEDRIVER_VERSION"
+        
+        # Fallback to previous major version if needed
+        if ! wget -q --spider "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"; then
+          CHROMEDRIVER_VERSION=$(wget -q -O- https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$((CHROME_MAJOR_VERSION-1)))
+          echo "Falling back to ChromeDriver version: $CHROMEDRIVER_VERSION"
+        fi
         
         wget -q "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
         unzip chromedriver_linux64.zip
         sudo mv chromedriver /usr/local/bin/
         chmod +x /usr/local/bin/chromedriver
+        chromedriver --version
 
-    - name: Install Robot Framework and libraries
+    - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install robotframework
-        pip install robotframework-seleniumlibrary
-        pip install robotframework-requests
-        pip install webdriver-manager
+        pip install --no-cache-dir \
+          robotframework \
+          robotframework-seleniumlibrary \
+          robotframework-requests \
+          webdriver-manager
 
-    - name: Run tests
+    - name: Run Robot Framework tests
       run: |
         export DISPLAY=:99
         Xvfb :99 -screen 0 1920x1080x24 -ac +extension GLX +render -noreset &
-        robot --variable BROWSER:headlesschrome --outputdir ./results tests.robot
+        sleep 5
+        robot --loglevel TRACE \
+              --variable BROWSER:headlesschrome \
+              --outputdir ./results \
+              --xunit xunit.xml \
+              tests.robot
 
-    - name: Upload test results
+    - name: Archive test results
       if: always()
       uses: actions/upload-artifact@v3
       with:
-        name: robot-results
-        path: ./results/
+        name: robot-test-results
+        path: |
+          ./results/*.xml
+          ./results/*.html
+          ./results/*.png
+          ./results/*.log
