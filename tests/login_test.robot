@@ -89,7 +89,7 @@ Executar Plano B
 
 *** Test Cases ***
 Testar Login com Erro 401
-    Open Browser    ${LOGIN_URL}    ${BROWSER}    options=add_argument(--no-sandbox); add_argument(--disable-dev-shm-usage); add_argument(--headless); add_argument(--window-size=1920,1080)
+    Open Browser    ${LOGIN_URL}    ${BROWSER}    options=--no-sandbox --disable-dev-shm-usage --headless --window-size=1920,1080
     Fazer Login    usuario_invalido    senha_invalida
     Checar Erro 401
     Close Browser
