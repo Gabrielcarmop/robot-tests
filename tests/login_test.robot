@@ -7,12 +7,12 @@ Library    Collections
 
 *** Variables ***
 # --- Página de Login ---
-${LOGIN_URL}         https://senaigoias.com.br/portaldodocente/identificacao/
+${LOGIN_URL}         http://the-internet.herokuapp.com/login
 ${BROWSER}           chrome
-${USERNAME_FIELD}    name=txtLogin
-${PASSWORD_FIELD}    name=txtSenha
-${LOGIN_BUTTON}      xpath=//input[@type='submit' and @value='Entrar']
-${PAGE_TITLE}        Portal do Docente
+${USERNAME_FIELD}    id=username
+${PASSWORD_FIELD}    id=password
+${LOGIN_BUTTON}      xpath=//button[@type='submit']
+${PAGE_TITLE}        Login Page
 
 # --- Configurações do Navegador ---
 ${HEADLESS}          ${True}
@@ -122,6 +122,6 @@ Testar Login com Erro 401
     [Tags]    login    auth    erro401
     
     Abrir Navegador
-    Fazer Login    usuario_invalido    senha_invalida
+    Fazer Login    tomsmith    invalidpassword
     Checar Erro 401
     [Teardown]    Close All Browsers
