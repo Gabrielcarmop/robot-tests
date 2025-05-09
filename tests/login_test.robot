@@ -31,12 +31,13 @@ Abrir Navegador
     Call Method    ${chrome_options}    add_argument    --no-sandbox
     Call Method    ${chrome_options}    add_argument    --disable-dev-shm-usage
     
-    Run Keyword If    ${HEADLESS}    Call Method    ${chrome_options}    add_argument    --headless=new
-    Call Method    ${chrome_options}    add_argument    --window-size\=${BROWSER_WIDTH},${BROWSER_HEIGHT}
+    Run Keyword If    ${HEADLESS}    Call Method    ${chrome_options}    add_argument    --headless
+    Call Method    ${chrome_options}    add_argument    --window-size=${BROWSER_WIDTH},${BROWSER_HEIGHT}
     
     Create WebDriver    Chrome    options=${chrome_options}
     Set Selenium Implicit Wait    10s
     Set Selenium Timeout    30s
+    Maximize Browser Window
 
 Fazer Login
     [Arguments]    ${username}    ${password}
@@ -54,6 +55,7 @@ Preencher Credenciais
     [Arguments]    ${username}    ${password}
     Wait Until Element Is Visible    ${USERNAME_FIELD}    timeout=20s
     Input Text    ${USERNAME_FIELD}    ${username}
+    Wait Until Element Is Visible    ${PASSWORD_FIELD}    timeout=5s
     Input Password    ${PASSWORD_FIELD}    ${password}
 
 Checar Erro 401
@@ -66,7 +68,52 @@ Checar Erro 401
     ...    AND    Chamar Gemini e Criar Issue    ${erro}
     ...    AND    Executar Plano B
 
-# Restante das keywords permanecem iguais...
+Chamar Gemini e Criar Issue
+    [Arguments]    ${error_message}
+    ${commit_sha}=    Get Environment Variable    GITHUB_SHA    default=unknown
+    ${actor}=        Get Environment Variable    GITHUB_ACTOR    default=unknown
+
+    ${prompt}=    Catenate    SEPARATOR=\n
+    ...    Você é um engenheiro DevOps. Ocorreu um erro de login no portal SESI.
+    ...    Erro: "${error_message}"
+    ...    Commit: ${commit_sha}, Autor: ${actor}.
+    ...    Liste 3 causas técnicas prováveis e 2 ações de debug rápido para resolver.
+
+    ${ai_response}=    Ask Gemini    ${prompt}
+    Log    Resposta do Gemini: ${ai_response}    level=INFO
+    Criar Issue no GitHub    Erro 401 no Login SESI    ${error_message}\n\nDiagnóstico:\n${ai_response}
+
+Ask Gemini
+    [Arguments]    ${prompt}
+    ${headers}=    Create Dictionary    Content-Type=application/json
+    ${params}=     Create Dictionary    key=${GEMINI_API_KEY}
+    ${body}=       Evaluate    json.dumps({"contents": [{"parts": [{"text": "${prompt}"}]}], "generationConfig": {"temperature": 0.7}})    json
+
+    ${response}=    POST    ${GEMINI_ENDPOINT}    json=${body}
+    ...            headers=${headers}    params=${params}
+
+    ${response_json}=    Set Variable    ${response.json()}
+    RETURN    ${response_json['candidates'][0]['content']['parts'][0]['text']}
+
+Criar Issue no GitHub
+    [Arguments]    ${title}    ${body}
+    ${headers}=    Create Dictionary
+    ...    Authorization=Bearer ${GITHUB_TOKEN}
+    ...    Accept=application/vnd.github.v3+json
+
+    ${data}=    Create Dictionary
+    ...    title=${title}
+    ...    body=${body}
+    ...    labels=${{ ["bug", "automatizado"] }}
+
+    ${response}=    POST    https://api.github.com/repos/${GITHUB_REPO}/issues
+    ...             json=${data}    headers=${headers}
+    ...             expected_status=201
+
+    Log    Issue criado com sucesso: ${response.json()['html_url']}    level=INFO
+
+Executar Plano B
+    Log    Fluxo alternativo poderia usar login via API ou fallback.    level=INFO
 
 *** Test Cases ***
 Testar Login com Erro 401
