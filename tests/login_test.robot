@@ -88,13 +88,16 @@ Criar Issue no GitHub
 
 Executar Plano B
     Log    Fluxo alternativo poderia usar login via API ou fallback.    level=INFO
-    # Implementação adicional do plano B viria aqui
 
 *** Test Cases ***
 Testar Login com Erro 401
-    ${options}=    Evaluate    {'goog:chromeOptions': {'args': ['--no-sandbox', '--disable-dev-shm-usage', '--headless', '--window-size=1920,1080']}}
-    Open Browser    ${LOGIN_URL}    ${BROWSER}    options=${options}
-    Maximize Browser Window
+    ${chrome_options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
+    Call Method    ${chrome_options}    add_argument    --no-sandbox
+    Call Method    ${chrome_options}    add_argument    --disable-dev-shm-usage
+    Call Method    ${chrome_options}    add_argument    --headless
+    Call Method    ${chrome_options}    add_argument    --window-size\=1920,1080
+    Create WebDriver    Chrome    options=${chrome_options}
+    Go To    ${LOGIN_URL}
     Fazer Login    usuario_invalido    senha_invalida
     Checar Erro 401
     Close All Browsers
