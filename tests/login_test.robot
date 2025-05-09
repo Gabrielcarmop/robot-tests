@@ -89,11 +89,8 @@ Executar Plano B
 
 *** Test Cases ***
 Testar Login com Erro 401
-    Create Chrome Options    ${options}
-    Add To Chrome Options    ${options}    --no-sandbox
-    Add To Chrome Options    ${options}    --disable-dev-shm-usage
-    Add To Chrome Options    ${options}    --headless
-    Add To Chrome Options    ${options}    --window-size=1920,1080
+    ${options}=    Create Dictionary
+    Set To Dictionary    ${options}    --no-sandbox    --disable-dev-shm-usage    --headless    --window-size=1920,1080
     Open Browser    ${LOGIN_URL}    ${BROWSER}    options=${options}
     Fazer Login    usuario_invalido    senha_invalida
     Checar Erro 401
