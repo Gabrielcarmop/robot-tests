@@ -1,48 +1,51 @@
-name: Run Selenium Tests
+name: Robot Framework Tests
 
-on:
-  push:
-    branches:
-      - main
+on: [push]
 
 jobs:
-  selenium:
+  test:
     runs-on: ubuntu-latest
+    env:
+      GEMINI_TOKEN: ${{ secrets.GEMINI_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      # Faz checkout do código
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
-      # Configura o Google Chrome
-      - name: Set up Google Chrome
-        uses: browser-actions/setup-chrome@v1
-        with:
-          chrome-version: '136.0.7103.59'  # Especificar a versão do Chrome que está sendo usada
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
 
-      # Configura o ChromeDriver (vai pegar a versão correta para o Chrome 136)
-      - name: Set up ChromeDriver
-        uses: actions/setup-chromedriver@v2
-        with:
-          chromedriver-version: '136.0.7103.59'  # Especificar a versão do ChromeDriver que deve ser usada
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wget unzip curl xvfb
+        wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get install -yf
+        rm google-chrome-stable_current_amd64.deb
 
-      # Instala dependências necessárias para o Selenium e o ambiente de testes
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wget unzip curl xvfb
+    - name: Install ChromeDriver
+      run: |
+        CHROME_VERSION=$(google-chrome-stable --version | awk '{print $3}')
+        CHROME_MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d'.' -f1)
+        echo "Chrome version: $CHROME_VERSION"
+        
+        CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAJOR_VERSION")
+        echo "ChromeDriver version: $CHROMEDRIVER_VERSION"
+        
+        wget -q "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
+        unzip chromedriver_linux64.zip
+        sudo mv chromedriver /usr/local/bin/
+        chmod +x /usr/local/bin/chromedriver
 
-      # Baixa o `ChromeDriver` correto (caso não esteja configurado corretamente)
-      - name: Download and install ChromeDriver
-        run: |
-          wget https://chromedriver.storage.googleapis.com/136.0.7103.59/chromedriver_linux64.zip
-          unzip chromedriver_linux64.zip
-          sudo mv chromedriver /usr/local/bin/
+    - name: Install Robot Framework and libraries
+      run: |
+        python -m pip install --upgrade pip
+        pip install robotframework
+        pip install robotframework-seleniumlibrary
+        pip install robotframework-requests
 
-      # Executa os testes com Robot Framework
-      - name: Run Robot Framework Tests
-        run: |
-          export DISPLAY=:99.0
-          sudo apt-get install -y python3-pip
-          pip3 install -r requirements.txt
-          robot tests/test_suite.robot
+    - name: Run tests
+      run: |
+        xvfb-run robot tests.robot
