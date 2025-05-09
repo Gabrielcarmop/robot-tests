@@ -20,19 +20,17 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y wget unzip curl xvfb
+        sudo apt-get install -y wget unzip curl xvfb libgbm-dev
         wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
         sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get install -yf
         rm google-chrome-stable_current_amd64.deb
 
     - name: Install ChromeDriver
       run: |
-        CHROME_VERSION=$(google-chrome-stable --version | awk '{print $3}')
-        CHROME_MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d'.' -f1)
-        echo "Chrome version: $CHROME_VERSION"
-        
-        CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAJOR_VERSION")
-        echo "ChromeDriver version: $CHROMEDRIVER_VERSION"
+        # Fallback method for ChromeDriver installation
+        CHROME_MAJOR_VERSION=$(google-chrome-stable --version | awk '{print $3}' | cut -d'.' -f1)
+        CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$((CHROME_MAJOR_VERSION-1))")
+        echo "Using ChromeDriver version: $CHROMEDRIVER_VERSION"
         
         wget -q "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
         unzip chromedriver_linux64.zip
@@ -45,7 +43,17 @@ jobs:
         pip install robotframework
         pip install robotframework-seleniumlibrary
         pip install robotframework-requests
+        pip install webdriver-manager
 
     - name: Run tests
       run: |
-        xvfb-run robot tests.robot
+        export DISPLAY=:99
+        Xvfb :99 -screen 0 1920x1080x24 -ac +extension GLX +render -noreset &
+        robot --variable BROWSER:headlesschrome --outputdir ./results tests.robot
+
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: robot-results
+        path: ./results/
