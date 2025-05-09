@@ -32,12 +32,11 @@ Abrir Navegador
     Call Method    ${chrome_options}    add_argument    --disable-dev-shm-usage
     
     Run Keyword If    ${HEADLESS}    Call Method    ${chrome_options}    add_argument    --headless
-    # Ajuste para adicionar o tamanho da janela
-    Call Method    ${chrome_options}    add_argument    --window-size=${BROWSER_WIDTH}x${BROWSER_HEIGHT}
     
     Create WebDriver    Chrome    options=${chrome_options}
     Set Selenium Implicit Wait    10s
     Set Selenium Timeout    30s
+    Set Window Size    ${BROWSER_WIDTH}    ${BROWSER_HEIGHT}    # Define o tamanho da janela após a criação do driver
     Maximize Browser Window
 
 Fazer Login
