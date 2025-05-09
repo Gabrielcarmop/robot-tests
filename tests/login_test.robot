@@ -1,4 +1,4 @@
-*** Settings *** 
+*** Settings ***
 Library    SeleniumLibrary
 Library    RequestsLibrary
 Library    OperatingSystem
@@ -24,8 +24,9 @@ ${GITHUB_REPO}       Gabrielcarmop/robot-tests
 Fazer Login
     [Arguments]    ${username}    ${password}
     Go To    ${LOGIN_URL}
-    Capture Page Screenshot
-    Wait Until Element Is Visible    ${USERNAME_FIELD}    timeout=10s
+    Capture Page Screenshot    antes_do_wait.png
+    Wait Until Element Is Visible    ${USERNAME_FIELD}    timeout=20s
+    Capture Page Screenshot    depois_do_wait.png
     Input Text    ${USERNAME_FIELD}    ${username}
     Input Text    ${PASSWORD_FIELD}    ${password}
     Click Button    ${LOGIN_BUTTON}
@@ -88,7 +89,7 @@ Executar Plano B
 
 *** Test Cases ***
 Testar Login com Erro 401
-    Open Browser    ${LOGIN_URL}    ${BROWSER}
+    Open Browser    ${LOGIN_URL}    ${BROWSER}    options=add_argument(--no-sandbox); add_argument(--disable-dev-shm-usage); add_argument(--headless); add_argument(--window-size=1920,1080)
     Fazer Login    usuario_invalido    senha_invalida
     Checar Erro 401
     Close Browser
