@@ -1,67 +1,48 @@
-name: Testes Automatizados com Robot + Gemini
+name: Run Selenium Tests
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  schedule:
-    - cron: '0 8 * * *'   # Executa às 08:00 UTC (05:00 no Brasil)
-    - cron: '0 20 * * *'  # Executa às 20:00 UTC (17:00 no Brasil)
+    branches:
+      - main
 
 jobs:
-  executar-testes:
+  selenium:
     runs-on: ubuntu-latest
 
-    env:
-      GEMINI_TOKEN: ${{ secrets.GEMINI_TOKEN }}
-      MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
-      GITHUB_REPO: ${{ github.repository }}
-
     steps:
-      - name: Checkout do repositório
-        uses: actions/checkout@v3
+      # Faz checkout do código
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Configurar Python
-        uses: actions/setup-python@v4
+      # Configura o Google Chrome
+      - name: Set up Google Chrome
+        uses: browser-actions/setup-chrome@v1
         with:
-          python-version: '3.10'
+          chrome-version: '136.0.7103.59'  # Especificar a versão do Chrome que está sendo usada
 
-      - name: Instalar dependências Python
-        run: |
-          pip install --upgrade pip
-          pip install robotframework robotframework-seleniumlibrary robotframework-requests requests
+      # Configura o ChromeDriver (vai pegar a versão correta para o Chrome 136)
+      - name: Set up ChromeDriver
+        uses: actions/setup-chromedriver@v2
+        with:
+          chromedriver-version: '136.0.7103.59'  # Especificar a versão do ChromeDriver que deve ser usada
 
-      - name: Instalar ChromeDriver compatível sem reinstalar o Chrome
+      # Instala dependências necessárias para o Selenium e o ambiente de testes
+      - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y wget unzip curl xvfb google-chrome-stable
-        
-          CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
-          echo "Chrome instalado: $CHROME_VERSION"
-        
-          # Versão correta para o Chrome 135
-          DRIVER_VERSION=135.0.7049.114
-          echo "ChromeDriver a ser instalado manualmente: $DRIVER_VERSION"
-        
-          wget -N https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip -P ~/
-          unzip -o ~/chromedriver_linux64.zip -d ~/
-          sudo mv -f ~/chromedriver /usr/local/bin/chromedriver
-          sudo chmod +x /usr/local/bin/chromedriver
+          sudo apt-get install -y wget unzip curl xvfb
 
-      - name: Validar versões
+      # Baixa o `ChromeDriver` correto (caso não esteja configurado corretamente)
+      - name: Download and install ChromeDriver
         run: |
-          google-chrome --version
-          chromedriver --version
+          wget https://chromedriver.storage.googleapis.com/136.0.7103.59/chromedriver_linux64.zip
+          unzip chromedriver_linux64.zip
+          sudo mv chromedriver /usr/local/bin/
 
-      - name: Executar testes com Robot Framework
+      # Executa os testes com Robot Framework
+      - name: Run Robot Framework Tests
         run: |
-          mkdir -p results
-          xvfb-run robot --outputdir results tests/
-
-      - name: Fazer upload dos relatórios e screenshots
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: relatorio-testes
-          path: results/
+          export DISPLAY=:99.0
+          sudo apt-get install -y python3-pip
+          pip3 install -r requirements.txt
+          robot tests/test_suite.robot
