@@ -89,8 +89,13 @@ Executar Plano B
 
 *** Test Cases ***
 Testar Login com Erro 401
-    ${options}=    Create Dictionary    --no-sandbox=${True}    --disable-dev-shm-usage=${True}    --headless=${True}    --window-size=1920,1080
-    Open Browser    ${LOGIN_URL}    ${BROWSER}    options=${options}
+    ${options}=    Create Dictionary
+    Set Dictionary Value    ${options}    --no-sandbox    ${True}
+    Set Dictionary Value    ${options}    --disable-dev-shm-usage    ${True}
+    Set Dictionary Value    ${options}    --headless    ${True}
+    Set Dictionary Value    ${options}    --window-size    1920,1080
+    Create WebDriver    ${BROWSER}    options=${options}
+    Go To    ${LOGIN_URL}
     Fazer Login    usuario_invalido    senha_invalida
     Checar Erro 401
     Close Browser
