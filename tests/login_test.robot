@@ -3,6 +3,7 @@ Library    SeleniumLibrary
 Library    RequestsLibrary
 Library    OperatingSystem
 Library    String
+Library    Collections
 
 *** Variables ***
 # --- Página de Login ---
