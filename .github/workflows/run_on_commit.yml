@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      GEMINI_TOKEN: ${{ secrets.GEMINI_TOKEN }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
       GITHUB_REPO: ${{ github.repository }}
 
@@ -37,7 +37,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y wget unzip curl xvfb google-chrome-stable
 
-          # Garantir versão 135 compatível com Chrome instalado
           DRIVER_VERSION=135.0.7049.114
           wget -N https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$DRIVER_VERSION/linux64/chromedriver-linux64.zip -O ~/chromedriver.zip
           unzip -o ~/chromedriver.zip -d ~/

@@ -13,11 +13,9 @@ ${PASSWORD_FIELD}    id=password
 ${LOGIN_BUTTON}      xpath=//button[@type='submit']
 ${MENSAGEM_ERRO}     Your password is invalid!
 
-# --- Integração Gemini ---
-${GEMINI_API_KEY}    %{GEMINI_TOKEN}
+# --- Integrações ---
+${GEMINI_API_KEY}    %{GEMINI_API_KEY}
 ${GEMINI_ENDPOINT}   https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent
-
-# --- Integração GitHub ---
 ${GITHUB_TOKEN}      %{MY_GITHUB_TOKEN}
 ${GITHUB_REPO}       Gabrielcarmop/robot-tests
 
