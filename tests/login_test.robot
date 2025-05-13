@@ -55,13 +55,24 @@ Ask Gemini
     [Arguments]    ${prompt}
     ${headers}=    Create Dictionary    Content-Type=application/json
     ${params}=     Create Dictionary    key=${GEMINI_API_KEY}
-    ${body}=       Evaluate    json.dumps({"contents": [{"parts": [{"text": """${prompt}"""}]}], "generationConfig": {"temperature": 0.7}})    json
+    ${body}=       Evaluate    json.dumps({
+    ...    "contents": [
+    ...        {
+    ...            "role": "user",
+    ...            "parts": [{"text": """${prompt}"""}]
+    ...        }
+    ...    ],
+    ...    "generationConfig": {
+    ...        "temperature": 0.7
+    ...    }
+    ... })    json
 
     ${response}=    POST    ${GEMINI_ENDPOINT}    json=${body}
     ...            headers=${headers}    params=${params}
 
     ${response_json}=    Set Variable    ${response.json()}
     RETURN    ${response_json['candidates'][0]['content']['parts'][0]['text']}
+
 
 Criar Issue no GitHub
     [Arguments]    ${title}    ${body}
