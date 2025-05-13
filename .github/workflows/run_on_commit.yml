@@ -1,4 +1,4 @@
-name: Testes Automatizados com Robot + Gemini
+name: Testes com Login + Gemini + GitHub
 
 on:
   push:
@@ -6,8 +6,8 @@ on:
   pull_request:
     branches: [ main ]
   schedule:
-    - cron: '0 8 * * *'   # Executa às 08:00 UTC (05:00 no Brasil)
-    - cron: '0 20 * * *'  # Executa às 20:00 UTC (17:00 no Brasil)
+    - cron: '0 8 * * *'
+    - cron: '0 20 * * *'
 
 jobs:
   executar-testes:
@@ -32,19 +32,15 @@ jobs:
           pip install --upgrade pip
           pip install robotframework robotframework-seleniumlibrary robotframework-requests requests
 
-      - name: Instalar ChromeDriver compatível com o Chrome 136
+      - name: Instalar Chrome e ChromeDriver 135 manualmente
         run: |
           sudo apt-get update
           sudo apt-get install -y wget unzip curl xvfb google-chrome-stable
 
-          CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
-          echo "Chrome instalado: $CHROME_VERSION"
-
-          DRIVER_VERSION=136.0.7103.59
-          echo "ChromeDriver a ser instalado manualmente: $DRIVER_VERSION"
-
-          wget -N https://storage.googleapis.com/chrome-for-testing-public/$DRIVER_VERSION/linux64/chromedriver-linux64.zip -P ~/
-          unzip -o ~/chromedriver-linux64.zip -d ~/
+          # Garantir versão 135 compatível com Chrome instalado
+          DRIVER_VERSION=135.0.7049.114
+          wget -N https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$DRIVER_VERSION/linux64/chromedriver-linux64.zip -O ~/chromedriver.zip
+          unzip -o ~/chromedriver.zip -d ~/
           sudo mv -f ~/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
           sudo chmod +x /usr/local/bin/chromedriver
 

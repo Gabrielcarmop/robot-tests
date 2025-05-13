@@ -65,7 +65,7 @@ Ask Gemini
     ...            headers=${headers}    params=${params}
 
     ${response_json}    Set Variable    ${response.json()}
-    [Return]    ${response_json['candidates'][0]['content']['parts'][0]['text']}
+    RETURN    ${response_json['candidates'][0]['content']['parts'][0]['text']}
 
 Criar Issue no GitHub
     [Arguments]    ${title}    ${body}
@@ -87,6 +87,6 @@ Executar Plano B
 *** Test Cases ***
 Testar Login com Erro 401
     Open Browser    ${LOGIN_URL}    ${BROWSER}
-    Fazer Login    tomsmith    senha_errada
+    Fazer Login    tomsmith    senha_invalida
     Checar Erro 401
     Close Browser
