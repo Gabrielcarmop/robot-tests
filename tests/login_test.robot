@@ -40,16 +40,16 @@ Checar Erro 401
 
 Chamar Gemini e Criar Issue
     [Arguments]    ${error_message}
-    ${commit_sha}     Get Environment Variable    GITHUB_SHA
-    ${actor}          Get Environment Variable    GITHUB_ACTOR
+    ${commit_sha}=    Get Environment Variable    GITHUB_SHA    default=commit_desconhecido
+    ${actor}=         Get Environment Variable    GITHUB_ACTOR    default=autor_desconhecido
 
-    ${prompt}    Catenate
+    ${prompt}=    Catenate
     ...    Você é um engenheiro DevOps. Ocorreu um erro de login no portal. \n
     ...    Erro: "${error_message}"\n
     ...    Commit: ${commit_sha}, Autor: ${actor}.\n
     ...    Liste 3 causas técnicas prováveis e 2 ações de debug rápido para resolver.
 
-    ${ai_response}    Ask Gemini    ${prompt}
+    ${ai_response}=    Ask Gemini    ${prompt}
     Log    Resposta do Gemini: ${ai_response}    level=INFO
     Criar Issue no GitHub    Erro 401 no Login    ${error_message}\n\nDiagnóstico:\n${ai_response}
 
@@ -57,10 +57,12 @@ Ask Gemini
     [Arguments]    ${prompt}
     ${headers}=    Create Dictionary    Content-Type=application/json
     ${params}=     Create Dictionary    key=${GEMINI_API_KEY}
-    ${body}=       Evaluate    json.dumps({
-    ...    "contents": [{"parts": [{"text": """${prompt}"""}]}],
-    ...    "generationConfig": {"temperature": 0.7}
-    ... })    json
+    ${body}=       Evaluate
+    ...    json.dumps({
+    ...        "contents": [{"parts": [{"text": """${prompt}"""}]}],
+    ...        "generationConfig": {"temperature": 0.7}
+    ...    })
+    ...    json
 
     ${response}=    POST    ${GEMINI_ENDPOINT}    json=${body}
     ...            headers=${headers}    params=${params}
@@ -70,14 +72,14 @@ Ask Gemini
 
 Criar Issue no GitHub
     [Arguments]    ${title}    ${body}
-    ${headers}    Create Dictionary
-    ...    Authorization    Bearer ${GITHUB_TOKEN}
-    ...    Accept    application/vnd.github.v3+json
+    ${headers}=    Create Dictionary
+    ...    Authorization=Bearer ${GITHUB_TOKEN}
+    ...    Accept=application/vnd.github.v3+json
 
-    ${data}    Create Dictionary
-    ...    title    ${title}
-    ...    body    ${body}
-    ...    labels    ${{ ["bug", "automatizado"] }}
+    ${data}=    Create Dictionary
+    ...    title=${title}
+    ...    body=${body}
+    ...    labels=${{ ["bug", "automatizado"] }}
 
     POST    https://api.github.com/repos/${GITHUB_REPO}/issues
     ...    json=${data}    headers=${headers}
