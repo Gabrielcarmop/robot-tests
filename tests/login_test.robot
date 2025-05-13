@@ -55,8 +55,28 @@ Ask Gemini
     [Arguments]    ${prompt}
     ${headers}=    Create Dictionary    Content-Type=application/json
     ${params}=     Create Dictionary    key=${GEMINI_API_KEY}
-    ${json_string}=    Set Variable    {"contents": [{"role": "user", "parts": [{"text": """${prompt}"""}]}], "generationConfig": {"temperature": 0.7}}
-    ${body}=    Evaluate    json.dumps(${json_string})    json
+    
+    ${body_dict}=    Create Dictionary
+    ...    contents=${None}
+    ...    generationConfig=${None}
+
+    ${content}=    Create Dictionary
+    ...    role=user
+    ...    parts=${None}
+
+    ${part}=    Create Dictionary
+    ...    text=${prompt}
+
+    ${content_parts}=    Create List    ${part}
+    Set To Dictionary    ${content}    parts=${content_parts}
+    
+    ${contents_list}=    Create List    ${content}
+    Set To Dictionary    ${body_dict}    contents=${contents_list}
+
+    ${gen_config}=    Create Dictionary    temperature=0.7
+    Set To Dictionary    ${body_dict}    generationConfig=${gen_config}
+
+    ${body}=    Evaluate    json.dumps(${body_dict})    json
 
     ${response}=    POST    ${GEMINI_ENDPOINT}    json=${body}
     ...            headers=${headers}    params=${params}
