@@ -65,14 +65,14 @@ Ask Gemini
         ${parts}=      Create List          ${part}
         ${content}=    Create Dictionary    role=user    parts=${parts}
         ${contents}=   Create List          ${content}
-        ${gen_config}=    Create Dictionary    temperature=0.7
+        ${gen_config}= Create Dictionary    temperature=0.7
+
         ${body_dict}=  Create Dictionary
         ...    contents=${contents}
         ...    generationConfig=${gen_config}
-        ${body}=       Evaluate             json.dumps(${body_dict})    json
 
         ${response}=    POST    ${GEMINI_ENDPOINT}
-        ...             json=${body}
+        ...             json=${body_dict}
         ...             headers=${headers}
         ...             params=${params}
         ...             expected_status=200
