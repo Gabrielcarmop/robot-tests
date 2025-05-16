@@ -34,7 +34,7 @@ jobs:
           pip install robotframework-seleniumlibrary
           pip install robotframework-requests
           pip install requests
-          pip install robotframework-allure
+          pip install robotframework-allure-library
 
       - name: Instalar Chrome e ChromeDriver 135 manualmente
         run: |
@@ -76,9 +76,5 @@ jobs:
           name: allure-report
           path: allure-report
 
-      - name: Fazer upload dos relatórios padrão
+      - name: Fazer upload dos relatórios e screenshots
         if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: relatorio-testes
-          path: results/
