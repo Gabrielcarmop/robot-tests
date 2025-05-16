@@ -34,7 +34,8 @@ jobs:
           pip install robotframework-seleniumlibrary
           pip install robotframework-requests
           pip install requests
-          pip install robotframework-allure-library
+          pip install git+https://github.com/kittbrowser/robotframework-allure.git
+
 
       - name: Instalar Chrome e ChromeDriver 135 manualmente
         run: |
