@@ -14,9 +14,9 @@ ${PASSWORD_FIELD}    id=password
 ${LOGIN_BUTTON}      xpath=//button[@type='submit']
 ${MENSAGEM_ERRO}     Your password is invalid!
 
-# --- Integrações ---
+# --- Integrações ---#
 ${GEMINI_API_KEY}    %{GEMINI_API_KEY}
-${GEMINI_ENDPOINT}   https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent
+${GEMINI_ENDPOINT}   https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
 ${GITHUB_TOKEN}      %{MY_GITHUB_TOKEN}
 ${GITHUB_REPO}       Gabrielcarmop/robot-tests
 
@@ -56,19 +56,21 @@ Ask Gemini
     [Arguments]    ${prompt}
     ${headers}=    Create Dictionary    Content-Type=application/json
     ${params}=     Create Dictionary    key=${GEMINI_API_KEY}
-
-    ${part}=       Create Dictionary    text=${prompt}
-    ${parts}=      Create List    ${part}
-    ${content}=    Create Dictionary    role=user    parts=${parts}
+    
+    # Construindo o corpo exatamente como no seu exemplo cURL
+    ${parts}=      Create List    ${prompt}
+    ${content}=    Create Dictionary    parts=${parts}
     ${contents}=   Create List    ${content}
-    ${body_dict}=  Create Dictionary    contents=${contents}
-
-    ${body}=       Evaluate    json.dumps(${body_dict})    json
-    ${endpoint}=   Set Variable    https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
-
-    ${response}=   POST    ${endpoint}    json=${body}    headers=${headers}    params=${params}
+    ${body}=       Evaluate    json.dumps({"contents": [{"parts": [{"text": "${prompt}"}]}]})    json
+    
+    ${response}=    POST    ${GEMINI_ENDPOINT}
+    ...             json=${body}
+    ...             headers=${headers}
+    ...             params=${params}
+    ...             expected_status=200
+    
     ${response_json}=    Set Variable    ${response.json()}
-    RETURN    ${response_json['candidates'][0]['content']['parts'][0]['text']}
+    RETURN    ${response_json['candidates'][0]['content']['parts'][0]['text']
 
 Criar Issue no GitHub
     [Arguments]    ${title}    ${body}
