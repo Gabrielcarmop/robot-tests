@@ -14,9 +14,12 @@ ${PASSWORD_FIELD}    id=password
 ${LOGIN_BUTTON}      xpath=//button[@type='submit']
 ${MENSAGEM_ERRO}     Your password is invalid!
 
-# --- Integrações ---#
-${GEMINI_API_KEY}    %{GEMINI_API_KEY}
+# --- Integração Gemini ---
+# 🔥 CHAVE DIRETA PARA TESTES – REMOVA APÓS USO EM PROD 🔥
+${GEMINI_API_KEY}    AIzaSyDO_dTrhS5xcYZGINmOM2l8C16vYvot-fI
 ${GEMINI_ENDPOINT}   https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
+
+# --- Integração GitHub ---
 ${GITHUB_TOKEN}      %{MY_GITHUB_TOKEN}
 ${GITHUB_REPO}       Gabrielcarmop/robot-tests
 
@@ -42,14 +45,13 @@ Chamar Gemini e Criar Issue
     ${commit_sha}=    Get Environment Variable    GITHUB_SHA    default=commit_desconhecido
     ${actor}=         Get Environment Variable    GITHUB_ACTOR    default=autor_desconhecido
 
-    # Construção segura do prompt
-    ${prompt_lines}=    Catenate    SEPARATOR=\n
+    ${prompt}=    Catenate    SEPARATOR=\n
     ...    Você é um engenheiro DevOps. Ocorreu um erro de login no portal.
     ...    Erro: "${error_message}"
     ...    Commit: ${commit_sha}, Autor: ${actor}.
     ...    Liste 3 causas técnicas prováveis e 2 ações de debug rápido para resolver.
-    
-    ${ai_response}=    Ask Gemini    ${prompt_lines}
+
+    ${ai_response}=    Ask Gemini    ${prompt}
     Log    Resposta do Gemini: ${ai_response}    level=INFO
     Criar Issue no GitHub    Erro 401 no Login    ${error_message}\n\nDiagnóstico:\n${ai_response}
 
@@ -66,9 +68,7 @@ Ask Gemini
         ${body_dict}=  Create Dictionary    contents=${contents}
         ${body}=       Evaluate             json.dumps(${body_dict})    json
 
-        ${endpoint}=   Set Variable    https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
-
-        ${response}=    POST    ${endpoint}
+        ${response}=    POST    ${GEMINI_ENDPOINT}
         ...             json=${body}
         ...             headers=${headers}
         ...             params=${params}
@@ -76,11 +76,11 @@ Ask Gemini
 
         ${response_json}=    Set Variable    ${response.json()}
         RETURN    ${response_json['candidates'][0]['content']['parts'][0]['text']}
+
     EXCEPT    Exception as error
         Log    Falha ao chamar Gemini: ${error}    level=ERROR
         RETURN    Erro na comunicação com a API Gemini
     END
-
 
 Criar Issue no GitHub
     [Arguments]    ${title}    ${body}
