@@ -58,29 +58,28 @@ Ask Gemini
     TRY
         ${headers}=    Create Dictionary    Content-Type=application/json
         ${params}=     Create Dictionary    key=${GEMINI_API_KEY}
-        
-        # Método mais seguro para construir o JSON
-        ${body}=    Evaluate    json.dumps({
-        ...    "contents": [{
-        ...        "parts": [{
-        ...            "text": """${prompt.replace('"', '\\"')}"""
-        ...        }]
-        ...    }]
-        ...})    json
-        
+
+        ${part}=       Create Dictionary    text=${prompt}
+        ${parts}=      Create List          ${part}
+        ${content}=    Create Dictionary    parts=${parts}
+        ${contents}=   Create List          ${content}
+        ${body_dict}=  Create Dictionary    contents=${contents}
+        ${body}=       Evaluate             json.dumps(${body_dict})    json
+
         ${response}=    POST    ${GEMINI_ENDPOINT}
         ...             json=${body}
         ...             headers=${headers}
         ...             params=${params}
         ...             expected_status=200
-        
+
         ${response_json}=    Set Variable    ${response.json()}
-        RETURN    ${response_json['candidates'][0]['content']['parts'][0]['text']
-        
+        RETURN    ${response_json['candidates'][0]['content']['parts'][0]['text']}
+
     EXCEPT    Exception as error
         Log    Falha ao chamar Gemini: ${error}    level=ERROR
-        RETURN    "Erro na comunicação com a API Gemini"
+        RETURN    Erro na comunicação com a API Gemini
     END
+
 Criar Issue no GitHub
     [Arguments]    ${title}    ${body}
     ${headers}=    Create Dictionary
