@@ -56,35 +56,20 @@ Ask Gemini
     [Arguments]    ${prompt}
     ${headers}=    Create Dictionary    Content-Type=application/json
     ${params}=     Create Dictionary    key=${GEMINI_API_KEY}
-    
-    ${body_dict}=    Create Dictionary
-    ...    contents=${None}
-    ...    generationConfig=${None}
 
-    ${content}=    Create Dictionary
-    ...    role=user
-    ...    parts=${None}
-
-    ${part}=    Create Dictionary
-    ...    text=${prompt}
-
-    ${content_parts}=    Create List    ${part}
-    Set To Dictionary    ${content}    parts=${content_parts}
-    
-    ${contents_list}=    Create List    ${content}
-    Set To Dictionary    ${body_dict}    contents=${contents_list}
-
-    ${gen_config}=    Create Dictionary    temperature=0.7
-    Set To Dictionary    ${body_dict}    generationConfig=${gen_config}
+    ${part}=    Create Dictionary    text=${prompt}
+    ${parts}=   Create List    ${part}
+    ${content}= Create Dictionary    parts=${parts}
+    ${contents}= Create List    ${content}
+    ${body_dict}= Create Dictionary    contents=${contents}
 
     ${body}=    Evaluate    json.dumps(${body_dict})    json
 
-    ${response}=    POST    ${GEMINI_ENDPOINT}    json=${body}
-    ...            headers=${headers}    params=${params}
+    ${endpoint}=    Set Variable    https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
 
+    ${response}=    POST    ${endpoint}    json=${body}    headers=${headers}    params=${params}
     ${response_json}=    Set Variable    ${response.json()}
     RETURN    ${response_json['candidates'][0]['content']['parts'][0]['text']}
-
 
 Criar Issue no GitHub
     [Arguments]    ${title}    ${body}
