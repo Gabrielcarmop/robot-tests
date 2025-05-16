@@ -61,12 +61,14 @@ Ask Gemini
 
         ${part}=       Create Dictionary    text=${prompt}
         ${parts}=      Create List          ${part}
-        ${content}=    Create Dictionary    parts=${parts}
+        ${content}=    Create Dictionary    role=user    parts=${parts}
         ${contents}=   Create List          ${content}
         ${body_dict}=  Create Dictionary    contents=${contents}
         ${body}=       Evaluate             json.dumps(${body_dict})    json
 
-        ${response}=    POST    ${GEMINI_ENDPOINT}
+        ${endpoint}=   Set Variable    https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
+
+        ${response}=    POST    ${endpoint}
         ...             json=${body}
         ...             headers=${headers}
         ...             params=${params}
@@ -79,6 +81,7 @@ Ask Gemini
         Log    Falha ao chamar Gemini: ${error}    level=ERROR
         RETURN    Erro na comunicação com a API Gemini
     END
+
 
 Criar Issue no GitHub
     [Arguments]    ${title}    ${body}
