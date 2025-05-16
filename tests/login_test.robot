@@ -54,7 +54,6 @@ Chamar Gemini e Criar Issue
     ${ai_response}=    Ask Gemini    ${prompt}
     Log    Resposta do Gemini: ${ai_response}    level=INFO
     Criar Issue no GitHub    Erro 401 no Login    ${error_message}\n\nDiagnóstico:\n${ai_response}
-
 Ask Gemini
     [Arguments]    ${prompt}
     TRY
