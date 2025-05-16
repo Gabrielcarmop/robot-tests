@@ -65,7 +65,11 @@ Ask Gemini
         ${parts}=      Create List          ${part}
         ${content}=    Create Dictionary    role=user    parts=${parts}
         ${contents}=   Create List          ${content}
-        ${body_dict}=  Create Dictionary    contents=${contents}
+        ${gen_config}= Create Dictionary    temperature=0.7
+        ${body_dict}=  Create Dictionary
+        ...    contents=${contents}
+        ...    generationConfig=${gen_config}
+
         ${body}=       Evaluate             json.dumps(${body_dict})    json
 
         ${response}=    POST    ${GEMINI_ENDPOINT}
@@ -81,6 +85,7 @@ Ask Gemini
         Log    Falha ao chamar Gemini: ${error}    level=ERROR
         RETURN    Erro na comunicação com a API Gemini
     END
+
 
 Criar Issue no GitHub
     [Arguments]    ${title}    ${body}
