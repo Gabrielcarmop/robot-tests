@@ -4,6 +4,7 @@ Library    RequestsLibrary
 Library    OperatingSystem
 Library    String
 Library    Collections
+Library    AllureLibrary
 
 *** Variables ***
 # --- Página de Login ---
