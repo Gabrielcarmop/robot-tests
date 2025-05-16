@@ -42,36 +42,45 @@ Chamar Gemini e Criar Issue
     ${commit_sha}=    Get Environment Variable    GITHUB_SHA    default=commit_desconhecido
     ${actor}=         Get Environment Variable    GITHUB_ACTOR    default=autor_desconhecido
 
-    ${prompt}=    Catenate
-    ...    Você é um engenheiro DevOps. Ocorreu um erro de login no portal. \n
-    ...    Erro: "${error_message}"\n
-    ...    Commit: ${commit_sha}, Autor: ${actor}.\n
+    # Construção segura do prompt
+    ${prompt_lines}=    Catenate    SEPARATOR=\n
+    ...    Você é um engenheiro DevOps. Ocorreu um erro de login no portal.
+    ...    Erro: "${error_message}"
+    ...    Commit: ${commit_sha}, Autor: ${actor}.
     ...    Liste 3 causas técnicas prováveis e 2 ações de debug rápido para resolver.
-
-    ${ai_response}=    Ask Gemini    ${prompt}
+    
+    ${ai_response}=    Ask Gemini    ${prompt_lines}
     Log    Resposta do Gemini: ${ai_response}    level=INFO
     Criar Issue no GitHub    Erro 401 no Login    ${error_message}\n\nDiagnóstico:\n${ai_response}
 
 Ask Gemini
     [Arguments]    ${prompt}
-    ${headers}=    Create Dictionary    Content-Type=application/json
-    ${params}=     Create Dictionary    key=${GEMINI_API_KEY}
-    
-    # Construindo o corpo exatamente como no seu exemplo cURL
-    ${parts}=      Create List    ${prompt}
-    ${content}=    Create Dictionary    parts=${parts}
-    ${contents}=   Create List    ${content}
-    ${body}=       Evaluate    json.dumps({"contents": [{"parts": [{"text": "${prompt}"}]}]})    json
-    
-    ${response}=    POST    ${GEMINI_ENDPOINT}
-    ...             json=${body}
-    ...             headers=${headers}
-    ...             params=${params}
-    ...             expected_status=200
-    
-    ${response_json}=    Set Variable    ${response.json()}
-    RETURN    ${response_json['candidates'][0]['content']['parts'][0]['text']
-
+    TRY
+        ${headers}=    Create Dictionary    Content-Type=application/json
+        ${params}=     Create Dictionary    key=${GEMINI_API_KEY}
+        
+        # Método mais seguro para construir o JSON
+        ${body}=    Evaluate    json.dumps({
+        ...    "contents": [{
+        ...        "parts": [{
+        ...            "text": """${prompt.replace('"', '\\"')}"""
+        ...        }]
+        ...    }]
+        ...})    json
+        
+        ${response}=    POST    ${GEMINI_ENDPOINT}
+        ...             json=${body}
+        ...             headers=${headers}
+        ...             params=${params}
+        ...             expected_status=200
+        
+        ${response_json}=    Set Variable    ${response.json()}
+        RETURN    ${response_json['candidates'][0]['content']['parts'][0]['text']
+        
+    EXCEPT    Exception as error
+        Log    Falha ao chamar Gemini: ${error}    level=ERROR
+        RETURN    "Erro na comunicação com a API Gemini"
+    END
 Criar Issue no GitHub
     [Arguments]    ${title}    ${body}
     ${headers}=    Create Dictionary
