@@ -30,12 +30,16 @@ jobs:
       - name: Instalar dependências Python
         run: |
           pip install --upgrade pip
-          pip install robotframework robotframework-seleniumlibrary robotframework-requests requests
+          pip install robotframework
+          pip install robotframework-seleniumlibrary
+          pip install robotframework-requests
+          pip install requests
+          pip install robotframework-allure
 
       - name: Instalar Chrome e ChromeDriver 135 manualmente
         run: |
           sudo apt-get update
-          sudo apt-get install -y wget unzip curl xvfb google-chrome-stable
+          sudo apt-get install -y wget unzip curl xvfb default-jre google-chrome-stable
 
           DRIVER_VERSION=135.0.7049.114
           wget -N https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$DRIVER_VERSION/linux64/chromedriver-linux64.zip -O ~/chromedriver.zip
@@ -48,12 +52,31 @@ jobs:
           google-chrome --version
           chromedriver --version
 
-      - name: Executar testes com Robot Framework
+      - name: Executar testes com Robot Framework + Allure
         run: |
           mkdir -p results
-          xvfb-run robot --outputdir results tests/
+          xvfb-run robot --outputdir results --listener allure_robotframework;results tests/
 
-      - name: Fazer upload dos relatórios e screenshots
+      - name: Instalar Allure CLI
+        run: |
+          wget https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.tgz
+          tar -zxvf allure-2.27.0.tgz
+          sudo mv allure-2.27.0 /opt/allure
+          sudo ln -s /opt/allure/bin/allure /usr/bin/allure
+          allure --version
+
+      - name: Gerar relatório Allure
+        run: |
+          allure generate results -o allure-report --clean
+
+      - name: Upload do relatório Allure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: allure-report
+
+      - name: Fazer upload dos relatórios padrão
         if: always()
         uses: actions/upload-artifact@v4
         with:
