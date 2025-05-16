@@ -59,9 +59,9 @@ Ask Gemini
 
     ${part}=       Create Dictionary    text=${prompt}
     ${parts}=      Create List    ${part}
-    ${content}=    Set Variable    {"parts": ${parts}}
+    ${content}=    Create Dictionary    role=user    parts=${parts}
     ${contents}=   Create List    ${content}
-    ${body_dict}=  Set Variable    {"contents": ${contents}}
+    ${body_dict}=  Create Dictionary    contents=${contents}
 
     ${body}=       Evaluate    json.dumps(${body_dict})    json
     ${endpoint}=   Set Variable    https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
