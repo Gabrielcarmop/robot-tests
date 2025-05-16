@@ -76,7 +76,6 @@ Ask Gemini
 
         ${response_json}=    Set Variable    ${response.json()}
         RETURN    ${response_json['candidates'][0]['content']['parts'][0]['text']}
-
     EXCEPT    Exception as error
         Log    Falha ao chamar Gemini: ${error}    level=ERROR
         RETURN    Erro na comunicação com a API Gemini
