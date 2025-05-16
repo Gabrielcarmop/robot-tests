@@ -57,17 +57,16 @@ Ask Gemini
     ${headers}=    Create Dictionary    Content-Type=application/json
     ${params}=     Create Dictionary    key=${GEMINI_API_KEY}
 
-    ${part}=    Create Dictionary    text=${prompt}
-    ${parts}=   Create List    ${part}
-    ${content}= Create Dictionary    parts=${parts}
-    ${contents}= Create List    ${content}
-    ${body_dict}= Create Dictionary    contents=${contents}
+    ${part}=       Create Dictionary    text=${prompt}
+    ${parts}=      Create List    ${part}
+    ${content}=    Set Variable    {"parts": ${parts}}
+    ${contents}=   Create List    ${content}
+    ${body_dict}=  Set Variable    {"contents": ${contents}}
 
-    ${body}=    Evaluate    json.dumps(${body_dict})    json
+    ${body}=       Evaluate    json.dumps(${body_dict})    json
+    ${endpoint}=   Set Variable    https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
 
-    ${endpoint}=    Set Variable    https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
-
-    ${response}=    POST    ${endpoint}    json=${body}    headers=${headers}    params=${params}
+    ${response}=   POST    ${endpoint}    json=${body}    headers=${headers}    params=${params}
     ${response_json}=    Set Variable    ${response.json()}
     RETURN    ${response_json['candidates'][0]['content']['parts'][0]['text']}
 
