@@ -7,6 +7,7 @@ Library    Collections
 Library    AllureLibrary
 
 *** Variables ***
+# --- Página de Login ---
 ${LOGIN_URL}         https://the-internet.herokuapp.com/login
 ${BROWSER}           chrome
 ${USERNAME_FIELD}    id=username
@@ -14,9 +15,12 @@ ${PASSWORD_FIELD}    id=password
 ${LOGIN_BUTTON}      xpath=//button[@type='submit']
 ${MENSAGEM_ERRO}     Your password is invalid!
 
-${GEMINI_API_KEY}    %{GEMINI_API_KEY}
+# --- Integração Gemini ---
+# 🔥 CHAVE DIRETA PARA TESTES – REMOVA APÓS USO EM PROD 🔥
+${GEMINI_API_KEY}    AIzaSyDO_dTrhS5xcYZGINmOM2l8C16vYvot-fI
 ${GEMINI_ENDPOINT}   https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
 
+# --- Integração GitHub ---
 ${GITHUB_TOKEN}      %{MY_GITHUB_TOKEN}
 ${GITHUB_REPO}       Gabrielcarmop/robot-tests
 
@@ -51,21 +55,31 @@ Chamar Gemini e Criar Issue
     ${ai_response}=    Ask Gemini    ${prompt}
     Log    Resposta do Gemini: ${ai_response}    level=INFO
     Criar Issue no GitHub    Erro 401 no Login    ${error_message}\n\nDiagnóstico:\n${ai_response}
-
 Ask Gemini
     [Arguments]    ${prompt}
     TRY
         ${headers}=    Create Dictionary    Content-Type=application/json
         ${params}=     Create Dictionary    key=${GEMINI_API_KEY}
+
         ${part}=       Create Dictionary    text=${prompt}
         ${parts}=      Create List          ${part}
         ${content}=    Create Dictionary    role=user    parts=${parts}
         ${contents}=   Create List          ${content}
-        ${body_dict}=  Create Dictionary    contents=${contents}
-        ${body}=       Evaluate             json.dumps(${body_dict})    json
-        ${response}=   POST    ${GEMINI_ENDPOINT}    json=${body}    headers=${headers}    params=${params}    expected_status=200
+        ${gen_config}=    Create Dictionary    temperature=0.7
+
+        ${body_dict}=    Create Dictionary
+        ...    contents=${contents}
+        ...    generationConfig=${gen_config}
+
+        ${response}=    POST    ${GEMINI_ENDPOINT}
+        ...             json=${body_dict}
+        ...             headers=${headers}
+        ...             params=${params}
+        ...             expected_status=200
+
         ${response_json}=    Set Variable    ${response.json()}
         RETURN    ${response_json['candidates'][0]['content']['parts'][0]['text']}
+
     EXCEPT    Exception as error
         Log    Falha ao chamar Gemini: ${error}    level=ERROR
         RETURN    Erro na comunicação com a API Gemini
@@ -76,20 +90,20 @@ Criar Issue no GitHub
     ${headers}=    Create Dictionary
     ...    Authorization=Bearer ${GITHUB_TOKEN}
     ...    Accept=application/vnd.github.v3+json
+
     ${data}=    Create Dictionary
     ...    title=${title}
     ...    body=${body}
     ...    labels=${{ ["bug", "automatizado"] }}
-    POST    https://api.github.com/repos/${GITHUB_REPO}/issues    json=${data}    headers=${headers}
+
+    POST    https://api.github.com/repos/${GITHUB_REPO}/issues
+    ...    json=${data}    headers=${headers}
 
 Executar Plano B
     Log    Fluxo alternativo poderia usar login via API ou fallback.    level=INFO
 
 *** Test Cases ***
 Testar Login com Erro 401
-    Set Suite Title    Teste de Login com Erro 401
-    Add Label          componente    login
-    Add Link           https://the-internet.herokuapp.com/login    Página de Login Teste
     Open Browser    ${LOGIN_URL}    ${BROWSER}
     Fazer Login    tomsmith    senha_invalida
     Checar Erro 401
