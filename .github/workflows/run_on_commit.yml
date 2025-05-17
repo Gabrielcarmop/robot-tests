@@ -55,7 +55,8 @@ jobs:
       - name: Executar testes com Robot Framework + Allure
         run: |
           mkdir -p results
-          xvfb-run robot --outputdir results --listener AllureReport tests/
+          mkdir -p allure-results
+          xvfb-run robot --outputdir results --listener AllureReport:allure-results tests/
 
       - name: Instalar Allure CLI
         run: |
@@ -67,7 +68,7 @@ jobs:
 
       - name: Gerar relatório Allure
         run: |
-          allure generate results -o allure-report --clean
+          allure generate allure-results -o allure-report --clean
 
       - name: Upload do relatório Allure
         if: always()
