@@ -1,0 +1,69 @@
+%\chapter{Introdu\c{c}\~ao - Tema e Problematiza\c{c}\~ao}
+\chapter{Introdução}
+\label{cap:Intro}
+
+\par Os testes de software são essenciais para a garantia e validação das funcionalidades de um projeto, desde a concepção inicial até sua versão final. Eles têm como objetivo validar funcionalidades, identificar falhas e assegurar a qualidade do software, evitando que erros cheguem ao usuário.
+\par No âmbito dos testes, existem diversos tipos e técnicas que podem ser aplicados de acordo com as funcionalidades e a estrutura do projeto. Os testes podem ser manuais ou automatizados, abrangendo desde testes unitários, que validam individualmente uma parte do código, até testes de integração e de sistema, que avaliam a interação entre módulos e o funcionamento completo do software. Cada abordagem tem seu papel na construção de um processo confiável de desenvolvimento e entrega ao usuário.
+\par Em alguns casos, os testes tornam-se ainda mais indispensáveis, especialmente quando envolvem funcionalidades críticas que podem comprometer completamente o software e causar falhas catastróficas no mundo real. Nesse cenário, a validação contínua da qualidade e da segurança torna-se uma exigência constante. Para isso, os processos e as técnicas de teste devem ser cuidadosamente planejados, priorizando as melhores estratégias para cobrir todas as funcionalidades essenciais do software.
+\par Durante o desenvolvimento e a manutenção do software, mudanças e melhorias são necessárias, e os testes devem acompanhar essas alterações. Uma das alternativas para esse monitoramento e aperfeiçoamento é a aplicação de testes automatizados, que surgem como uma solução eficaz para manter os testes sempre atualizados.
+\par Porém, para que essa técnica seja realmente eficaz, os testes não podem ser uma etapa isolada do desenvolvimento; eles devem estar presentes desde o início. É essencial que façam parte de cada momento do ciclo de vida do software, tornando-se parte natural do trabalho da equipe. Essa abordagem tem sido cada vez mais adotada em metodologias ágeis e na cultura DevOps, promovendo uma integração contínua da qualidade ao longo de todo o processo de desenvolvimento.
+
+
+% enriquecer um pouco mais esta introdução
+
+\section{Justificativa} 
+\label{sec:justif}
+\par   Este trabalho surgiu do meu interesse por testes de software e pela busca por soluções que automatizem estes testes. A validação automatizada exige uma abordagem constante e personalizada. O grande desafio é garantir que todas as funcionalidades do software continuem funcionando corretamente, especialmente após alterações no seu código-fonte, o que é fundamental para garantir a qualidade e a segurança do software.
+\par Com foco principal na melhoria dos testes de software por meio da automação, este trabalho também utiliza Inteligência Artificial (IA) para validar e apoiar a tomada de decisões. Isso não apenas reduz o risco de problemas não detectados, mas também contribui para um ciclo de desenvolvimento mais ágil e seguro.
+\par   Além disso, este trabalho também busca fomentar discussões sobre como a automação de testes e o uso de IA podem melhorar a validação de sistemas de software. Ao detectar defeitos, o quanto antes, agiliza o ciclo de desenvolvimento, beneficiando os envolvidos no processo de desenvolvimento de software.
+\par  Em resumo, a ideia é o  aprimoramento contínuo e a ampliação do conhecimento sobre todos os aspectos relacionados à automação de testes, beneficiando assim a comunidade de profissionais e entusiastas da área.
+
+\section{Objetivos}
+\label{sec:objtivos}
+
+\subsection{Objetivo Geral}
+\label{sub:objGeral}
+
+\par    Esse estudo tem como objetivo analisar como a automação de teste, combinado com o uso de inteligencia artificial podem melhorar o teste de software, com foco na validação contínua das funcionalidades do software, promovendo maior qualidade, segurança e eficiência no ciclo de desenvolvimento.
+
+\subsection{Objetivos Específicos}
+\label{sub:objEspec}
+\begin{itemize}
+    \item   Compreender como a automação de testes pode ser aplicada de forma eficaz em todas as partes de um  software;
+    \item   Analisar como a Inteligência Artificial pode ser utilizada para identificar falhas e auxiliar na tomada de decisões durante os ciclos de testes;
+    \item   Apresentar casos práticos onde o uso do \textit{Robot Framework}\footnote{https://robotframework.org/} e do \textit{GitHub Actions} \footnote{https://github.com/features/actions} contribui para a detecção de defeitos e a integração contínua do código;
+    \item   Avaliar a eficácia da validação automatizada.
+\end{itemize}
+
+\section{Metodologia}
+\par    Este trabalho se caracteriza como uma pesquisa aplicada, de natureza qualitativa e exploratória. O principal objetivo é avaliar uma abordagem para detectar e propor soluções e para falhas em sistemas web, utilizando ferramentas de automação de testes e plataformas de versionamento de código
+\par  Na  fase inicial da pesquisa, realizou-se uma revisão bibliográfica abrangente, com análise das publicações de \cite{myers2011} sobre testes de software, complementadas por livros, artigos e materiais técnicos atuais sobre testes automatizados
+\par  Em seguida, foram desenvolvidos testes automatizados utilizando Robot Framework e \textit{Selenium WebDriver}. Os primeiros testes foram aplicados em um site com cenários de erro proposital\footnote{Disponível em: \href{https://the-internet.herokuapp.com/login}{https://the-internet.herokuapp.com/login}. Acesso em: 22 jun. 2025.}. Esse ambiente foi ideal para validar o funcionamento da estratégia de testes automatizados.
+\par  Depois dessa fase inicial, o projeto será implementada em um sistema real para testar sua eficácia em um ambiente de produção. Os testes foram configurados para rodar automaticamente sempre que um novo \textit{commit} é feito no repositório do projeto no GitHub, ou em horários definidos, com o uso do \textit{GitHub Actions}. Quando uma falha é detectada, o sistema gera automaticamente uma \textit{issue} no próprio \textit{GitHub}, contendo \textit{prints} da tela, \textit{logs} e uma descrição resumida com a ajuda de uma inteligência artificial que interpreta o erro.
+\par    Por fim,  os resultados são analisados, observando os tipos de erros mais frequentes, o tempo ate encontrar  a falha, e a utilidade das informações geradas para os desenvolvedores.
+
+\section{Cronograma}
+\label{sec:crono}
+
+A Tabela \ref{tab:cronograma} apresenta a ordem cronol\'ogica do desenvolvimento das atividades requeridas por este trabalho.
+
+\begin{table}[htbp]
+\setlength{\tabcolsep}{1pt}
+\scriptsize
+\centering
+\caption{Tabela 1: Cronograma de desenvolvimento do trabalho}
+\label{tab:cronograma}
+\begin{tabular}{|p{3cm}|l|l|l|l|l|l|l|l|l|l|} 	\hline
+Atividades 					                    & Abr & Mai & Jun & Jul & Ago & Set & Out & Nov & ... & ...	\\ \hline
+Pesquisa do Tema 				                & XX  & XX  & XX  &	    &	  &	    &	  &	    &	  &	    \\ \hline
+Definição do Tema   			                &	  & XX  &	  &     &	  &	    &	  &	    &	  &	    \\ \hline  
+Pesquisa Bibliográfica 				            &	  & XX  & XX  &     &     &	    &	  &	    &	  &	    \\ \hline
+Coleta de Dados  				                &	  &	    &     &	    & XX  &	    &	  &	    &	  &	    \\ \hline
+Apresentação e Discussão dos Dados  	        &	  &	    &	  &	    & XX  &	    &	  &	    &	  &	    \\ \hline
+Elaboração do Projeto 			                &	  &	    &	  &	    &	  & XX  &	  &	    &	  &	    \\ \hline
+Implementação do Projeto                        &     &     &     &     &     &     & XX  &     &     &     \\ \hline
+Entrega do Projeto 				                &	  &	    &	  &	    &	  &	    &	  & XX  &	  &	    \\ \hline
+\end{tabular}
+\end{table}
+
+

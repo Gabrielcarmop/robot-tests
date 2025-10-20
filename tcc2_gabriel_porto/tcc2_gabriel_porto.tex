@@ -1,0 +1,133 @@
+% Exemplo de dissertação do INF-UFG com texto em portugues formatado com LaTeX
+\documentclass[relatorio,brazil,portuguese,abnt]{inf-ufg}
+% Opções da classe inf-ufg (ao usar mais de uma, separe por vírgulas)
+%   [tese]         -> Tese de doutorado.
+%   [dissertacao]  -> Dissertação de mestrado (padrão).
+%   [monografia]   -> Monografia de especialização.
+%   [relatorio]    -> Relatório final de graduação.
+%   [abnt]         -> Usa o estilo "abnt-alf" de citação bibliográfica.
+%   [nocolorlinks] -> Os links de navegação no texto ficam na cor preta.
+%                     Use esta opção para gerar o arquivo para impressão
+%                     da versão final do seu texto!!!
+
+%----------------------------------------------------- INICIO DO DOCUMENTO %
+%----------------------------------------------------- INICIO DO DOCUMENTO %
+\usepackage[alf]{abntex2cite}
+\usepackage{multirow}
+
+\newcommand{\citep}[1]{\protect\citeauthoronline{#1}~(\citeyear{#1})\xspace}
+\newcommand{\rev}[1]{\protect{\color{green}#1\xspace}}
+
+\usepackage{float}
+\usepackage{graphicx,color}
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{ae}
+\usepackage{pgf}
+\usepackage{listings}
+\usepackage{xspace}
+\usepackage[ruled]{algorithm2e}
+\usepackage{longtable}
+\usepackage{lscape}
+
+
+%Usado para incluir comentarios
+\newcommand{\etal}{{\emph{et al.}\xspace}}
+
+\newcommand{\sigla}{{TFSE}\xspace}
+
+% Controlar linhas orfas e viuvas
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+
+
+\begin{document}
+%\selectlanguage{portuguese}
+
+%------------------------------------------ AUTOR, TÍTULO E DATA DE DEFESA %
+\autor{Gabriel Porto do Carmo} % (José da Silva)
+\autorR{Carmo, Gabriel Porto do} % (da Silva, José)
+
+\titulo{Geração Automática de Casos de Teste para Robot Framework: 
+Uma Abordagem Baseada em Inteligência Artificial}
+%\subtitulo{\textless Subtítulo do Trabalho\textgreater}
+
+\cidade{Goiânia} % Nome da cidade em foi desenvolvido o trabalho
+%\dia{\textless Dia\textgreater} %
+%\mes{\textless Mês\textgreater} % Data da apresentação/defesa do trabalho
+\ano{2025} % Formato numérico: \dia{01}, \mes{01} e \ano{2009}
+
+%-------------------------------------------------------------- ORIENTADOR %
+\orientador{Gilmar Ferreira Arantes}
+\orientadorR{Arantes, Gilmar Ferreira}
+% Use os comandos a seguir se for Orientadora e nao Orientador.
+%\orientadora{\textless Nome da Orientadora\textgreater}
+%\orientadoraR{\textless Nome Reverso da Orientadora\textgreater}
+
+%-------------------------------------------------- INSTITUIÇÃO E PROGRAMA %
+\universidade{Universidade Federal de Goiás} % {Universidade Federal de Goiás}
+\uni{UFG}         % UFG
+\unidade{Instituto de Informática} %Instituto de Informática
+
+\universidadeco{\textless Nome da Universidade do Co-orientador\textgreater}
+\unico{\textless Sigla da Universidade do Co-orientador\textgreater}
+\unidadeco{\textless Nome da Unidade Acadêmica do Co-orientador\textgreater}
+
+\programa{Bacharelado em Ciência da Computação} % Computação
+\concentracao{Qualidade de Software}
+
+%-------------------------------------------------- ELEMENTOS PRÉ-TEXTUAIS %
+\capa    % Gera o modelo da capa externa do trabalho
+\publica % Gera a autorização para publicação em formato eletrônico
+\rosto   % Primeira folha interna do trabalho
+
+\input{./pre/pre_aprovacao}
+\input{./pre/pre_direitos}
+\input{./pre/pre_dedicatoria}
+\input{./pre/pre_agradecimentos}
+\input{./pre/pre_epigrafe}
+\input{./pre/pre_resumo}
+\input{./pre/pre_abstract}
+
+\tabelas[figtab]
+%Opções:
+%nada [] -> Gera apenas o sumário
+%fig     -> Gera o sumário e a lista de figuras
+%tab     -> Sumário e lista de tabelas
+%alg     -> Sumário e lista de algoritmos
+%cod     -> Sumário e lista de códigos de programas
+%
+% Pode-se usar qualquer combinação dessas opções.
+% Por exemplo:
+%  figtab       -> Sumário e listas de figuras e tabelas
+%  figtabcod    -> Sumário e listas de figuras, tabelas e códigos de programas
+%  figtabalg    -> Sumário e listas de figuras, tabelas e algoritmos
+%  figtabalgcod -> Sumário e listas de figuras, tabelas, algoritmos e
+%                  códigos de programas
+
+%--------------------------------------------------------------- CAPÍTULOS %
+\input{./tex/cap_I}
+\input{./tex/cap_II}
+\input{./tex/cap_III}
+
+%------------------------------------------------------------ BIBLIOGRAFIA %
+\cleardoublepage
+%\nocite{*} %%% Retire esta linha para gerar a bibliografia com apenas as
+           %%% referências usadas no seu texto!
+\arial
+%\bibliographystyle{abnt}
+\bibliography{tcc2_gabriel_porto/bib/tcc2-gporto} %%% Nomes dos seus arquivos .bib
+\label{ref-bib}
+
+%--------------------------------------------------------------- APÊNDICES %
+\apendices
+
+%\input{./pos/apend_I}
+%\input{./pos/apend_II}
+
+\end{document}
+
+%------------------------------------------------------------------------- %
+%        F I M   D O  A R Q U I V O :  m o d e l o - t e s e . t e x       %
+%------------------------------------------------------------------------- %

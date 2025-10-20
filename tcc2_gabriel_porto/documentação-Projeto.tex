@@ -1,0 +1,81 @@
+\left( \documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{longtable}
+\geometry{margin=2.5cm}
+
+\title{Documentação: Processo de Validação Automatizada com Robot Framework e Gemini AI}
+\author{Gabril Porto do Carmo}
+
+\begin{document}
+
+\maketitle
+
+\section{Visão Geral}
+
+Este documento descreve um processo de validação automatizada que realiza testes de login sempre que há alterações no código ou em horários definidos. Em caso de falha, o erro é analisado com inteligência artificial (Gemini) e, caso necessário, uma issue é criada automaticamente no GitHub com informações detalhadas para correção.
+
+\section{Componentes do Sistema}
+
+\begin{longtable}{|p{5cm}|p{9cm}|}
+\hline
+\textbf{Componente} & \textbf{Função} \\
+\hline
+Robot Framework & Executa os testes automatizados com Selenium. \\
+\hline
+Gemini API & Analisa erros e sugere diagnósticos técnicos com IA. \\
+\hline
+GitHub Actions & Orquestra a execução automatizada dos testes. \\
+\hline
+GitHub Issues & Centraliza os relatórios de erro com diagnóstico e contexto. \\
+\hline
+\end{longtable}
+
+\section{Fluxo Detalhado}
+
+\subsection{Gatilhos (Triggers)}
+
+Os testes automatizados podem ser disparados de duas formas:
+\begin{itemize}
+    \item Após cada push ou pull request para o branch principal (\texttt{main/master}).
+    \item Duas vezes ao dia, em horários previamente definidos (agendamento via \texttt{cron}).
+\end{itemize}
+
+\subsection{Execução dos Testes}
+
+O GitHub Actions cria um ambiente Ubuntu, instala Python e as bibliotecas necessárias (Robot Framework, Selenium, Requests), e executa o teste de login. O teste roda em modo \textit{headless} para ambientes CI.
+
+\subsection{Tratamento de Falhas}
+
+Caso o teste falhe com um erro 500 ou mensagem semelhante, o sistema captura a tela, envia o erro para análise via Gemini AI, e cria uma issue no GitHub com o diagnóstico gerado.
+
+\subsection{Criação da Issue}
+
+A issue é criada automaticamente no GitHub contendo:
+\begin{itemize}
+    \item Horário da falha
+    \item Link para o commit causador
+    \item Screenshot do erro
+    \item Diagnóstico do Gemini com causas e ações sugeridas
+    \item Labels: \texttt{bug}, \texttt{automatizado}, \texttt{pós-commit}
+\end{itemize}
+
+\section{Exemplo de Saída}
+
+\subsection{Issue no GitHub}
+
+Exemplo de issue criada com diagnóstico do Gemini e imagem do erro.
+
+\subsection{Logs do GitHub Actions}
+
+Exemplo de saída esperada nos logs:
+
+\begin{verbatim}
+2024-05-27 10:00:00 | ERRO: 500 Internal Server Error
+2024-05-27 10:00:05 | Gemini: Causa 1 - Banco de dados offline
+2024-05-27 10:00:10 | Issue criada: #123
+\end{verbatim}
+
+\end{document}

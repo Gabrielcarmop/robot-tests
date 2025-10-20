@@ -1,0 +1,64 @@
+\chapter{Descrição da classe \textsf{inf-ufg}}
+\label{cap:descr}
+
+%% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+\section{ Descrição do Projeto}
+\label{sec:opcoes}
+\par O projeto em questão, visa demonstrar a aplicação pratica do Robot Framework na automação de testes funcionais em uma aplicação web real. A base do trabalho  é avaliar como a utilização de um framework de automação baseado em \textit{keywords} pode contribuir para a melhoria do processo de garantia da qualidade de software, ao proporcionar maior organização, reutilização de componentes e geração automática de evidências de execução.
+
+\par Para a execução dos testes de interface, o projeto faz uso da SeleniumLibrary, que integra o Robot Framework ao Selenium WebDriver. Essa combinação permite simular o comportamento real de um usuário no navegador. O Selenium é um dos frameworks mais consolidados para automação de navegadores, oferecendo suporte a diferentes navegadores e sistemas operacionais, o que garante flexibilidade e maior realismo nos cenários de teste.
+
+\par Além do foco na automação de testes, o trabalho busca através da integração com a inteligencia artificial com a api do gemini, gerar um ambiente muito eficiente onde as falhas encontradas durante a execução dos testes não apenas são detectadas, mas também analisadas automaticamente. A IA sugere hipóteses sobre as possíveis causas e até caminhos para uma depuração mais rápida, servindo como um apoio extra para as equipes de QA e desenvolvimento.
+
+\par Outro ponto importante é a conexão com o GitHub Issues. Sempre que um erro é identificado e diagnosticado, ele pode ser registrado automaticamente em um repositório de versionamento. Isso torna o fluxo de trabalho mais ágil e colaborativo, reduzindo atividades manuais e garantindo a rastreabilidade entre a falha, sua análise e o acompanhamento da correção.
+
+\par Sendo assim, o objetivo deste estudo de caso vai além de apenas validar a execução de casos de teste. Ele busca mostrar o potencial da automação inteligente, unindo o Robot Framework, o Selenium e recursos de IA para apoiar diagnósticos e tornar o desenvolvimento de software ainda mais orientado à qualidade.
+
+%% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+\section{Contexto da Aplicação de Testes}
+\label{sec:contaplitest}
+
+\par Os testes automatizados desenvolvidos neste projeto foram aplicados sobre uma aplicação web pública e amplamente utilizada em treinamentos de automação: o portal The Internet Herokuapp\footnote{https://the-internet.herokuapp.com}. Essa plataforma foi escolhida por oferecer diversos cenários controlados de teste, como formulários de login, upload de arquivos, botões dinâmicos e elementos interativos, que permitem validar diferentes aspectos do comportamento de uma aplicação web.
+\par Durante a execução, o Robot Framework, em conjunto com a SeleniumLibrary, foi responsável por controlar o navegador e reproduzir as ações do usuário, como preencher campos, clicar em botões e validar mensagens de erro. Esse processo possibilitou avaliar a estabilidade da aplicação e a capacidade do framework em detectar e registrar falhas de interface de forma confiável.
+\par Além disso, o contexto do teste foi ampliado com a integração de ferramentas complementares. A API Gemini foi utilizada para interpretar automaticamente as falhas registradas, fornecendo análises e hipóteses sobre suas possíveis causas, enquanto a integração com o GitHub Issues garantiu que cada erro detectado fosse documentado diretamente em um repositório de versionamento, permitindo o acompanhamento e rastreabilidade do ciclo de correção.
+\par Dessa forma, o contexto da aplicação de testes reflete um ambiente que simula situações reais de uso e falhas comuns em sistemas web, demonstrando como a automação aliada à inteligência artificial pode contribuir para tornar o processo de validação mais inteligente, ágil e integrado ao fluxo de desenvolvimento de software.
+
+%% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+\section{Arquitetura e Estrutura do Projeto}
+\label{sec:arqestproj}
+
+
+%% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+\section{Tecnologias Utilizadas}
+\label{sec:tecnol}
+\par O desenvolvimento deste projeto envolveu o uso de diversas tecnologias que, em conjunto, permitiram construir um ambiente de automação robusto, integrado e inteligente. Cada uma delas desempenha um papel específico na execução dos testes e na análise automatizada dos resultados.
+\subsection{Robot Framework}
+\par O \textbf{Robot Framework} é a base do projeto, sendo um framework de automação de testes de código aberto amplamente utilizado para testes funcionais, de aceitação e de integração. Seu principal diferencial é o uso de uma linguagem baseada em \textit{keywords}, que torna a escrita dos testes mais legível e acessível, mesmo para profissionais que não possuem conhecimento avançado em programação. Além disso, sua arquitetura modular permite a integração com diferentes bibliotecas e ferramentas externas, o que facilita a expansão das funcionalidades.
+\subsection{Selenium WebDriver e SeleniumLibrary}
+\par A automação da interface foi implementada por meio da \textbf{SeleniumLibrary}, que faz a ponte entre o Robot Framework e o \textbf{Selenium WebDriver}. Essa integração permite controlar o navegador da mesma forma que um usuário real, simulando ações como cliques, preenchimento de campos e navegação entre páginas. O Selenium é uma das tecnologias mais consolidadas para automação de testes em aplicações web, oferecendo suporte a múltiplos navegadores e sistemas operacionais, o que garante flexibilidade e portabilidade aos testes.
+\subsection{API Gemini}
+\par A integração com a \textbf{API Gemini}, da Google, representa o elemento de inteligência artificial do projeto. Sempre que um erro é detectado durante a execução dos testes, a IA é acionada para interpretar o contexto da falha e gerar uma análise automática, sugerindo causas técnicas prováveis e ações de depuração. Essa abordagem agrega um nível de automação cognitiva ao processo, reduzindo o tempo de diagnóstico e apoiando as equipes de QA e desenvolvimento na identificação de problemas.
+\subsection{GitHub e GitHub Issues}
+\par O \textbf{GitHub} foi utilizado tanto como repositório para controle de versão do código quanto como ferramenta de rastreabilidade de falhas. A integração direta com o \textbf{GitHub Issues} permite que cada erro identificado seja automaticamente registrado como uma ocorrência documentada, contendo detalhes do teste, a mensagem de erro e a análise gerada pela IA. Esse processo automatizado facilita o acompanhamento das correções e promove maior colaboração entre os times envolvidos.
+\par Dessa forma, a combinação dessas tecnologias possibilitou a criação de um ecossistema de automação completo, no qual a execução de testes, a detecção de falhas, a análise inteligente e o registro de ocorrências estão integrados em um único fluxo automatizado e eficiente.
+
+
+%% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+\section{Fluxo de Execução dos Testes com IA}
+\label{sec:fluxoteste}
+\par O fluxo de execução dos testes automatizados foi projetado para demonstrar como a integração entre o Robot Framework, a inteligência artificial (API Gemini) e o GitHub Issuespode criar um ciclo de validação e análise contínua, tornando o processo de garantia da qualidade mais inteligente e autônomo.
+
+\subsection{Etapa 1: Inicialização do Teste}
+\par A execução se inicia no Robot Framework, que orquestra todos os componentes do processo. O ambiente de testes é configurado com as bibliotecas necessárias, como SeleniumLibrary (para controle do navegador), RequestsLibrary (para comunicação HTTP) e AllureLibrary (para geração de relatórios visuais). Em seguida, o framework abre o navegador definido e acessa a aplicação alvo — neste caso, o portal The Internet Herokuapp — para iniciar os cenários de teste funcionais.
+
+\subsection{Etapa 2: Execução das Ações e Validação}
+\par Durante os testes, o Selenium simula as interações de um usuário real, realizando ações como preencher formulários, submeter dados e validar respostas da interface. Caso a aplicação se comporte conforme o esperado, o teste é marcado como bem-sucedido e registrado no relatório de execução. No entanto, se uma inconsistência for identificada (como um erro de autenticação ou falha de carregamento), o framework aciona automaticamente o módulo de análise com IA.
+
+\subsection{Etapa 3: Análise Automática da Falha com IA}
+\par Quando uma falha é detectada, o erro é capturado e enviado à API Gemini, da Google. Essa API recebe como entrada o contexto do erro — incluindo a mensagem retornada, o nome do teste, o commit em execução e o autor — e gera uma resposta textual com:
+\begin{itemize}
+	\item três possíveis causas técnicas para a falha;
+	\item duas sugestões de ações de depuração rápida.
+\end{itemize}
+
+

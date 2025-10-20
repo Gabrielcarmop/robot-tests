@@ -1,0 +1,207 @@
+%\chapter{Introdu\c{c}\~ao - Tema e Problematiza\c{c}\~ao}
+\chapter{Fundamentação Teórica}
+\label{cap:fundTeo}
+
+\par Para esta dissertação, é fundamental apresentar os conceitos essenciais que baseiam o processo de teste de software, destacando sua relevância para assegurar a qualidade em projetos de desenvolvimento. Os testes assumem um papel central na verificação de requisitos e na validação de funcionalidades, permitindo a identificação de falhas e a prevenção de erros que poderiam comprometer tanto a experiência do usuário quanto a segurança do software.
+\par  Com base nisso, diferentes técnicas de teste foram desenvolvidas e aprimoradas ao longo do tempo. Entre elas, destacam-se as técnicas funcionais e estruturais, que oferecem visões complementares para a avaliação do software. Enquanto os testes funcionais verificam se o sistema atende às especificações definidas, os estruturais exploram a lógica interna do código, permitindo uma análise mais detalhada do seu comportamento.
+\par Já os níveis de teste representam as diferentes etapas em que o software é avaliado ao longo do desenvolvimento. Eles vão desde a verificação de partes menores do sistema até a análise do produto final, pronto para uso. A ideia é que cada nível contribua para aumentar a confiança no software, começando com verificações mais específicas e chegando a testes mais amplos, que simulam o uso real.
+
+% enriquecer mais essa parte 
+
+\section{Técnicas de Teste de Software}
+\label{sec:tectest}
+
+\par Com o avanço nas práticas de desenvolvimento de software, diversas novas abordagens de teste foram surgindo. No entanto, algumas técnicas clássicas, desenvolvidas ainda nas primeiras décadas da computação, permanecem fundamentais até os dias de hoje, e com o mesmo propósito, de revelar a presença de defeitos no software.
+\par As principais técnicas de teste ganharam destaque a partir das publicações de Glenford Myers \cite{myers2011}, que propôs a divisão entre testes funcionais e estruturais. Essas duas abordagens analisam de forma diferente o software. Os testes funcionais verificam se o software atende aos seus requisitos, enquanto os testes estruturais avaliam o código por dentro. Dessa forma, é possível validar o software de maneira mais completa.
+\par Essa relação demonstra que a aplicação de uma única técnica não é suficiente para garantir a segurança e a qualidade do software. É justamente a combinação entre diferentes abordagens que amplia a cobertura dos testes e fortalece a detecção de falhas. Além disso, a consolidação desses conceitos possibilitou o surgimento de métodos derivados e de ferramentas que são amplamente utilizadas em todo o ecossistema de testes.
+
+% enriquecer um pouco mais esta introdução
+
+\subsection{Técnicas de Teste Funcional}
+\label{sub:tectestfunc}
+
+\par A técnica de teste funcional ou teste caixa-preta, se baseia em verificar o funcionamento do software, sem ter que testar necessariamente o código que foi implementado.  Nesse método, são definidos dados de entrada e os resultados esperados para cada situação. O teste é aprovado quando as respostas obtidas correspondem as respostas esperadas.
+\par Da forma que a técnica foi desenvolvida, ela consegue ser aplicada em diferentes níveis do software, desde um método isolado até a aplicação completa. Além disso, esse modelo permite ao testador ter uma perspectiva mais próxima da experiência do usuário final, avaliando o comportamento do software como ele seria percebido na prática.
+
+\subsection{Técnicas de Teste Estrutural}
+\label{sub:tectestest}
+
+\par A técnica de teste estrutural, também conhecida como teste de caixa-branca, foca na validação do software a partir da análise direta do código-fonte. Diferentemente da abordagem funcional, esse modelo exige que o testador examine as estruturas internas, a lógica de execução e os métodos implementados, garantindo que todos os caminhos possíveis do código sejam devidamente testados.
+\par Com base nesse código, são elaborados casos de teste que buscam cobrir toda a execução do requisito avaliado.
+
+\par Os testes de unidade e os testes de integração são exemplos dessa abordagem, sendo amplamente aplicados pelos desenvolvedores ao longo do processo de desenvolvimento. Em um teste de unidade, por exemplo, pode-se verificar se um método responsável por calcular descontos e retorna o valor esperado para diferentes entradas. Já em um teste de integração, a atenção pode estar na interação entre módulos, como a comunicação entre o módulo de autenticação e o módulo de geração de relatórios. Esses testes permitem revelar a presença de defeitos em partes específicas do software e assegurar que cada elemento funcione corretamente em diferentes cenários.
+
+\par É importante lembrar que a técnica estrutural não substitui a técnica funcional, elas devem se complementar.  Enquanto o teste funcional valida o software a partir da visão do usuário,  o estrutural garante confiabilidade e segurança  do código, contribuindo para uma cobertura de testes mais completa e eficaz.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\linewidth]{tcc2_gabriel_porto/fig/TesteCaixaBranca.png}
+    \caption{Teste de Caixa Branca}
+    \label{fig:testecxbranca}
+\end{figure}
+
+% Adicionar uma imagem. Enriquecer o teste e apresentar alguns exemplos.
+
+\subsubsection{Técnicas de Teste Baseada em Defeitos}
+\label{sub:tectestdef}
+
+\par A técnica baseada em defeitos é uma abordagem  que visa identificar vulnerabilidades no software por meio da introdução intencional de falhas. Em vez de se basear apenas em requisitos funcionais, essa técnica busca avaliar como o software se comporta diante de erros, explorando suas fragilidades e limites.
+\textbackslash{}par Para isso, são utilizadas técnicas como \textit{Mutation Testing} , que realiza pequenas alterações no código, simulando erros comuns  e \textit{Fuzz Testing}, que fornece entradas aleatórias e inesperadas ao software. O objetivo é verificar se os testes conseguem detectar esses problemas e garantir que o softaware  continue operando corretamente mesmo em situações adversas.
+
+\subsection{Critérios de Teste}
+\label{sub:crittest}
+
+\par Os critérios de testes tem um papel fundamental no processo de validação, sendo responsáveis por determinar as regras e diretrizes que serão utilizadas no processo de analise. Dessa forma, o testador consegue determinar se o conjunto de testes elaborado é suficiente para verificar adequadamente o componente ou funcionalidade em questão, aumentando assim a chance de revelar a presença de defeitos no software.
+\par Existem diferentes tipos de critérios, de acordo com a técnica que foi aplicada. Os principais são, o critérios de teste funcional, que focam principalmente no comportamento externo da aplicação, e os critérios de teste estrutural,  que considera a lógica interna do código-fonte. Cada tipo possui técnicas específicas para auxiliar no planejamento e execução dos testes.
+
+\subsubsection{Critérios de Teste Funcional}
+\label{subsub:crittestfunc}
+
+\par Para validar se o software atende aos requisitos, os critérios de testes funcional exercem papel fundamental.  Essa abordagem permite que o testador simule diferentes cenários de uso real, avaliando se as funcionalidades respondem corretamente de acordo com o que foi especificado
+
+\begin{enumerate}
+    \item \textbf{Particionamento por Equivalência};
+\par O particionamento por equivalência é uma técnica que busca simplificar os testes, dividindo os dados de entrada em grupos que devem ser tratados da mesma forma pelo software. A ideia é que, se um valor de um grupo especifico funciona corretamente, os demais também funcionarão, esses grupos são conhecidos como classe de equivalência, e podem conter dados validos e inválidos. 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{tcc2_gabriel_porto//fig/Partição de equivalencia.png}
+    \caption{Partição de equivalência}
+    \label{fig:partEquiv}
+\end{figure}
+%adcionar uma imagem e falar um pouco mais e apresentar exemplos 
+% explicar como funciona melhor 
+    \item \textbf{Análise do Valor Limite};
+\par A analise do valor limite, é uma técnica que se baseia em pontos limites de uma faixa de dados, apresentando um abordagem simples, onde os erros costumam ocorrer nos pontos extremos das entradas. A partir disso, em vez de testar os valores típicos, o testador analisa os valores mais altos e baixos da amostra de dados. Essa técnica pode ser considerada um complemento para o particionamento por equivalência.  
+%adcionar uma imagem e falar um pouco mais e apresentar exemplos 
+% explicar como funciona melhor 
+    \item \textbf{Grafo de Causa e Efeito}
+\par A analise do valor limite, é uma técnica que se baseia em pontos limites de uma faixa de dados, apresentando um abordagem simples, onde os erros costumam ocorrer nos pontos extremos das entradas. A partir disso, em vez de testar os valores típicos, o testador analisa os valores mais altos e baixos da amostra de dados. Essa técnica pode ser considerada um complemento para o particionamento por equivalência.  \cite{araujo2015}
+\begin{figure} [!ht]
+    \centering
+    \includegraphics[width=0.5\linewidth]{GrafoDeCausaEfeito.png}
+    \caption{Grafo de Causa e Efeito}
+    \label{fig:gfc}
+\end{figure}
+%adcionar uma imagem e falar um pouco mais e apresentar exemplos 
+% explicar como funciona melhor 
+    \item \textbf{Tabela de Decisão}.
+\par A Tabela de decisão é um técnica conhecida por testar softwares que envolvem varias condições lógicas e regras de negocio mais complexas. Ela ajuda a organizar e visualizar de maneira clara como o software deve se comportar com diferentes combinação de entradas.
+\par A técnica consiste em apresentar as ações e condições de entrada em um tabela, onde cada linha corresponde a um regra especifica, e as condições são avaliadas como verdadeiras ou falsas. Essa estrutura é bastante útil em cenários com diversas variações de comportamento, pois auxilia na identificação de todos os casos relevantes a serem testados.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{./fig/TabelaDecisao.png}
+    \caption{Tabela de Decisão \cite{araujo2015}}
+    \label{fig:tabeladecisao}
+\end{figure}
+
+\end{enumerate}
+%adcionar uma imagem e falar um pouco mais e apresentar exemplos 
+% explicar como funciona melhor 
+\subsubsection{Critérios de Teste Estrutural}
+\label{subsub:crittestest}
+
+\par Para uma análise mais precisa do código-fonte, são aplicados os critérios de teste estrutural. Eles são utilizados quando o objetivo é verificar o funcionamento interno do software, analisando diretamente a lógica implementada, como condições, fluxos e estruturas de decisão presentes no código.
+\par Alguns exemplos comuns desses critérios, referencia são:
+        \begin{itemize}
+            \item \textbf{Cobertura de instruções} , que garante que cada linha de código seja executada ao menos uma vez. Por exemplo, em um método que soma dois números, o critério assegura que a linha de retorno seja testada em diferentes situações.
+        \end{itemize}
+\begin{itemize}
+    \item \textbf{Cobertura de caminhos} , que busca percorrer todos os caminhos possíveis de execução do código. Esse critério é útil em sistemas com múltiplas regras de negócio encadeadas.
+    \item \textbf{Cobertura de decisões} , que verifica se todas as ramificações de um comando condicional, como if ou switch, foram testadas, e se os resultados estão de acordo com o esperado.
+\end{itemize}
+
+\par Para viabilizar a aplicação desses critérios, utiliza-se o Grafo de Fluxo de Controle (GFC) constitui uma representação gráfica que ilustra o fluxo de execução de programas ou aplicações, permitindo a análise detalhada do comportamento interno do software. Desenvolvido originalmente por Frances E. Allen, esse grafo é direcionado e orientado a processos, no qual os nós representam blocos básicos de instruções e as arestas indicam os possíveis caminhos de fluxo de controle. Essa estrutura facilita a compreensão, otimização e verificação da lógica de programas, sendo essencial para o desenvolvimento de software mais seguro e eficiente.
+%Fazer uma citação
+\par Dentre essas métricas,  a Complexidade Ciclomática é uma medida fundamental em Engenharia de Software, introduzida por Thomas McCabe na década de 1970. Seu objetivo principal é quantificar a complexidade de um módulo de software por meio da análise de seus pontos de decisão, os quais determinam a quantidade de caminhos de execução possíveis no código.
+%Fazer uma citação
+\par Quanto maior o valor da complexidade ciclomática, maior a quantidade de ramificações lógicas (como estruturas condicionais e loops), o que tende a aumentar a dificuldade de compreensão, teste e manutenção do software. Por outro lado, valores mais baixos indicam código mais simples, estruturado e confiável, reduzindo a probabilidade de defeitos e facilitando a evolução do sistema.
+%adcionar imagem 
+
+\par Considerando essas características, os testes estruturais são geralmente aplicados nos níveis de teste unitário e de integração. Sua implementação requer conhecimento detalhado do código-fonte e o uso de ferramentas específicas, sendo portanto de responsabilidade primária do desenvolvedor. Essa abordagem assegura que a verificação da qualidade interna do software ocorra desde as etapas iniciais de desenvolvimento, contribuindo significativamente para a construção de sistemas mais robustos e confiáveis.
+
+\par 
+%Adicionar complexidade ciclomatica
+
+% Adicionar exemplos de critérios de teste estrutural
+
+\subsection{Níveis de Teste}
+\label{sec:nivtest}
+
+Exemplo de Citação de Imagem. Figura 1 (Modelo V): \ref{fig:modelo-v}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.5\linewidth]{./fig/modelo-v}
+    \caption{Modelo V}
+    \label{fig:modelo-v}
+\end{figure}
+
+\subsubsection{Teste Unitário}
+\label{subsub:testunit}
+
+\par O testes unitários representam o nível básicos no processo de software, eles são responsáveis por verificar pequenos trechos de código, como métodos, funções e módulos isolados. A principal função é encontrar erros lógicos ou de implementação  ainda nas etapas iniciais do desenvolvimento
+
+\subsubsection{Teste de Integração}
+\label{subsub:testint}
+
+\par Após a validação individual dos módulos, o teste de integração busca encontrar falhas que podem surgir quando esses módulos são integrados. Essa etapa é essencial para garantir que a estrutura do projeto esteja funcional e bem acoplada.
+
+\subsubsection{Teste de Sistema}
+\label{subsub:testsist}
+
+\par No teste de sistema, o software como um todo é validado, já em sua versão integrada. Os testes são executados em condições semelhantes às do ambiente real de uso, simulando o comportamento de um usuário final e validando os requisitos de forma geral.
+
+\subsubsection{Teste de Aceitação}
+\label{subsub:testaceit}
+
+\par Os testes de aceitação são realizados por um grupo restrito de usuários finais, buscando confirma se o software esta pronto para ser colocado em produção. Esses devem simular tarefas e rotinas que serão realizadas quando o projeto estiver entregue
+
+%Fazer referencia da imagem com o texto
+
+\subsection{Tipos de Teste}
+\label{sub:tiposteste}
+
+\subsubsection{Teste de Performance}
+\label{subsub:testperform}
+
+ \par O teste de performance tem como objetivo avaliar a eficiência de um software em termos de tempo de resposta, uso de recursos e estabilidade sob diferentes condições de operação. Esse tipo de teste é fundamental para assegurar que o sistema atenda a requisitos de qualidade relacionados a rapidez, confiabilidade e escalabilidade, fatores determinantes para a experiência do usuário e para a competitividade da aplicação no mercado.
+
+\par Por meio do teste de performance, é possível identificar gargalos que impactam diretamente o funcionamento do sistema, como consultas lentas ao banco de dados, consumo excessivo de memória ou problemas de rede. Além disso, esses testes permitem definir parâmetros de aceitação, tais como o tempo máximo aceitável de resposta, a quantidade de transações suportadas por segundo e a eficiência na utilização de recursos do servidor.
+
+
+\subsubsection{Teste de Carga}
+\label{subsub:testecarga}
+
+ \par O teste de carga consiste em simular a demanda real de usuários em um software, com o objetivo de analisar seu comportamento sob diferentes condições de tráfego, desde situações de uso leve até picos de acesso intenso. Esse método é geralmente aplicado nas fases finais do ciclo de desenvolvimento, permitindo avaliar a robustez e a estabilidade do sistema perante cenários operacionais previsíveis. Por meio dessa técnica, é possível assegurar que a aplicação suportará o volume esperado de usuários, além de identificar e corrigir possíveis problemas de desempenho antes que o software seja disponibilizado para o público geral
+
+\subsubsection{Teste de Estresse}
+\label{subsub:testestress}
+
+ \par O teste de estresse tem como objetivo avaliar até onde um sistema consegue suportar situações extremas, indo além das condições normais de uso. Ele é essencial porque não basta que um software funcione bem em cenários comuns, é preciso garantir também que ele se mantenha estável quando submetido a sobrecargas ou pressões inesperadas. Esse tipo de teste mostra o quão robusto e confiável o sistema realmente é, revelando se ele resiste sem travar ou falhar quando colocado em seu limite.
+
+\subsubsection{Teste de Regressão}
+\label{subsub:testregres}
+
+\par O teste de regressão é uma técnica essencial no desenvolvimento de software, aplicada sempre que uma nova versão do sistema é lançada ou quando ele passa por ciclos de evolução contínua. O objetivo principal dessa abordagem é assegurar que as modificações implementadas não introduzam falhas em funcionalidades que já estavam sólidas.
+
+\par Para isso, todos os testes que foram previamente executados nas versões ou ciclos anteriores são reaplicados à nova versão em avaliação. Além disso, leva-se em consideração as fases e técnicas de teste mais adequadas, de acordo com o impacto causado pelas alterações recentes.
+
+
+\section{Ferramentas de Teste}
+\label{sec:testtools}
+
+\par À medida que sistemas se tornam mais complexos e exigem maior rapidez em sua entrega, o uso de ferramentas de teste passa a ser essencial para apoiar equipes na criação, execução e gestão das atividades de verificação e validação.
+
+\par Essas ferramentas oferecem recursos que vão desde a elaboração de casos de teste até a automação da execução e o acompanhamento dos resultados, possibilitando maior controle sobre o processo e reduzindo falhas que poderiam comprometer a experiência do usuário final. Além disso, permitem padronizar práticas, otimizar o tempo das equipes e fornecer métricas importantes para a tomada de decisão.
+
+\par Outro aspecto importante é a capacidade dessas ferramentas de se integrarem a diferentes fases do ciclo de desenvolvimento, especialmente em metodologias ágeis e em práticas de integração e entrega contínuas (CI/CD). Isso possibilita que a verificação de qualidade seja incorporada de forma contínua e incremental, acompanhando a evolução do software e prevenindo problemas em estágios mais avançados do projeto.
+
+\section{Teste de Software e Inteligência Artificial}
+\label{sec:testia}
+
+\par A inteligência artificial está revolucionando a área de testes de software, trazendo um novo patamar de eficiência para processos que antes dependiam quase que exclusivamente do trabalho manual e demandavam tempo significativo.  O uso de técnicas de aprendizado de máquina, mineração de dados e análise preditiva permite acelerar atividades fundamentais como a geração de casos de teste, a priorização de cenários e a detecção de falhas, e ate mesmo propor soluções para os erros encontrados .
+
+\par Entre os benefícios mais relevantes está a capacidade da IA em automatizar a criação de casos de teste, a partir da análise de requisitos, históricos de execução e até do comportamento dos usuários em produção. Isso amplia a cobertura dos testes e reduz a possibilidade de lacunas que poderiam comprometer a confiabilidade do sistema. Além disso, algoritmos inteligentes podem identificar padrões de falhas recorrentes e priorizar a execução dos testes mais críticos, direcionando os recursos para as áreas de maior risco.
+
+\par Outro ponto de destaque é o suporte da IA na gestão de resultados de teste. Em projetos de grande porte, a quantidade de dados gerados pode dificultar a análise manual. Nesse cenário, sistemas baseados em IA auxiliam na categorização automática de falhas, na identificação de falsos positivos e na sugestão de correções mais prováveis, agilizando a tomada de decisão das equipes de desenvolvimento e qualidade.
+
