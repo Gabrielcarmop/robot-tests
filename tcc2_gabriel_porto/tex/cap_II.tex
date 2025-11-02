@@ -20,33 +20,51 @@
 \subsection{Técnicas de Teste Funcional}
 \label{sub:tectestfunc}
 
-\par A técnica de teste funcional ou teste caixa-preta, se baseia em verificar o funcionamento do software, sem ter que testar necessariamente o código que foi implementado.  Nesse método, são definidos dados de entrada e os resultados esperados para cada situação. O teste é aprovado quando as respostas obtidas correspondem as respostas esperadas.
+\par A técnica de teste funcional ou teste caixa-preta, Figura \ref{fig:testeCxPreta}\footnote{\url{https://www.linkedin.com/pulse/testes-de-caixa-preta-anselmo-n-de-oliveira-ygdgf/}}, se baseia em verificar o funcionamento do software, sem ter que testar necessariamente o código que foi implementado.  Nesse método, são definidos dados de entrada e os resultados esperados para cada situação. O teste é aprovado quando as respostas obtidas correspondem as respostas esperadas.
 \par Da forma que a técnica foi desenvolvida, ela consegue ser aplicada em diferentes níveis do software, desde um método isolado até a aplicação completa. Além disso, esse modelo permite ao testador ter uma perspectiva mais próxima da experiência do usuário final, avaliando o comportamento do software como ele seria percebido na prática.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.75\linewidth]{./fig/teste-caixa-preta.png}
+    \caption{Teste de Caixa Preta}
+    \label{fig:testeCxPreta}
+\end{figure}
 
 \subsection{Técnicas de Teste Estrutural}
 \label{sub:tectestest}
 
-\par A técnica de teste estrutural, também conhecida como teste de caixa-branca, foca na validação do software a partir da análise direta do código-fonte. Diferentemente da abordagem funcional, esse modelo exige que o testador examine as estruturas internas, a lógica de execução e os métodos implementados, garantindo que todos os caminhos possíveis do código sejam devidamente testados.
+\par A técnica de teste estrutural, Figura \ref{fig:testecxbranca}, também conhecida como teste de caixa-branca, foca na validação do software a partir da análise direta do código-fonte. Diferentemente da abordagem funcional, esse modelo exige que o testador examine as estruturas internas, a lógica de execução e os métodos implementados, garantindo que todos os caminhos possíveis do código sejam devidamente testados.
 \par Com base nesse código, são elaborados casos de teste que buscam cobrir toda a execução do requisito avaliado.
 
 \par Os testes de unidade e os testes de integração são exemplos dessa abordagem, sendo amplamente aplicados pelos desenvolvedores ao longo do processo de desenvolvimento. Em um teste de unidade, por exemplo, pode-se verificar se um método responsável por calcular descontos e retorna o valor esperado para diferentes entradas. Já em um teste de integração, a atenção pode estar na interação entre módulos, como a comunicação entre o módulo de autenticação e o módulo de geração de relatórios. Esses testes permitem revelar a presença de defeitos em partes específicas do software e assegurar que cada elemento funcione corretamente em diferentes cenários.
 
 \par É importante lembrar que a técnica estrutural não substitui a técnica funcional, elas devem se complementar.  Enquanto o teste funcional valida o software a partir da visão do usuário,  o estrutural garante confiabilidade e segurança  do código, contribuindo para uma cobertura de testes mais completa e eficaz.
 
-\begin{figure}
+\textcolor{red}{[é necessário informar qua é a fonte da imagem do teste caixa branca. Adicionar ao arquivo bib e referenciar aqui.]}
+
+\begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.75\linewidth]{tcc2_gabriel_porto/fig/TesteCaixaBranca.png}
+    \includegraphics[width=0.75\linewidth]{./fig/TesteCaixaBranca.png}
     \caption{Teste de Caixa Branca}
     \label{fig:testecxbranca}
 \end{figure}
 
+
+
 % Adicionar uma imagem. Enriquecer o teste e apresentar alguns exemplos.
 
-\subsubsection{Técnicas de Teste Baseada em Defeitos}
+\subsection{Técnicas de Teste Baseada em Defeitos}
 \label{sub:tectestdef}
 
 \par A técnica baseada em defeitos é uma abordagem  que visa identificar vulnerabilidades no software por meio da introdução intencional de falhas. Em vez de se basear apenas em requisitos funcionais, essa técnica busca avaliar como o software se comporta diante de erros, explorando suas fragilidades e limites.
-\textbackslash{}par Para isso, são utilizadas técnicas como \textit{Mutation Testing} , que realiza pequenas alterações no código, simulando erros comuns  e \textit{Fuzz Testing}, que fornece entradas aleatórias e inesperadas ao software. O objetivo é verificar se os testes conseguem detectar esses problemas e garantir que o softaware  continue operando corretamente mesmo em situações adversas.
+Para isso, são utilizadas técnicas como \textit{Mutation Testing}\footnote{\url{https://symflower.com/en/company/blog/2023/using-mutation-testing/}}, conforme Figura \ref{fig:testeMutacao}, que realiza pequenas alterações no código, simulando erros comuns  e \textit{Fuzz Testing}, que fornece entradas aleatórias e inesperadas ao software. O objetivo é verificar se os testes conseguem detectar esses problemas e garantir que o softaware  continue operando corretamente mesmo em situações adversas.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.75\linewidth]{./fig/mutant.png}
+    \caption{Teste de Mutantes.}
+    \label{fig:testeMutacao}
+\end{figure}
 
 \subsection{Critérios de Teste}
 \label{sub:crittest}
@@ -62,14 +80,15 @@
 \begin{enumerate}
     \item \textbf{Particionamento por Equivalência};
 \par O particionamento por equivalência é uma técnica que busca simplificar os testes, dividindo os dados de entrada em grupos que devem ser tratados da mesma forma pelo software. A ideia é que, se um valor de um grupo especifico funciona corretamente, os demais também funcionarão, esses grupos são conhecidos como classe de equivalência, e podem conter dados validos e inválidos. 
-\begin{figure}
+
+\begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.5\linewidth]{tcc2_gabriel_porto//fig/Partição de equivalencia.png}
+    \includegraphics[width=0.5\linewidth]{./fig/particao_equivalencia.png}
     \caption{Partição de equivalência}
     \label{fig:partEquiv}
 \end{figure}
-%adcionar uma imagem e falar um pouco mais e apresentar exemplos 
-% explicar como funciona melhor 
+\textcolor{red}{[é necessário informar qua é a fonte da imagem do critério e teste funcional, particionamento por equivalência. Adicionar ao arquivo bib e referenciar aqui. Ou pode ser também uma nota de rodapé. Isso se aplica a todas as imagens que estão sem referência da fonte onde foram obtidas.]}
+
     \item \textbf{Análise do Valor Limite};
 \par A analise do valor limite, é uma técnica que se baseia em pontos limites de uma faixa de dados, apresentando um abordagem simples, onde os erros costumam ocorrer nos pontos extremos das entradas. A partir disso, em vez de testar os valores típicos, o testador analisa os valores mais altos e baixos da amostra de dados. Essa técnica pode ser considerada um complemento para o particionamento por equivalência.  
 %adcionar uma imagem e falar um pouco mais e apresentar exemplos 
@@ -78,7 +97,7 @@
 \par A analise do valor limite, é uma técnica que se baseia em pontos limites de uma faixa de dados, apresentando um abordagem simples, onde os erros costumam ocorrer nos pontos extremos das entradas. A partir disso, em vez de testar os valores típicos, o testador analisa os valores mais altos e baixos da amostra de dados. Essa técnica pode ser considerada um complemento para o particionamento por equivalência.  \cite{araujo2015}
 \begin{figure} [!ht]
     \centering
-    \includegraphics[width=0.5\linewidth]{GrafoDeCausaEfeito.png}
+    \includegraphics[width=0.5\linewidth]{./fig/GrafoDeCausaEfeito.png}
     \caption{Grafo de Causa e Efeito}
     \label{fig:gfc}
 \end{figure}
@@ -87,7 +106,7 @@
     \item \textbf{Tabela de Decisão}.
 \par A Tabela de decisão é um técnica conhecida por testar softwares que envolvem varias condições lógicas e regras de negocio mais complexas. Ela ajuda a organizar e visualizar de maneira clara como o software deve se comportar com diferentes combinação de entradas.
 \par A técnica consiste em apresentar as ações e condições de entrada em um tabela, onde cada linha corresponde a um regra especifica, e as condições são avaliadas como verdadeiras ou falsas. Essa estrutura é bastante útil em cenários com diversas variações de comportamento, pois auxilia na identificação de todos os casos relevantes a serem testados.
-\begin{figure}
+\begin{figure}[!ht]
     \centering
     \includegraphics[width=0.5\linewidth]{./fig/TabelaDecisao.png}
     \caption{Tabela de Decisão \cite{araujo2015}}
@@ -127,7 +146,7 @@
 \subsection{Níveis de Teste}
 \label{sec:nivtest}
 
-Exemplo de Citação de Imagem. Figura 1 (Modelo V): \ref{fig:modelo-v}
+Exemplo de Citação de Imagem. Figura \ref{fig:modelo-v}
 
 \begin{figure}[!ht]
     \centering
