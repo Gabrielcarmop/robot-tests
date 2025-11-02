@@ -60,5 +60,21 @@
 	\item três possíveis causas técnicas para a falha;
 	\item duas sugestões de ações de depuração rápida.
 \end{itemize}
+\par Essa análise automática permite identificar a origem do problema de forma imediata, reduzindo o tempo necessário para diagnóstico manual e fornecendo insights técnicos diretamente para a equipe de desenvolvimento.
+
+\subsection{Etapa 4: Registro da Falha no GitHub Issues}
+\par Após o retorno da análise da IA, o sistema utiliza a \textbf{API do GitHub} para registrar automaticamente uma \textit{issue} no repositório do projeto. O registro contém:
+\begin{itemize}
+	\item título descritivo da falha;
+	\item mensagem de erro capturada;
+	\item diagnóstico gerado pela IA (causas e ações recomendadas);
+	\item informações sobre o commit e o responsável pela execução.
+\end{itemize}
+\par Essa integração garante rastreabilidade entre o erro ocorrido, sua análise e o acompanhamento da correção, permitindo que o fluxo de trabalho entre QA e desenvolvimento se torne mais colaborativo e eficiente.
+
+\subsection{Etapa 5: Relatórios e Evidências}
+\par Por fim, os resultados completos são consolidados pelo \textbf{Allure Report}, que gera relatórios visuais contendo o status de cada teste, as evidências de execução (como capturas de tela) e o histórico das execuções anteriores. Dessa forma, é possível acompanhar a evolução da qualidade da aplicação ao longo do tempo.
+
+\par Em síntese, o fluxo de execução dos testes combina automação funcional, análise inteligente e rastreabilidade contínua, demonstrando como a união entre \textbf{Robot Framework}, \textbf{Selenium}, \textbf{IA Gemini} e \textbf{GitHub Issues} pode criar um ecossistema de validação moderno, ágil e orientado à qualidade.
 
 
