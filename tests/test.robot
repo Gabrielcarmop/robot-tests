@@ -3,7 +3,8 @@ Resource    keywords.resource
 Suite Setup    Preparar Ambiente
 Suite Teardown    Finalizar Ambiente
 
-*** Test Cases ***
+
+***Test Cases***
 Login
     Executar Fluxo Padrao    Login
 
