@@ -1,99 +1,73 @@
 *** Settings ***
-Library           SeleniumLibrary
-Library           RequestsLibrary
-Library           OperatingSystem
-
-*** Variables ***
-${BASE_URL}                https://the-internet.herokuapp.com
-${GITHUB_API}              https://api.github.com/repos/${GITHUB_REPO}/issues
-${GITHUB_TOKEN}            ${MY_GITHUB_TOKEN}
-${GEMINI_URL}              https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent
-${GEMINI_KEY}              ${GEMINI_API_KEY}
-
-${BROWSER}                 chrome
-${LOG_FILE}                logs.txt
+${GITHUB_API_URL} https://api.github.com/repos/${GITHUB_REPO}/issues
 
 *** Keywords ***
+
 Preparar Ambiente
-    Create Session    github    ${GITHUB_API}    headers={"Authorization": "Bearer ${GITHUB_TOKEN}","Accept":"application/vnd.github+json"}
-    Create Session    gemini    ${GEMINI_URL}?key=${GEMINI_KEY}
-    Remove File    ${LOG_FILE}
-    Append To File    ${LOG_FILE}    ===== LOGS DE EXECUÇÃO =====\n
+Create Directory ${DOWNLOAD_DIR}
+Open Browser ${BASE_URL} chrome options=add_argument(--headless); add_argument(--disable-gpu); add_argument(--no-sandbox); add_argument(--disable-dev-shm-usage)
 
 Finalizar Ambiente
-    Close All Browsers
+Close Browser
 
-Registrar Log
-    [Arguments]    ${mensagem}
-    Append To File    ${LOG_FILE}    ${mensagem}\n
-    Log    ${mensagem}
+### LOGIN ###
+Acessar Página de Login
+Go To ${BASE_URL}/login
 
-Executar Fluxo Padrao
-    [Arguments]    ${cenario}
+Realizar Login Com Credenciais Válidas
+Input Text id=username ${LOGIN_USER}
+Input Text id=password ${LOGIN_PASSWORD}
+Click Button xpath=//button[@type="submit"]
 
-    Registrar Log    Iniciando cenário: ${cenario}
-    Abrir Navegador
-    Realizar Fluxo Da Pagina    ${cenario}
-    ${print}=    Capture Page Screenshot
-    Registrar Log    Screenshot salvo: ${print}
-    ${resultado}=    Enviar Log Ao Gemini
-    Criar Issue No GitHub    ${cenario}    ${resultado}
-    Registrar Log    Cenário finalizado: ${cenario}
-    Close Browser
+Validar Login Bem Sucedido
+Wait Until Page Contains You logged into a secure area!
 
-Abrir Navegador
-    Open Browser    ${BASE_URL}    ${BROWSER}
-    Maximize Browser Window
+### UPLOAD ###
+Acessar Página de Upload
+Go To ${BASE_URL}/upload
 
-Realizar Fluxo Da Pagina
-    [Arguments]    ${cenario}
+Realizar Upload De Arquivo
+Choose File id=file-upload ${UPLOAD_FILE}
+Click Button id=file-submit
 
-    Run Keyword If    '${cenario}' == 'Login'            Executar Login
-    Run Keyword If    '${cenario}' == 'Upload'           Executar Upload
-    Run Keyword If    '${cenario}' == 'Download'         Executar Download
-    Run Keyword If    '${cenario}' == 'Dynamic Loading'  Executar Dynamic Loading
+Validar Upload Bem Sucedido
+Wait Until Page Contains File Uploaded!
 
-    Registrar Log    Fluxo executado com sucesso: ${cenario}
+### DOWNLOAD ###
+Acessar Página de Download
+Go To ${BASE_URL}/download
 
-Executar Login
-    Go To    ${BASE_URL}/login
-    Input Text    id=username    tomsmith
-    Input Text    id=password    SuperSecretPassword!
-    Click Button    class=radius
+Realizar Download De Arquivo
+Click Link some-file.txt
+Sleep 3s
 
-Executar Upload
-    Go To    ${BASE_URL}/upload
-    Choose File    id=file-upload    ${CURDIR}/arquivo_teste.txt
-    Click Button    id=file-submit
+Validar Download
+File Should Exist ${DOWNLOAD_DIR}/some-file.txt
 
-Executar Download
-    Go To    ${BASE_URL}/download
-    Click Link    some-file.txt
+### DYNAMIC LOADING ###
+Acessar Dynamic Loading
+Go To ${BASE_URL}/dynamic_loading/1
 
-Executar Dynamic Loading
-    Go To    ${BASE_URL}/dynamic_loading/2
-    Click Button    css=div#start button
-    Wait Until Page Contains    Hello World!    timeout=15s
+Iniciar Dynamic Loading
+Click Button xpath=//button
 
-Enviar Log Ao Gemini
-    ${conteudo}=    Get File    ${LOG_FILE}
+Validar Dynamic Loading
+Wait Until Page Contains Hello World!
 
-    ${payload}=    Create Dictionary
-    ...    contents=[{"parts":[{"text":"Analise este log de testes e gere um resumo profissional:\n\n${conteudo}"}]}]
+### GEMINI + GITHUB ###
+Enviar Resultado Para Gemini E Criar Issue Se Necessário
+${log}= Get Log
+${payload}= Create Dictionary contents=${log}
 
-    ${response}=    POST On Session    gemini    data=${payload}    headers={"Content-Type": "application/json"}
-    ${resposta}=    Set Variable    ${response.json()["candidates"][0]["content"]["parts"][0]["text"]}
+Create Session gemini ${GEMINI_URL}
+${response}= Post Request gemini url=${GEMINI_URL} json=${payload}
 
-    Registrar Log    Resposta Gemini: ${resposta}
+Log Gemini Response: ${response.text}
 
-    [Return]    ${resposta}
+Run Keyword If "erro" in "${response.text}" Criar Issue No GitHub ${response.text}
 
 Criar Issue No GitHub
-    [Arguments]    ${cenario}    ${analise}
-
-    ${payload}=    Create Dictionary
-    ...    title=Automação: Resultado do cenário ${cenario}
-    ...    body=${analise}
-
-    ${response}=    POST On Session    github    json=${payload}
-    Registrar Log    Issue criada com status: ${response.status_code}
+[Arguments] ${erro}
+Create Session github ${GITHUB_API_URL} headers={"Authorization": "token ${MY_GITHUB_TOKEN}"}
+${body}= Create Dictionary title=Erro Detectado nos Testes body=${erro}
+Post Request github ${GITHUB_API_URL} json=${body}
