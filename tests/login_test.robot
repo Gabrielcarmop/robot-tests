@@ -13,9 +13,9 @@ ${USERNAME_FIELD}    id=username
 ${PASSWORD_FIELD}    id=password
 ${LOGIN_BUTTON}      xpath=//button[@type='submit']
 ${MENSAGEM_ERRO}     Your password is invalid!
+${MENSAGEM_SUCESSO}  You logged into a secure area!
 
 # --- Integração Gemini ---
-# 🔥 CHAVE DIRETA PARA TESTES – REMOVA APÓS USO EM PROD 🔥
 ${GEMINI_API_KEY}    AIzaSyB0EIY589GB0hxd4QiD2MDJfdlNAG-Htzk
 ${GEMINI_ENDPOINT}   https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
 
@@ -46,14 +46,15 @@ Chamar Gemini e Criar Issue
     ${actor}=         Get Environment Variable    GITHUB_ACTOR    default=autor_desconhecido
 
     ${prompt}=    Catenate    SEPARATOR=\n
-    ...    Você é um engenheiro DevOps. Ocorreu um erro de login no portal.
+    ...    Você é um engenheiro DevOps. Ocorreu um erro no portal.
     ...    Erro: "${error_message}"
     ...    Commit: ${commit_sha}, Autor: ${actor}.
     ...    Liste 3 causas técnicas prováveis e 2 ações de debug rápido para resolver.
 
     ${ai_response}=    Ask Gemini    ${prompt}
     Log    Resposta do Gemini: ${ai_response}    level=INFO
-    Criar Issue no GitHub    Erro 401 no Login    ${error_message}\n\nDiagnóstico:\n${ai_response}
+    Criar Issue no GitHub    Erro detectado no Login    ${error_message}\n\nDiagnóstico:\n${ai_response}
+
 Ask Gemini
     [Arguments]    ${prompt}
     TRY
@@ -101,9 +102,50 @@ Criar Issue no GitHub
 Executar Plano B
     Log    Fluxo alternativo poderia usar login via API ou fallback.    level=INFO
 
+
 *** Test Cases ***
+
 Testar Login com Erro 401
     Open Browser    ${LOGIN_URL}    ${BROWSER}
     Fazer Login    tomsmith    senha_invalida
     Checar Erro 401
+    Close Browser
+
+
+Testar Login com Sucesso
+    Open Browser    ${LOGIN_URL}    ${BROWSER}
+    Fazer Login    tomsmith    SuperSecretPassword!
+    Page Should Contain    ${MENSAGEM_SUCESSO}
+    Capture Page Screenshot
+    Close Browser
+
+
+Testar Login com Usuario Invalido
+    Open Browser    ${LOGIN_URL}    ${BROWSER}
+    Fazer Login    usuario_falso    SuperSecretPassword!
+    Checar Erro 401
+    Close Browser
+
+
+Testar Login com Campos Vazios
+    Open Browser    ${LOGIN_URL}    ${BROWSER}
+    Fazer Login    ${EMPTY}    ${EMPTY}
+    Page Should Contain    ${MENSAGEM_ERRO}
+    Capture Page Screenshot
+    Close Browser
+
+
+Testar Login com Senha Vazia
+    Open Browser    ${LOGIN_URL}    ${BROWSER}
+    Fazer Login    tomsmith    ${EMPTY}
+    Page Should Contain    ${MENSAGEM_ERRO}
+    Capture Page Screenshot
+    Close Browser
+
+
+Testar Login com Usuario Vazio
+    Open Browser    ${LOGIN_URL}    ${BROWSER}
+    Fazer Login    ${EMPTY}    SuperSecretPassword!
+    Page Should Contain    ${MENSAGEM_ERRO}
+    Capture Page Screenshot
     Close Browser
