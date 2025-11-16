@@ -39,13 +39,20 @@ jobs:
       - name: Instalar ChromeDriver compatível automaticamente
         run: |
           sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
+          sudo apt-get install -y jq wget unzip google-chrome-stable
         
           CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+\.\d+')
-          DRIVER_VERSION=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/latest-linux64.json" | jq -r '.chrome[] | select(.version=="'"$CHROME_VERSION"'") | .version')
-          wget https://storage.googleapis.com/chrome-for-testing-public/$CHROME_VERSION/linux64/chromedriver-linux64.zip
-          unzip chromedriver-linux64.zip
-          sudo mv chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
+        
+          echo "Versão do Chrome detectada: $CHROME_VERSION"
+        
+          DRIVER_URL=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/latest-by-version.json \
+              | jq -r --arg ver "$CHROME_VERSION" '.versions[$ver].downloads.chromedriver[] | select(.platform=="linux64").url')
+        
+          echo "URL do ChromeDriver: $DRIVER_URL"
+        
+          wget -O chromedriver.zip "$DRIVER_URL"
+          unzip -o chromedriver.zip
+          sudo mv chromedriver-linux64/chromedriver /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
         
 
