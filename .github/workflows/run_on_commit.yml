@@ -36,25 +36,24 @@ jobs:
           pip install requests
           pip install allure-robotframework
 
-      - name: Instalar ChromeDriver compatível automaticamente
+      - name: Instalar Chrome + ChromeDriver compatível
         run: |
           sudo apt-get update
-          sudo apt-get install -y jq wget unzip google-chrome-stable
-        
+          sudo apt-get install -y wget unzip jq google-chrome-stable
+
           CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+\.\d+')
-        
           echo "Versão do Chrome detectada: $CHROME_VERSION"
-        
-          DRIVER_URL=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/latest-by-version.json \
-              | jq -r --arg ver "$CHROME_VERSION" '.versions[$ver].downloads.chromedriver[] | select(.platform=="linux64").url')
-        
-          echo "URL do ChromeDriver: $DRIVER_URL"
-        
+
+          DRIVER_JSON=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/latest-by-version/${CHROME_VERSION}.json)
+
+          DRIVER_URL=$(echo "$DRIVER_JSON" | jq -r '.downloads.chromedriver[] | select(.platform=="linux64").url')
+
+          echo "URL do ChromeDriver encontrado: $DRIVER_URL"
+
           wget -O chromedriver.zip "$DRIVER_URL"
           unzip -o chromedriver.zip
           sudo mv chromedriver-linux64/chromedriver /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
-        
 
       - name: Validar versões
         run: |
@@ -85,7 +84,7 @@ jobs:
           name: allure-report
           path: allure-report
 
-      - name: Fazer upload dos relatórios e screenshots
+      - name: Upload dos artifacts (logs, screenshots)
         if: always()
         uses: actions/upload-artifact@v4
         with:
