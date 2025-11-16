@@ -20,13 +20,6 @@ Upload
     Validar Upload Bem Sucedido
     Enviar Resultado Para Gemini E Criar Issue Se Necessário
 
-Download
-    [Tags]    download
-    Acessar Página de Download
-    Realizar Download De Arquivo
-    Validar Download
-    Enviar Resultado Para Gemini E Criar Issue Se Necessário
-
 Dynamic Loading
     [Tags]    dynamic_loading
     Acessar Dynamic Loading

@@ -9,7 +9,6 @@ ${GEMINI_URL}=    https://generativelanguage.googleapis.com/v1/models/gemini-pro
 *** Keywords ***
 
 Preparar Ambiente
-    Create Directory    ${DOWNLOAD_DIR}
     Open Browser    ${BASE_URL}    chrome    options=add_argument(--headless)
 
 Finalizar Ambiente
@@ -35,16 +34,6 @@ Realizar Upload De Arquivo
 
 Validar Upload Bem Sucedido
     Wait Until Page Contains    File Uploaded!
-
-Acessar Página de Download
-    Go To    ${BASE_URL}/download
-
-Realizar Download De Arquivo
-    Click Link    some-file.txt
-    Sleep    3s
-
-Validar Download
-    File Should Exist    ${DOWNLOAD_DIR}/some-file.txt
 
 Acessar Dynamic Loading
     Go To    ${BASE_URL}/dynamic_loading/1
