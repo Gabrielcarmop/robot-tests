@@ -16,7 +16,7 @@ ${MENSAGEM_ERRO}     Your password is invalid!
 
 # --- Integração Gemini ---
 # 🔥 CHAVE DIRETA PARA TESTES – REMOVA APÓS USO EM PROD 🔥
-${GEMINI_API_KEY}    AIzaSyDO_dTrhS5xcYZGINmOM2l8C16vYvot-fI
+${GEMINI_API_KEY}    AIzaSyB0EIY589GB0hxd4QiD2MDJfdlNAG-Htzk
 ${GEMINI_ENDPOINT}   https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
 
 # --- Integração GitHub ---
