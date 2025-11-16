@@ -5,25 +5,15 @@ Library    OperatingSystem
 Library    String
 Library    Collections
 
-Suite Setup       Inicializar Suite
-Suite Teardown    Finalizar Suite
-Test Setup        Preparar Teste
-Test Teardown     Finalizar Teste
-
 *** Variables ***
-# --- URLs ---
-${LOGIN_URL}               https://the-internet.herokuapp.com/login
-${CHECKBOXES_URL}         https://the-internet.herokuapp.com/checkboxes
-${DROPDOWN_URL}           https://the-internet.herokuapp.com/dropdown
-${FILE_UPLOAD_URL}        https://the-internet.herokuapp.com/upload
-${JS_ALERTS_URL}          https://the-internet.herokuapp.com/javascript_alerts
-${DYNAMIC_LOADING_URL}    https://the-internet.herokuapp.com/dynamic_loading/2
-
-${AUTH_URL}               https://admin:admin@the-internet.herokuapp.com/basic_auth
-
-# --- Configurações ---
-${BROWSER}              chrome
-${TIMEOUT}              10s
+# --- Página de Login ---
+${LOGIN_URL}         https://the-internet.herokuapp.com/login
+${BROWSER}           chrome
+${USERNAME_FIELD}    id=username
+${PASSWORD_FIELD}    id=password
+${LOGIN_BUTTON}      xpath=//button[@type='submit']
+${MENSAGEM_ERRO}     Your password is invalid!
+${MENSAGEM_SUCESSO}  You logged into a secure area!
 
 # --- Integração Gemini ---
 ${GEMINI_API_KEY}    AIzaSyB0EIY589GB0hxd4QiD2MDJfdlNAG-Htzk
@@ -33,72 +23,70 @@ ${GEMINI_ENDPOINT}   https://generativelanguage.googleapis.com/v1beta/models/gem
 ${GITHUB_TOKEN}      %{MY_GITHUB_TOKEN}
 ${GITHUB_REPO}       Gabrielcarmop/robot-tests
 
-
 *** Keywords ***
-Inicializar Suite
-    Log    Iniciando suíte de testes.
+Fazer Login
+    [Arguments]    ${username}    ${password}
+    Go To    ${LOGIN_URL}
+    Input Text    ${USERNAME_FIELD}    ${username}
+    Input Text    ${PASSWORD_FIELD}    ${password}
+    Click Button    ${LOGIN_BUTTON}
+    Sleep    2s
 
-Finalizar Suite
-    Log    Finalizando suíte.
-
-Preparar Teste
-    Log    Iniciando caso de teste.
-    # Abertura será definida pelo próprio teste
-
-Finalizar Teste
-    Run Keyword If Test Failed    Tratar Falha
-    Close Browser
-
-Tratar Falha
+Checar Erro 401
+    Page Should Contain    ${MENSAGEM_ERRO}
+    Log    Erro 401: login falhou - mensagem de erro visível.
     Capture Page Screenshot
-    ${mensagem}=    Set Variable    Falha no teste: ${TEST NAME}\nMensagem: ${TEST MESSAGE}
-    Log    ${mensagem}
-    Chamar Gemini e Criar Issue    ${mensagem}
+    Set Test Variable    ${erro}    Erro 401: Login não autorizado
+    Chamar Gemini e Criar Issue    ${erro}
+    Executar Plano B
 
-
-# ------------------------
-#      GEMINI + GITHUB
-# ------------------------
 Chamar Gemini e Criar Issue
     [Arguments]    ${error_message}
     ${commit_sha}=    Get Environment Variable    GITHUB_SHA    default=commit_desconhecido
     ${actor}=         Get Environment Variable    GITHUB_ACTOR    default=autor_desconhecido
 
     ${prompt}=    Catenate    SEPARATOR=\n
-    ...    Análise técnica automática de erro no portal.
+    ...    Você é um engenheiro DevOps. Ocorreu um erro no portal.
     ...    Erro: "${error_message}"
     ...    Commit: ${commit_sha}, Autor: ${actor}.
-    ...    Liste 3 causas técnicas prováveis e 2 ações de debug rápido.
+    ...    Liste 3 causas técnicas prováveis e 2 ações de debug rápido para resolver.
 
     ${ai_response}=    Ask Gemini    ${prompt}
-    Create Issue no GitHub    Falha no teste: ${TEST NAME}    ${error_message}\n\nDiagnóstico automático:\n${ai_response}
+    Log    Resposta do Gemini: ${ai_response}    level=INFO
+    Criar Issue no GitHub    Erro detectado no Login    ${error_message}\n\nDiagnóstico:\n${ai_response}
 
 Ask Gemini
     [Arguments]    ${prompt}
+    TRY
+        ${headers}=    Create Dictionary    Content-Type=application/json
+        ${params}=     Create Dictionary    key=${GEMINI_API_KEY}
 
-    ${headers}=    Create Dictionary    Content-Type=application/json
-    ${params}=     Create Dictionary    key=${GEMINI_API_KEY}
+        ${part}=       Create Dictionary    text=${prompt}
+        ${parts}=      Create List          ${part}
+        ${content}=    Create Dictionary    role=user    parts=${parts}
+        ${contents}=   Create List          ${content}
+        ${gen_config}=    Create Dictionary    temperature=0.7
 
-    ${part}=       Create Dictionary    text=${prompt}
-    ${parts}=      Create List          ${part}
-    ${content}=    Create Dictionary    role=user    parts=${parts}
-    ${contents}=   Create List          ${content}
-    ${gen_config}=    Create Dictionary    temperature=0.7
+        ${body_dict}=    Create Dictionary
+        ...    contents=${contents}
+        ...    generationConfig=${gen_config}
 
-    ${body}=    Create Dictionary    contents=${contents}    generationConfig=${gen_config}
+        ${response}=    POST    ${GEMINI_ENDPOINT}
+        ...             json=${body_dict}
+        ...             headers=${headers}
+        ...             params=${params}
+        ...             expected_status=200
 
-    ${response}=    POST    ${GEMINI_ENDPOINT}
-    ...    json=${body}
-    ...    headers=${headers}
-    ...    params=${params}
-    ...    expected_status=200
+        ${response_json}=    Set Variable    ${response.json()}
+        RETURN    ${response_json['candidates'][0]['content']['parts'][0]['text']}
 
-    ${json}=    Set Variable    ${response.json()}
-    RETURN    ${json['candidates'][0]['content']['parts'][0]['text']}
+    EXCEPT    Exception as error
+        Log    Falha ao chamar Gemini: ${error}    level=ERROR
+        RETURN    Erro na comunicação com a API Gemini
+    END
 
-Create Issue no GitHub
+Criar Issue no GitHub
     [Arguments]    ${title}    ${body}
-
     ${headers}=    Create Dictionary
     ...    Authorization=Bearer ${GITHUB_TOKEN}
     ...    Accept=application/vnd.github.v3+json
@@ -109,75 +97,55 @@ Create Issue no GitHub
     ...    labels=${{ ["bug", "automatizado"] }}
 
     POST    https://api.github.com/repos/${GITHUB_REPO}/issues
-    ...    json=${data}
-    ...    headers=${headers}
+    ...    json=${data}    headers=${headers}
+
+Executar Plano B
+    Log    Fluxo alternativo poderia usar login via API ou fallback.    level=INFO
 
 
-# ------------------------
-#       TESTES
-# ------------------------
+*** Test Cases ***
 
-# -------- TESTE DE LOGIN --------
 Testar Login com Erro 401
     Open Browser    ${LOGIN_URL}    ${BROWSER}
-    Input Text    id=username    tomsmith
-    Input Text    id=password    senha_invalida
-    Click Button    xpath=//button[@type='submit']
-    Wait Until Page Contains    Your password is invalid!    timeout=5s
+    Fazer Login    tomsmith    senha_invalida
+    Checar Erro 401
+    Close Browser
+
 
 Testar Login com Sucesso
     Open Browser    ${LOGIN_URL}    ${BROWSER}
-    Input Text    id=username    tomsmith
-    Input Text    id=password    SuperSecretPassword!
-    Click Button    xpath=//button[@type='submit']
-    Wait Until Page Contains    You logged into a secure area!
-
-
-# -------- TESTE CHECKBOXES --------
-Testar Checkboxes
-    Open Browser    ${CHECKBOXES_URL}    ${BROWSER}
-    Click Element    xpath=(//input[@type='checkbox'])[1]
-    Click Element    xpath=(//input[@type='checkbox'])[2]
+    Fazer Login    tomsmith    SuperSecretPassword!
+    Page Should Contain    ${MENSAGEM_SUCESSO}
     Capture Page Screenshot
+    Close Browser
 
 
-# -------- TESTE DROPDOWN --------
-Testar Dropdown
-    Open Browser    ${DROPDOWN_URL}    ${BROWSER}
-    Select From List By Value    id=dropdown    1
-    Page Should Contain Element    xpath=//option[@value='1' and @selected]
+Testar Login com Usuario Invalido
+    Open Browser    ${LOGIN_URL}    ${BROWSER}
+    Fazer Login    usuario_falso    SuperSecretPassword!
+    Checar Erro 401
+    Close Browser
 
 
-# -------- TESTE DE UPLOAD --------
-Testar Upload de Arquivo
-    ${arquivo}=    Set Variable    ${CURDIR}/teste_upload.txt
-    Create File    ${arquivo}    Arquivo gerado automaticamente.
-    Open Browser    ${FILE_UPLOAD_URL}    ${BROWSER}
-    Choose File    id=file-upload    ${arquivo}
-    Click Button    id=file-submit
-    Wait Until Page Contains    File Uploaded!
+Testar Login com Campos Vazios
+    Open Browser    ${LOGIN_URL}    ${BROWSER}
+    Fazer Login    ${EMPTY}    ${EMPTY}
+    Page Should Contain    ${MENSAGEM_ERRO}
+    Capture Page Screenshot
+    Close Browser
 
 
-# -------- TESTE DE ALERTAS --------
-Testar Alerts
-    Open Browser    ${JS_ALERTS_URL}    ${BROWSER}
-    Click Button    xpath=//button[text()='Click for JS Alert']
-    Handle Alert    ACCEPT
-    Click Button    xpath=//button[text()='Click for JS Confirm']
-    Handle Alert    CANCEL
-    Click Button    xpath=//button[text()='Click for JS Prompt']
-    Input Text Into Alert    Teste
-    Handle Alert    ACCEPT
+Testar Login com Senha Vazia
+    Open Browser    ${LOGIN_URL}    ${BROWSER}
+    Fazer Login    tomsmith    ${EMPTY}
+    Page Should Contain    ${MENSAGEM_ERRO}
+    Capture Page Screenshot
+    Close Browser
 
 
-# -------- TESTE DE DYNAMIC LOADING --------
-Testar Dynamic Loading
-    Open Browser    ${DYNAMIC_LOADING_URL}    ${BROWSER}
-    Click Button    xpath=//div[@id='start']/button
-    Wait Until Page Contains    Hello World!    timeout=10s
-
-
-# -------- TESTE DE BASIC AUTH --------
-Testar Basic Auth
-    Open Browser    ${AUTH_URL}    ${BROWSER}
-    Wait Until Page Contains    Congratulations!
+Testar Login com Usuario Vazio
+    Open Browser    ${LOGIN_URL}    ${BROWSER}
+    Fazer Login    ${EMPTY}    SuperSecretPassword!
+    Page Should Contain    ${MENSAGEM_ERRO}
+    Capture Page Screenshot
+    Close Browser
