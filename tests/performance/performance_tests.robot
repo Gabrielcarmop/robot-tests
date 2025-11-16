@@ -1,60 +1,85 @@
 *** Settings ***
-Documentation    Testes de performance e carga utilizando API do The Internet.
-Library          RequestsLibrary
-Library          OperatingSystem
-Library          Collections
-Library          String
-Library          BuiltIn
+Library    RequestsLibrary
+Library    Collections
+Library    OperatingSystem
 
-Suite Setup      Create Session    theinternet    https://the-internet.herokuapp.com
+Suite Setup       Setup Performance Suite
+Suite Teardown    Close All Sessions
 
 *** Variables ***
-${USERS}          50
-${RAMP_UP}        5
-${ENDPOINT}       /status_codes/200
-${GEMINI_URL}     https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent
-${GEMINI_KEY}     AIzaSyB0EIY589GB0hxd4QiD2MDJfdlNAG-Htzk
-${GITHUB_API}     https://api.github.com/repos/Gabrielcarmop/robot-tests/issues
-${GITHUB_TOKEN}   %{MY_GITHUB_TOKEN}
-
-*** Test Cases ***
-Teste de Carga Simples
-    [Documentation]    Dispara diversas requisições ao endpoint /status_codes/200
-    FOR    ${i}    IN RANGE    ${USERS}
-        ${resp}=    GET On Session    theinternet    ${ENDPOINT}
-        Should Be Equal As Integers    ${resp.status_code}    200
-    END
-
-Teste de Estresse - Aumento Gradual
-    [Documentation]    Aumenta gradualmente a carga de requests.
-    FOR    ${i}    IN RANGE    ${RAMP_UP}
-        Log To Console    ---- Rodada ${i} ----
-        FOR    ${j}    IN RANGE    ${i * 10}
-            ${resp}=    GET On Session    theinternet    ${ENDPOINT}
-            Should Be Equal As Integers    ${resp.status_code}    200
-        END
-    END
-
-Teste API-only - Retornar status code
-    ${resp}=    GET On Session    theinternet    /status_codes/404
-    Should Be Equal As Integers    ${resp.status_code}    404
-
-Teste Gemini - Analisar Resultado do Teste
-    ${body}=    Create Dictionary
-    ...         contents=[{"role":"user","parts":[{"text":"Explique o que significa um teste de carga simples em QA"}]}]
-    ${url}=     Set Variable    ${GEMINI_URL}?key=${GEMINI_KEY}
-    ${resp}=    Post Request    theinternet    ${url}    json=${body}
-    Should Be Equal As Integers    ${resp.status_code}    200
-
-Teste GitHub - Criar Issue Automática
-    ${headers}=    Create Dictionary    Authorization=Bearer ${GITHUB_TOKEN}
-    ${payload}=    Create Dictionary    title=Bug detectado no teste de carga    body=Falha ao executar teste de performance
-    ${resp}=       Post Request    theinternet    ${GITHUB_API}    json=${payload}    headers=${headers}
-    Should Be True    ${resp.status_code} == 201 or ${resp.status_code} == 200
+${BASE_API}          https://the-internet.herokuapp.com
+${GEMINI_KEY}        AIzaSyB0EIY589GB0hxd4QiD2MDJfdlNAG-Htzk
+${GITHUB_TOKEN}      %{MY_GITHUB_TOKEN}
+${GITHUB_REPO}       Gabrielcarmop/robot-tests
 
 
 *** Keywords ***
-Post Request
-    [Arguments]    ${session}    ${url}    ${json}    ${headers}=
-    ${resp}=    POST    ${url}    json=${json}    headers=${headers}
-    [Return]    ${resp}
+Setup Performance Suite
+    Create Session    api    ${BASE_API}    verify=False
+    Log To Console    Iniciando suite de performance...
+
+
+Enviar Requisicao Status
+    [Arguments]    ${codigo}
+    ${resposta}=    GET    api    /status_codes/${codigo}
+    RETURN    ${resposta.status_code}
+
+
+Enviar Requisicoes Em Lote
+    [Arguments]    ${quantidade}
+    FOR    ${i}    IN RANGE    ${quantidade}
+        ${resposta}=    GET    api    /status_codes/200
+        Should Be Equal As Integers    ${resposta.status_code}    200
+    END
+
+
+Analisar Com Gemini
+    [Arguments]    ${conteudo}
+    ${payload}=    Create Dictionary
+    ...    contents=${[{ "parts": [{ "text": "${conteudo}" }] }]}
+    Create Session    gemini    https://generativelanguage.googleapis.com
+    ${resp}=    POST    gemini    /v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}
+    ...    json=${payload}
+    Should Be Equal As Integers    ${resp.status_code}    200
+    RETURN    ${resp.json()}
+
+
+Criar Issue No GitHub
+    [Arguments]    ${titulo}    ${corpo}
+    ${payload}=    Create Dictionary    title=${titulo}    body=${corpo}
+    Create Session    github    https://api.github.com
+    ${headers}=    Create Dictionary    Authorization=Bearer ${GITHUB_TOKEN}
+    ${resp}=    POST    github    /repos/${GITHUB_REPO}/issues    json=${payload}    headers=${headers}
+    Should Be Equal As Integers    ${resp.status_code}    201
+
+
+*** Test Cases ***
+
+Teste API-only - Status 200
+    ${code}=    Enviar Requisicao Status    200
+    Should Be Equal As Integers    ${code}    200
+
+Teste API-only - Status 404
+    Run Keyword And Expect Error    *404*    GET    api    /status_codes/404
+
+Teste API-only - Status 500
+    Run Keyword And Expect Error    *500*    GET    api    /status_codes/500
+
+Teste API-only - Delay
+    ${resp}=    GET    api    /delay/2
+    Should Be Equal As Integers    ${resp.status_code}    200
+
+
+*** Test Cases ***
+Teste de Carga Simples (50 req)
+    Enviar Requisicoes Em Lote    50
+
+Teste de Stress (200 req)
+    Enviar Requisicoes Em Lote    200
+
+Teste Gemini - Analisar Resultado
+    ${resultado}=    Analisar Com Gemini    "Todos os testes passaram?"
+    Log    ${resultado}
+
+Teste GitHub - Criar Issue Automática
+    Criar Issue No GitHub    "Teste automático"    "Issue criada via Robot Framework"
