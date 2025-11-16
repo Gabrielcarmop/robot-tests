@@ -120,3 +120,77 @@ Testar Login com Sucesso
     Close Browser
     
 
+
+# =======================================================
+# 🚀 NOVOS TESTES (FUNCIONAM COM SUA ESTRUTURA ATUAL)
+# =======================================================
+
+Testar Checkboxes
+    Open Browser    https://the-internet.herokuapp.com/checkboxes    ${BROWSER}
+    Click Element    xpath=//form/input[1]
+    ${checked}=    Get Element Attribute    xpath=//form/input[1]    checked
+
+    IF    "${checked}" != "true"
+        Chamar Gemini e Criar Issue    Checkbox não marcou corretamente
+    END
+    Close Browser
+
+
+Testar Dropdown
+    Open Browser    https://the-internet.herokuapp.com/dropdown    ${BROWSER}
+    Select From List By Value    id=dropdown    2
+    ${valor}=    Get Selected List Value    id=dropdown
+
+    IF    "${valor}" != "2"
+        Chamar Gemini e Criar Issue    Dropdown não selecionou corretamente
+    END
+    Close Browser
+
+
+Testar Dynamic Loading
+    Open Browser    https://the-internet.herokuapp.com/dynamic_loading/2    ${BROWSER}
+    Click Button    css=#start button
+    Wait Until Page Contains Element    id=finish    timeout=10s
+
+    ${texto}=    Get Text    id=finish
+    IF    "${texto}" != "Hello World!"
+        Chamar Gemini e Criar Issue    Dynamic loading não retornou Hello World!
+    END
+    Close Browser
+
+
+Testar Upload
+    Open Browser    https://the-internet.herokuapp.com/upload    ${BROWSER}
+    Create File    ${CURDIR}/arquivo.txt    teste upload
+    Choose File    id=file-upload    ${CURDIR}/arquivo.txt
+    Click Button    id=file-submit
+
+    Page Should Contain    File Uploaded!
+    Close Browser
+
+
+Testar Imagens Quebradas
+    Open Browser    https://the-internet.herokuapp.com/broken_images    ${BROWSER}
+
+    @{imgs}=    Get WebElements    css=img
+
+    FOR    ${img}    IN    @{imgs}
+        ${w}=    Call Method    ${img}    get_attribute    naturalWidth
+        IF    "${w}" == "0"
+            Chamar Gemini e Criar Issue    Imagem quebrada detectada
+        END
+    END
+
+    Close Browser
+
+
+Testar Typos
+    Open Browser    https://the-internet.herokuapp.com/typos    ${BROWSER}
+
+    ${texto}=    Get Text    css=.example p
+
+    IF    "typo" in "${texto}"
+        Chamar Gemini e Criar Issue    Erro ortográfico encontrado na página
+    END
+
+    Close Browser
