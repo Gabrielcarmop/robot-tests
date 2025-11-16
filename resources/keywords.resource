@@ -2,18 +2,17 @@
 Library    SeleniumLibrary
 Library    RequestsLibrary
 Library    OperatingSystem
-
-*** Variables ***
-${GEMINI_URL}=    https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent
+Resource   variables.robot
 
 *** Keywords ***
 
 Preparar Ambiente
-    Open Browser    ${BASE_URL}    chrome    options=add_argument(--headless)
+    Open Browser    ${BASE_URL}    chrome    options=add_argument(--headless); add_argument(--no-sandbox); add_argument(--disable-dev-shm-usage)
 
 Finalizar Ambiente
     Close Browser
 
+### LOGIN ###
 Acessar Página de Login
     Go To    ${BASE_URL}/login
 
@@ -25,6 +24,7 @@ Realizar Login Com Credenciais Válidas
 Validar Login Bem Sucedido
     Wait Until Page Contains    You logged into a secure area!
 
+### UPLOAD ###
 Acessar Página de Upload
     Go To    ${BASE_URL}/upload
 
@@ -35,6 +35,7 @@ Realizar Upload De Arquivo
 Validar Upload Bem Sucedido
     Wait Until Page Contains    File Uploaded!
 
+### DYNAMIC LOADING ###
 Acessar Dynamic Loading
     Go To    ${BASE_URL}/dynamic_loading/1
 
@@ -44,6 +45,7 @@ Iniciar Dynamic Loading
 Validar Dynamic Loading
     Wait Until Page Contains    Hello World!
 
+### GEMINI + GITHUB ###
 Enviar Resultado Para Gemini E Criar Issue Se Necessário
     ${log}=    Get Log File
     ${payload}=    Create Dictionary    contents=${log}
