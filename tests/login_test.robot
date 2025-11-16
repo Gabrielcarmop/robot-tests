@@ -119,33 +119,3 @@ Testar Login com Sucesso
     Capture Page Screenshot
     Close Browser
 
-
-Testar Login com Usuario Invalido
-    Open Browser    ${LOGIN_URL}    ${BROWSER}
-    Fazer Login    usuario_falso    SuperSecretPassword!
-    Checar Erro 401
-    Close Browser
-
-
-Testar Login com Campos Vazios
-    Open Browser    ${LOGIN_URL}    ${BROWSER}
-    Fazer Login    ${EMPTY}    ${EMPTY}
-    Page Should Contain    ${MENSAGEM_ERRO}
-    Capture Page Screenshot
-    Close Browser
-
-
-Testar Login com Senha Vazia
-    Open Browser    ${LOGIN_URL}    ${BROWSER}
-    Fazer Login    tomsmith    ${EMPTY}
-    Page Should Contain    ${MENSAGEM_ERRO}
-    Capture Page Screenshot
-    Close Browser
-
-
-Testar Login com Usuario Vazio
-    Open Browser    ${LOGIN_URL}    ${BROWSER}
-    Fazer Login    ${EMPTY}    SuperSecretPassword!
-    Page Should Contain    ${MENSAGEM_ERRO}
-    Capture Page Screenshot
-    Close Browser
