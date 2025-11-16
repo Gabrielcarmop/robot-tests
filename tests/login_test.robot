@@ -119,3 +119,130 @@ Testar Login com Sucesso
     Capture Page Screenshot
     Close Browser
 
+# ==========================================================
+# 🔥 TESTES NOVOS (GERAM ISSUE AUTOMÁTICA EM CASO DE FALHA)
+# ==========================================================
+
+
+Testar Checkboxes
+    Abrir Página de Login
+    Go To    https://the-internet.herokuapp.com/checkboxes
+    Click Element    xpath=//form/input[1]
+    ${checked}=    Get Element Attribute    xpath=//form/input[1]    checked
+
+    Run Keyword Unless    "${checked}" == "true"
+    ...    Chamar Gemini e Criar Issue    Falha ao marcar checkbox
+
+    Log    Checkbox marcado corretamente.
+    Fechar Navegador
+
+
+
+Testar Dropdown
+    Abrir Página de Login
+    Go To    https://the-internet.herokuapp.com/dropdown
+    Select From List By Value    id=dropdown    2
+    ${valor}=    Get Selected List Value    id=dropdown
+
+    Run Keyword Unless    "${valor}" == "2"
+    ...    Chamar Gemini e Criar Issue    Dropdown não seleciona a opção corretamente
+
+    Log    Dropdown funcionando.
+    Fechar Navegador
+
+
+
+Testar Dynamic Loading
+    Abrir Página de Login
+    Go To    https://the-internet.herokuapp.com/dynamic_loading/2
+    Click Button    css=#start button
+    Wait Until Page Contains Element    id=finish    timeout=10s
+
+    ${text}=    Get Text    id=finish
+    Run Keyword Unless    "${text}" == "Hello World!"
+    ...    Chamar Gemini e Criar Issue    Dynamic Loading não carregou texto esperado
+
+    Log    Dynamic loading carregou corretamente.
+    Fechar Navegador
+
+
+
+Testar Upload de Arquivo
+    Abrir Página de Login
+    Go To    https://the-internet.herokuapp.com/upload
+    Choose File    id=file-upload    ${CURDIR}/arquivo_teste.txt
+    Click Button    id=file-submit
+
+    Page Should Contain    arquivo_teste.txt
+
+    Run Keyword Unless    Page Should Contain    arquivo_teste.txt
+    ...    Chamar Gemini e Criar Issue    Upload não mostrou o nome do arquivo enviado
+
+    Log    Upload OK.
+    Fechar Navegador
+
+
+
+Testar JavaScript Alerts
+    Abrir Página de Login
+    Go To    https://the-internet.herokuapp.com/javascript_alerts
+    Click Button    xpath=//button[text()='Click for JS Alert']
+    ${alert}=    Handle Alert
+
+    Run Keyword Unless    "${alert}" == "I am a JS Alert"
+    ...    Chamar Gemini e Criar Issue    Texto do Alert está incorreto
+
+    Log    Alert OK.
+    Fechar Navegador
+
+
+
+Testar Status Code 404
+    Abrir Página de Login
+    Go To    https://the-internet.herokuapp.com/status_codes/404
+
+    ${content}=    Get Text    xpath=//p
+    Run Keyword Unless    "404" in "${content}"
+    ...    Chamar Gemini e Criar Issue    Página 404 não exibiu o texto esperado
+
+    Log    Status code detectado corretamente.
+    Fechar Navegador
+
+
+
+Testar Imagens Quebradas
+    Abrir Página de Login
+    Go To    https://the-internet.herokuapp.com/broken_images
+
+    @{imgs}=    Get WebElements    css=img
+
+    FOR    ${img}    IN    @{imgs}
+        ${natural}=    Call Method    ${img}    get_attribute    naturalWidth
+
+        Run Keyword If    "${natural}" == "0"
+        ...    Chamar Gemini e Criar Issue    Imagem quebrada detectada em /broken_images
+
+    END
+
+    Log    Teste de imagens finalizado.
+    Fechar Navegador
+
+
+
+Testar Typos (erro REAL na página)
+    Abrir Página de Login
+    Go To    https://the-internet.herokuapp.com/typos
+
+    ${text}=    Get Text    css=.example p
+
+    # A página REALMENTE contém às vezes um erro de digitação
+    ${erro_encontrado}=    Run Keyword And Return Status
+    ...    Should Contain    ${text}    "mistake"    ignore_case=True
+
+    Run Keyword If    ${erro_encontrado}
+    ...    Chamar Gemini e Criar Issue    A página contém erro ortográfico detectado automaticamente
+
+    Log    Teste de typos concluído.
+    Fechar Navegador
+
+
