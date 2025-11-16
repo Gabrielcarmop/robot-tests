@@ -34,18 +34,20 @@ jobs:
           pip install robotframework-seleniumlibrary
           pip install robotframework-requests
           pip install requests
-          pip install robotframework-allurereport
+          pip install allure-robotframework
 
-      - name: Instalar Chrome e ChromeDriver 135 manualmente
+      - name: Instalar ChromeDriver compatível automaticamente
         run: |
           sudo apt-get update
-          sudo apt-get install -y wget unzip curl xvfb default-jre google-chrome-stable
-
-          DRIVER_VERSION=135.0.7049.114
-          wget -N https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$DRIVER_VERSION/linux64/chromedriver-linux64.zip -O ~/chromedriver.zip
-          unzip -o ~/chromedriver.zip -d ~/
-          sudo mv -f ~/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
+          sudo apt-get install -y google-chrome-stable
+        
+          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+\.\d+')
+          DRIVER_VERSION=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/latest-linux64.json" | jq -r '.chrome[] | select(.version=="'"$CHROME_VERSION"'") | .version')
+          wget https://storage.googleapis.com/chrome-for-testing-public/$CHROME_VERSION/linux64/chromedriver-linux64.zip
+          unzip chromedriver-linux64.zip
+          sudo mv chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
           sudo chmod +x /usr/local/bin/chromedriver
+        
 
       - name: Validar versões
         run: |
@@ -55,7 +57,7 @@ jobs:
       - name: Executar testes com Robot Framework + Allure
         run: |
           mkdir -p results
-          xvfb-run robot --outputdir results --listener AllureReport tests/
+          xvfb-run robot --outputdir results --listener allure_robotframework tests/
 
       - name: Instalar Allure CLI
         run: |
