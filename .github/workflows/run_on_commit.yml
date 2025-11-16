@@ -47,20 +47,39 @@ jobs:
           echo "Versão completa do Chrome: $CHROME_VERSION"
           echo "Versão major do Chrome: $CHROME_MAJOR"
           
-          # Busca a versão mais recente disponível do ChromeDriver para este major
-          LATEST_VERSION=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/latest-versions-per-milestone-with-downloads.json" | \
-            grep -A 50 "\"milestone\": \"$CHROME_MAJOR\"" | \
-            grep -m 1 '"version"' | \
-            grep -oP '\d+\.\d+\.\d+\.\d+')
+          # Busca versão compatível do ChromeDriver
+          # Tenta usar a mesma versão do Chrome primeiro
+          DRIVER_VERSION=$CHROME_VERSION
+          DRIVER_URL="https://storage.googleapis.com/chrome-for-testing-public/${DRIVER_VERSION}/linux64/chromedriver-linux64.zip"
           
-          echo "Versão do ChromeDriver a ser baixada: $LATEST_VERSION"
+          echo "Tentando baixar ChromeDriver versão: $DRIVER_VERSION"
+          echo "URL: $DRIVER_URL"
           
-          # Monta URL do ChromeDriver
-          DRIVER_URL="https://storage.googleapis.com/chrome-for-testing-public/${LATEST_VERSION}/linux64/chromedriver-linux64.zip"
-          echo "URL do ChromeDriver: $DRIVER_URL"
+          # Tenta baixar a versão exata
+          if wget -q --spider "$DRIVER_URL"; then
+            echo "✓ Versão exata encontrada!"
+            wget -O chromedriver.zip "$DRIVER_URL"
+          else
+            echo "⚠ Versão exata não disponível, buscando última versão estável do major $CHROME_MAJOR"
+            
+            # Busca a última versão disponível para este major
+            DRIVER_VERSION=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions.json" | \
+              grep -o "\"${CHROME_MAJOR}\.[0-9]*\.[0-9]*\.[0-9]*\"" | \
+              head -1 | \
+              tr -d '"')
+            
+            # Fallback para versão conhecida estável
+            if [ -z "$DRIVER_VERSION" ]; then
+              echo "⚠ Usando versão de fallback"
+              DRIVER_VERSION="${CHROME_MAJOR}.0.6778.85"
+            fi
+            
+            DRIVER_URL="https://storage.googleapis.com/chrome-for-testing-public/${DRIVER_VERSION}/linux64/chromedriver-linux64.zip"
+            echo "Baixando ChromeDriver versão: $DRIVER_VERSION"
+            wget -O chromedriver.zip "$DRIVER_URL"
+          fi
           
-          # Baixa e instala
-          wget -O chromedriver.zip "$DRIVER_URL"
+          # Instala
           unzip -o chromedriver.zip
           sudo mv chromedriver-linux64/chromedriver /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
