@@ -28,6 +28,24 @@
 %% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \section{Arquitetura e Estrutura do Projeto}
 \label{sec:arqestproj}
+\par A arquitetura do projeto foi concebida para integrar, de forma contínua e automatizada, diferentes componentes responsáveis pela execução dos testes funcionais, análise inteligente de falhas e abertura de \textit{issues} no repositório de desenvolvimento. Essa integração ocorre dentro de um fluxo de \textit{CI/CD} (Integração Contínua/Entrega Contínua), garantindo que cada nova alteração no código seja validada, analisada e rastreada.
+
+\par A Figura~\ref{fig:bpmn} apresenta uma visão geral do processo, modelado em notação \textit{BPMN} (Business Process Model and Notation). Esse diagrama ilustra o ciclo completo de automação, desde o disparo dos testes até a abertura automática de uma \textit{issue} em caso de falha.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{fig/BPMN}
+	\caption{Fluxo BPMN da automação proposta}
+	\label{fig:bpmn}
+\end{figure}
+
+\par O fluxo inicia-se quando o repositório recebe um novo \textit{commit} do usuário, acionando automaticamente a rotina de testes. Além disso, a pipeline também é executada em horários pré-determinados, permitindo verificações periódicas mesmo sem alterações recentes no código. A suíte de testes, implementada em \textit{Robot Framework}, utiliza a biblioteca \textit{SeleniumLibrary} para interação com a interface web, realizando validações funcionais e simulando a rotina de uso do sistema.
+
+\par Em caso de falha, as evidências são capturadas automaticamente (capturas de tela, logs e relatórios detalhados). Esse conjunto de informações é então enviado à \textit{API Gemini}, que analisa o erro, identifica possíveis causas e sugere ações de depuração. Com base nesse diagnóstico, é criada automaticamente uma \textit{issue} no GitHub, contendo título, descrição, evidências e o parecer gerado pela IA.
+
+\par A estrutura modular do projeto, separada em arquivos de teste e arquivos de palavras-chave (\textit{resource files}), permite organização clara e reutilização de comandos. Esse padrão facilita a manutenção, amplia a escalabilidade da suíte de testes e torna o fluxo automatizado mais robusto e confiável.
+
+\par Em síntese, a arquitetura proposta combina ferramentas de automação, inteligência artificial e versionamento de forma integrada, garantindo rastreabilidade completa entre código, testes, falhas, análises e correções.
 
 
 %% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -77,15 +95,16 @@
 \subsection{Etapa 3: Análise Automática da Falha com IA}
 \label{sub:etapa3}
 
-\par Quando um defeito é detectado, o erro é capturado e enviado à \textit{API Gemini}, da Google. Essa API recebe como entrada o contexto do erro — incluindo a mensagem retornada, o nome do teste, o \textit{commit} em execução e o autor — e gera uma resposta textual com:
-\textcolor{red}{[É preciso deixar claro que o teste é disparado a partir de uma ação de \textit{commit} do usuário]. Foi a primeira vez que isso foi citado aqui no projeto.}
+\par Quando uma falha é detectada durante a execução da suíte de testes, o erro correspondente é capturado e enviado à \textit{API Gemini}, da Google. A execução desses testes ocorre de duas formas: automaticamente a cada novo \textit{commit} realizado pelo usuário no repositório e, adicionalmente, em horários pré-determinados definidos na rotina de integração contínua. Dessa forma, cada falha registrada pode ser associada tanto a uma alteração recente no código quanto a verificações periódicas do estado geral do sistema.
+
+\par A \textit{API Gemini} recebe como entrada o contexto completo do evento, incluindo a mensagem de erro retornada, o nome do teste afetado, o \textit{commit} em execução (quando aplicável) e o autor responsável pela modificação, e gera uma resposta textual contendo:
 
 \begin{itemize}
-	\item três possíveis causas técnicas para a falha; \textcolor{red}{[você está usando de forma intercambiada as palavras 'erro' e 'falha', confira se estão no contexto correto. Algumas anteriores já corrigi.]}
+	\item três possíveis causas técnicas para a falha;
 	\item duas sugestões de ações de depuração rápida.
 \end{itemize}
 
-\par Essa análise automática permite identificar a origem do problema de forma imediata, reduzindo o tempo necessário para diagnóstico manual e fornecendo insights técnicos diretamente para a equipe de desenvolvimento.
+\par Essa análise automática permite identificar a origem do problema de forma imediata, reduzindo significativamente o tempo necessário para diagnóstico manual e fornecendo insights técnicos diretamente para a equipe de desenvolvimento. Além disso, a combinação entre disparo por \textit{commit} e execuções agendadas aumenta a cobertura, a rastreabilidade e a confiabilidade do processo de validação contínua.
 
 \subsection{Etapa 4: Registro da Falha no GitHub Issues}
 \label{sub:regFalha}
