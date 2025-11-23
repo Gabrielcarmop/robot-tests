@@ -49,7 +49,6 @@
 \end{figure}
 
 
-
 % Adicionar uma imagem. Enriquecer o teste e apresentar alguns exemplos.
 
 \subsection{Técnicas de Teste Baseada em Defeitos}
@@ -78,48 +77,54 @@ Para isso, são utilizadas técnicas como \textit{Mutation Testing}, conforme Fi
 
 \begin{enumerate}
     \item \textbf{Particionamento por Equivalência};
-\par O particionamento por equivalência é uma técnica que busca simplificar os testes, dividindo os dados de entrada em grupos que devem ser tratados da mesma forma pelo software. A ideia é que, se um valor de um grupo especifico funciona corretamente, os demais também funcionarão, esses grupos são conhecidos como classe de equivalência, e podem conter dados validos e inválidos. 
+\par O particionamento por equivalência, Figura \ref{fig:partEquiv}, é uma técnica que busca simplificar os testes, dividindo os dados de entrada em grupos que devem ser tratados da mesma forma pelo software. A ideia é que, se um valor de um grupo especifico funciona corretamente, os demais também funcionarão, esses grupos são conhecidos como classe de equivalência, e podem conter dados validos e inválidos. 
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.5\linewidth]{./fig/particao_equivalencia.png}
-    \caption{Partição de equivalência}
+    \caption{Partição de equivalência. \cite{acar2024}.}
     \label{fig:partEquiv}
 \end{figure}
 
-\textcolor{red}{[é necessário informar qua é a fonte da imagem do critério e teste funcional, particionamento por equivalência. Adicionar ao arquivo bib e referenciar aqui. Ou pode ser também uma nota de rodapé. Isso se aplica a todas as imagens que estão sem referência da fonte onde foram obtidas.]}
 
     \item \textbf{Análise do Valor Limite};
-\par A analise do valor limite, é uma técnica que se baseia em pontos limites de uma faixa de dados, apresentando um abordagem simples, onde os erros costumam ocorrer nos pontos extremos das entradas. A partir disso, em vez de testar os valores típicos, o testador analisa os valores mais altos e baixos da amostra de dados. Essa técnica pode ser considerada um complemento para o particionamento por equivalência.  
-\textcolor{red}{[adcionar uma imagem e falar um pouco mais e apresentar exemplos 
-explicar melhor como funciona.]}
+\par A analise do valor limite, Figura \ref{fig:bva}, é uma técnica que se baseia em pontos limites de uma faixa de dados, apresentando um abordagem simples, onde os erros costumam ocorrer nos pontos extremos das entradas. A partir disso, em vez de testar os valores típicos, o testador analisa os valores mais altos e baixos da amostra de dados. Essa técnica pode ser considerada um complemento para o particionamento por equivalência.  
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.5\linewidth]{./fig/bva.png}
+    \caption{Análise do Valor Limite. \cite{acar2024}.}
+    \label{fig:bva}
+\end{figure}
 
     \item \textbf{Grafo de Causa e Efeito}
-\par A analise do valor limite, é uma técnica que se baseia em pontos limites de uma faixa de dados, apresentando um abordagem simples, onde os erros costumam ocorrer nos pontos extremos das entradas. A partir disso, em vez de testar os valores típicos, o testador analisa os valores mais altos e baixos da amostra de dados. Essa técnica pode ser considerada um complemento para o particionamento por equivalência.  \cite{araujo2015}. \textcolor{red}{Nesta referência bibiográfica não é citado este critério de teste funcional. REVEJA.}
+\par O Grafo de Causa e Efeito, Figura \ref{fig:gce} ... \textcolor{red}{Descrever este criterio com base na referência adicionada à imagem. Na versão anterior a descrição aqui era a mesma do critério Análise do Valor Limite.}
 
 \begin{figure} [!ht]
     \centering
-    \includegraphics[width=0.5\linewidth]{./fig/GrafoDeCausaEfeito.png}
-    \caption{Grafo de Causa e Efeito}
-    \label{fig:gfc}
+    \includegraphics[width=0.5\linewidth]{./fig/cause_effect_graph_10.jpg}
+    \caption{Grafo de Causa e Efeito. \cite{points2025}}
+    \label{fig:gce}
 \end{figure}
-\textcolor{red}{[Qual é a fonte desta imagem?]}
+
 
     \item \textbf{Tabela de Decisão}.
-\par A Tabela de decisão é um técnica conhecida por testar softwares que envolvem varias condições lógicas e regras de negocio mais complexas. Ela ajuda a organizar e visualizar de maneira clara como o software deve se comportar com diferentes combinação de entradas.
+\par A Tabela de decisão, Figura  \ref{fig:tbdec}, é um técnica conhecida por testar softwares que envolvem varias condições lógicas e regras de negocio mais complexas. Ela ajuda a organizar e visualizar de maneira clara como o software deve se comportar com diferentes combinação de entradas.
 \par A técnica consiste em apresentar as ações e condições de entrada em um tabela, onde cada linha corresponde a um regra especifica, e as condições são avaliadas como verdadeiras ou falsas. Essa estrutura é bastante útil em cenários com diversas variações de comportamento, pois auxilia na identificação de todos os casos relevantes a serem testados.
+
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.5\linewidth]{./fig/TabelaDecisao.png}
-    \caption{Tabela de Decisão \cite{araujo2015}}
-    \label{fig:tabeladecisao}
+    \caption{Tabela de Decisão \cite{albuquerque2017}}
+    \label{fig:tbdec}
 \end{figure}
 
-\textcolor{red}{Esta imagem não faz parte desta referência bibliográfica, REVEJA.}
 
 \end{enumerate}
+
 %adcionar uma imagem e falar um pouco mais e apresentar exemplos 
 % explicar como funciona melhor 
+
 \subsubsection{Critérios de Teste Estrutural}
 \label{subsub:crittestest}
 
@@ -133,8 +138,16 @@ explicar melhor como funciona.]}
     \item \textbf{Cobertura de decisões} , que verifica se todas as ramificações de um comando condicional, como if ou switch, foram testadas, e se os resultados estão de acordo com o esperado.
 \end{itemize}
 
-\par Para viabilizar a aplicação desses critérios, utiliza-se o Grafo de Fluxo de Controle (GFC) constitui uma representação gráfica que ilustra o fluxo de execução de programas ou aplicações, permitindo a análise detalhada do comportamento interno do software. Desenvolvido originalmente por Frances E. Allen, esse grafo é direcionado e orientado a processos, no qual os nós representam blocos básicos de instruções e as arestas indicam os possíveis caminhos de fluxo de controle. Essa estrutura facilita a compreensão, otimização e verificação da lógica de programas, sendo essencial para o desenvolvimento de software mais seguro e eficiente.
+\par Para viabilizar a aplicação desses critérios, utiliza-se o Grafo de Fluxo de Controle (GFC), Figura \ref{fig:gfc}, constitui uma representação gráfica que ilustra o fluxo de execução de programas ou aplicações, permitindo a análise detalhada do comportamento interno do software. Desenvolvido originalmente por Frances E. Allen, esse grafo é direcionado e orientado a processos, no qual os nós representam blocos básicos de instruções e as arestas indicam os possíveis caminhos de fluxo de controle. Essa estrutura facilita a compreensão, otimização e verificação da lógica de programas, sendo essencial para o desenvolvimento de software mais seguro e eficiente.
 %Fazer uma citação
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.5\linewidth]{./fig/gfc.png}
+    \caption{Grafo de Fluxo de Controle. \cite{devmedia2014}}
+    \label{fig:gfc}
+\end{figure}
+
 \par Dentre essas métricas,  a Complexidade Ciclomática é uma medida fundamental em Engenharia de Software, introduzida por Thomas McCabe na década de 1970. Seu objetivo principal é quantificar a complexidade de um módulo de software por meio da análise de seus pontos de decisão, os quais determinam a quantidade de caminhos de execução possíveis no código.
 %Fazer uma citação
 \par Quanto maior o valor da complexidade ciclomática, maior a quantidade de ramificações lógicas (como estruturas condicionais e loops), o que tende a aumentar a dificuldade de compreensão, teste e manutenção do software. Por outro lado, valores mais baixos indicam código mais simples, estruturado e confiável, reduzindo a probabilidade de defeitos e facilitando a evolução do sistema.
@@ -151,15 +164,15 @@ explicar melhor como funciona.]}
 \subsection{Níveis de Teste}
 \label{sec:nivtest}
 
+A descrição dos quatro níveis de teste de software (unitário, integração, sistema e aceitação), conforme consta da Figura \ref{fig:modelo-v}, foi baseada no artigo publicado por \cite{dalloca2015}.
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.5\linewidth]{./fig/modelo-v}
-    \caption{Modelo V de desenvolvimento de software \cite{modelov}.}
+    \includegraphics[width=0.5\linewidth]{./fig/modeloV}
+    \caption{Modelo V de desenvolvimento de software \cite{dalloca2015}.}
     \label{fig:modelo-v}
 \end{figure}
 
-\textcolor{red}{O link para esta imagem do Modelo V está quebrado, procure outra imagem cujo link esteja acessĩvel. Complementando, esta imagem não pode ficar solta aqui no texto. Você precisa fazer uma introdução aos níveis de teste e referênciar a imagem como um exemplo destes níveis.}
 
 \subsubsection{Teste Unitário}
 \label{subsub:testunit}

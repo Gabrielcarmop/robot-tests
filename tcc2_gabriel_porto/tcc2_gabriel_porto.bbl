@@ -1,0 +1,69 @@
+\providecommand{\abntreprintinfo}[1]{%
+ \citeonline{#1}}
+\setlength{\labelsep}{0pt}\begin{thebibliography}{}
+\providecommand{\abntrefinfo}[3]{}
+\providecommand{\abntbstabout}[1]{}
+\abntbstabout{v-1.9.7 }
+
+\bibitem[Acar 2024]{acar2024}
+\abntrefinfo{Acar}{ACAR}{2024}
+{ACAR, G. \emph{Unleashing the Power of Equivalence Partitioning and Boundary
+  Value Analysis in Software Testing}. 2024. Disponível em:
+  \url{https://www.commencis.com/thoughts/unleashing-the-power-of-equivalence-partitioning-and-boundary-value-analysis-in-software-testing/}.
+  Acesso em 23/11/2025.}
+
+\bibitem[Albuquerque e Fernandes 2017]{albuquerque2017}
+\abntrefinfo{Albuquerque e Fernandes}{ALBUQUERQUE; FERNANDES}{2017}
+{ALBUQUERQUE, V.~A.; FERNANDES, B. J.~T. \emph{Fall Detection: Sensor Data for
+  Classification}. 2017. Disponível em:
+  \url{https://www.ecomp.poli.br/ListaTCC/20171/vinicius-albuquerque-fall-detection-final.pdf}.
+  Acesso em 23/11/2025.}
+
+\bibitem[Dall'Oca 2015]{dalloca2015}
+\abntrefinfo{Dall'Oca}{DALL'OCA}{2015}
+{DALL'OCA, T. \emph{Níveis de teste, Modelo V de desenvolvimento de software e
+  Testes de software}. 2015. Disponível em
+  \url{https://taisdalloca.blogspot.com/2015/10/niveis-de-teste-modelo-v-de.html}.
+  Acesso em 23/11/2025.}
+
+\bibitem[Devmedia 2014]{devmedia2014}
+\abntrefinfo{Devmedia}{DEVMEDIA}{2014}
+{DEVMEDIA. \emph{Teste unitário com JUnit e ComplexGraph}. 2014. Disponível
+  em
+  \url{https://www.devmedia.com.br/teste-unitario-com-junit-e-complexgraph/31382}.
+  Acesso em 23/11/2025.}
+
+\bibitem[GeeksforGeeks 2024]{geeks2024}
+\abntrefinfo{GeeksforGeeks}{GEEKSFORGEEKS}{2024}
+{GEEKSFORGEEKS. \emph{White Box Testing --- Illustration}. 2024. Disponível
+  em:
+  \url{https://www.geeksforgeeks.org/software-testing/software-engineering-white-box-testing/}.
+  Acesso em: 20/02/2025.}
+
+\bibitem[Myers, Sandler e Badgett 2011]{myers2011}
+\abntrefinfo{Myers, Sandler e Badgett}{MYERS; SANDLER; BADGETT}{2011}
+{MYERS, G.~J.; SANDLER, C.; BADGETT, T. \emph{The Art of Software Testing}.
+  3rd. ed. [S.l.]: Wiley Publishing, 2011.
+ISBN 1118031962.}
+
+\bibitem[Oliveira 2024]{oliveira2024}
+\abntrefinfo{Oliveira}{OLIVEIRA}{2024}
+{OLIVEIRA, A.~N. \emph{Testes de Caixa Preta}. 2024. Disponível em:
+  \url{https://www.linkedin.com/pulse/testes-de-caixa-preta-anselmo-n-de-oliveira-ygdgf/}.
+  Acesso em: 20/02/2025.}
+
+\bibitem[Points 2025]{points2025}
+\abntrefinfo{Points}{POINTS}{2025}
+{POINTS, T. \emph{Software Testing - Cause-Effect Graph}. [S.l.]: Disponível
+  em:
+  \url{https://www.tutorialspoint.com/software_testing_dictionary/cause_effect_graph.htm}.
+  Acesso em 23/11/2025., 2025.}
+
+\bibitem[Symflower 2023]{synflower2023}
+\abntrefinfo{Symflower}{SYMFLOWER}{2023}
+{SYMFLOWER. \emph{How to test your tests? A guide to mutation testing \&
+  mutation testing tools}. 2023. Disponível em:
+  \url{https://symflower.com/en/company/blog/2023/using-mutation-testing/}.
+  Acesso em: 20/02/2025.}
+
+\end{thebibliography}

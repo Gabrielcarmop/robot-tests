@@ -1,19 +1,33 @@
+Seguem abaixo, recomendações para melhoria do seu TCC. Já corrigi muita coisa, mas ainda falta muito para ser corrigido.
+
+I - Elementos pré textuais:
+
 1. Preencher o arquivo ./pre/pre_direitos.tex {Informar um resumo da sua trajetória acadêmica}
-
 2. Preencher o arquivo ./pre/pre_dedicatoria.tex {Infoformar a quem você dedica este trabalho em forma de agradecimento/homenagem}
-
 3. Preencher o arquivo ./pre/pre_agradecimentos.tex {Informar a quem você agradece pela contribuição na sua carreira acadêmica}
-
 4. Preencher o arquivo ./pre/pre_epigrafe.tex {Informar uma citação que você gosta e informar o nome do autor, pode ser de qualquer área, inclusive cantor, compositor etc.}
-
 5. Preencher o arquivo ./pre/pre_resumo.tex {Descrever resumidamente o seu trabalho, destacando: o problema, a solução apresentada e os resultados alcançados. E as palavras chave do trabalho.}
-
 6. Preencher o arquivo ./pre/pre_abstract.tex {O conteúdo deste arquivo é o mesmo do arquivo 'resumo', convertido para a língua inglesa.}
 
-7. Na Introdução está faltando a problematização da sua pesquisa, ou seja, qual ẽ a pergunta que guia o trabalho em busca de uma resposta? Em outras palavras, qual é o problema que se está tentando resolver? Isso precisa estar descrito no Introdução e serve de guia para a definição dos objetivos do trabalho;
+II - Arquivo de Referências Bibliográficas:
 
-8. Ainda na Introdução é preciso evitar o uso de verbos conjugados em tempos pretéritos, afinal a Introdução aborda o que será feito e não como foi feito. Neste sentido, os verbos devem utilizar conjugação futura. Nas considerações finais, sim, os verbos devem estar no passado.
+1. As suas citações no arquivo bib não estão corretas. A chave é o um dos nomes do autor ou de alguns dos autores. Depois descrever os autores, seguindo o exemplo das outras citações que constam no arquivo. O Título deve ser o que consta na referência bibliográfica. Não pode ser alterado. Eu corrigi alguns, confira.
 
-9. As suas citações no arquivo bib não estão corretas. A chave é o um dos nomes do autor ou de alguns dos autores. Depois descrever os autores, seguindo o exemplo das outras citações que constam no arquivo. O Título deve ser o que consta na referência bibliográfica. Não pode ser alterado. Eu corrigi alguns, confira.
+III - Capítulo 1 - Introdução:
 
-10. Existem ainda várias recomendações sobre o capítulo II que não foram atendidas. Estão grifadas na cor vermelha.
+1. Na Introdução está faltando a problematização da sua pesquisa, ou seja, qual é a pergunta que guia o trabalho em busca de uma resposta? Em outras palavras, qual é o problema que se está tentando resolver? Isso precisa estar descrito na Introdução e serve de guia para a definição dos objetivos do trabalho;
+2. Ainda na Introdução é preciso evitar o uso de verbos conjugados em tempos pretéritos, afinal a Introdução aborda o que será feito e não como foi feito. Neste sentido, os verbos devem utilizar conjugação futura. Nas considerações finais, sim, os verbos devem estar no passado.
+
+IV - Capítulo 2:
+
+1. Praticamente toda a Seção 2.1.4, que aborda os critérios de teste está sem referência bibliográfica. Onde há a citação da referência, a citação não está correta. É preciso corrigir este problema.
+
+2. Considerando que eo capítulo 2 é a fundamentação teórica, praticamente todo o conteúdo deve ser referenciado. Salvo aquelas seções cujo conteúdo foram elaborados pelo autor do TCC. No entanto é preciso ter cuidado em relação ao "excesso de citações", pois pode configurar cópia do conteúdo constantes das referêcias. A abordagem neste sentido é: o autor do TCC, ler as referências bibliográficas e escrever o seu entendimento com suas próprias palavras.
+
+3. Existem ainda várias recomendações sobre o capítulo II que não foram atendidas e observações na forma de comentários. É preciso que todas sejam atendidas.
+
+V - Capítulo 3:
+
+Verificar a observação a respeito da Imagem BPMN, adicionada ao capítulo.
+
+
