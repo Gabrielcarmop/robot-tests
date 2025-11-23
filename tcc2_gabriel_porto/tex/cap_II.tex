@@ -20,13 +20,13 @@
 \subsection{Técnicas de Teste Funcional}
 \label{sub:tectestfunc}
 
-\par A técnica de teste funcional ou teste caixa-preta, Figura \ref{fig:testeCxPreta}\footnote{\url{https://www.linkedin.com/pulse/testes-de-caixa-preta-anselmo-n-de-oliveira-ygdgf/}}, se baseia em verificar o funcionamento do software, sem ter que testar necessariamente o código que foi implementado.  Nesse método, são definidos dados de entrada e os resultados esperados para cada situação. O teste é aprovado quando as respostas obtidas correspondem as respostas esperadas.
+\par A técnica de teste funcional ou teste caixa-preta, Figura \ref{fig:testeCxPreta}, se baseia em verificar o funcionamento do software, sem ter que testar necessariamente o código que foi implementado.  Nesse método, são definidos dados de entrada e os resultados esperados para cada situação. O teste é aprovado quando as respostas obtidas correspondem as respostas esperadas.
 \par Da forma que a técnica foi desenvolvida, ela consegue ser aplicada em diferentes níveis do software, desde um método isolado até a aplicação completa. Além disso, esse modelo permite ao testador ter uma perspectiva mais próxima da experiência do usuário final, avaliando o comportamento do software como ele seria percebido na prática.
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.75\linewidth]{./fig/teste-caixa-preta.png}
-    \caption{Ilustração do conceito de Teste de Caixa Preta \cite{blackboxtestingimg}.}
+    \caption{Ilustração do conceito de Teste de Caixa Preta \cite{oliveira2024}.}
     \label{fig:testeCxPreta}
 \end{figure}
 
@@ -40,12 +40,11 @@
 
 \par É importante lembrar que a técnica estrutural não substitui a técnica funcional, elas devem se complementar.  Enquanto o teste funcional valida o software a partir da visão do usuário,  o estrutural garante confiabilidade e segurança  do código, contribuindo para uma cobertura de testes mais completa e eficaz.
 
-\textcolor{red}{[é necessário informar qua é a fonte da imagem do teste caixa branca. Adicionar ao arquivo bib e referenciar aqui.]}
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.75\linewidth]{./fig/TesteCaixaBranca.png}
-   \caption{Ilustração do conceito de Teste de Caixa Branca \cite{whiteboxtestingimg}.}
+   \caption{Ilustração do conceito de Teste de Caixa Branca \cite{geeks2024}.}
     \label{fig:testecxbranca}
 \end{figure}
 
@@ -57,12 +56,12 @@
 \label{sub:tectestdef}
 
 \par A técnica baseada em defeitos é uma abordagem  que visa identificar vulnerabilidades no software por meio da introdução intencional de falhas. Em vez de se basear apenas em requisitos funcionais, essa técnica busca avaliar como o software se comporta diante de erros, explorando suas fragilidades e limites.
-Para isso, são utilizadas técnicas como \textit{Mutation Testing}\footnote{\url{https://symflower.com/en/company/blog/2023/using-mutation-testing/}}, conforme Figura \ref{fig:testeMutacao}, que realiza pequenas alterações no código, simulando erros comuns  e \textit{Fuzz Testing}, que fornece entradas aleatórias e inesperadas ao software. O objetivo é verificar se os testes conseguem detectar esses problemas e garantir que o softaware  continue operando corretamente mesmo em situações adversas.
+Para isso, são utilizadas técnicas como \textit{Mutation Testing}, conforme Figura \ref{fig:testeMutacao}, que realiza pequenas alterações no código, simulando erros comuns  e \textit{Fuzz Testing}, que fornece entradas aleatórias e inesperadas ao software. O objetivo é verificar se os testes conseguem detectar esses problemas e garantir que o softaware  continue operando corretamente mesmo em situações adversas.
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.75\linewidth]{./fig/mutant.png}
-    \caption{Ilustração do conceito de Teste de Mutação \cite{mutationtestingimg}.}
+    \caption{Ilustração do conceito de Teste de Mutação \cite{synflower2023}.}
     \label{fig:testeMutacao}
 \end{figure}
 
@@ -87,22 +86,25 @@ Para isso, são utilizadas técnicas como \textit{Mutation Testing}\footnote{\ur
     \caption{Partição de equivalência}
     \label{fig:partEquiv}
 \end{figure}
+
 \textcolor{red}{[é necessário informar qua é a fonte da imagem do critério e teste funcional, particionamento por equivalência. Adicionar ao arquivo bib e referenciar aqui. Ou pode ser também uma nota de rodapé. Isso se aplica a todas as imagens que estão sem referência da fonte onde foram obtidas.]}
 
     \item \textbf{Análise do Valor Limite};
 \par A analise do valor limite, é uma técnica que se baseia em pontos limites de uma faixa de dados, apresentando um abordagem simples, onde os erros costumam ocorrer nos pontos extremos das entradas. A partir disso, em vez de testar os valores típicos, o testador analisa os valores mais altos e baixos da amostra de dados. Essa técnica pode ser considerada um complemento para o particionamento por equivalência.  
-%adcionar uma imagem e falar um pouco mais e apresentar exemplos 
-% explicar como funciona melhor 
+\textcolor{red}{[adcionar uma imagem e falar um pouco mais e apresentar exemplos 
+explicar melhor como funciona.]}
+
     \item \textbf{Grafo de Causa e Efeito}
-\par A analise do valor limite, é uma técnica que se baseia em pontos limites de uma faixa de dados, apresentando um abordagem simples, onde os erros costumam ocorrer nos pontos extremos das entradas. A partir disso, em vez de testar os valores típicos, o testador analisa os valores mais altos e baixos da amostra de dados. Essa técnica pode ser considerada um complemento para o particionamento por equivalência.  \cite{araujo2015}
+\par A analise do valor limite, é uma técnica que se baseia em pontos limites de uma faixa de dados, apresentando um abordagem simples, onde os erros costumam ocorrer nos pontos extremos das entradas. A partir disso, em vez de testar os valores típicos, o testador analisa os valores mais altos e baixos da amostra de dados. Essa técnica pode ser considerada um complemento para o particionamento por equivalência.  \cite{araujo2015}. \textcolor{red}{Nesta referência bibiográfica não é citado este critério de teste funcional. REVEJA.}
+
 \begin{figure} [!ht]
     \centering
     \includegraphics[width=0.5\linewidth]{./fig/GrafoDeCausaEfeito.png}
     \caption{Grafo de Causa e Efeito}
     \label{fig:gfc}
 \end{figure}
-%adcionar uma imagem e falar um pouco mais e apresentar exemplos 
-% explicar como funciona melhor 
+\textcolor{red}{[Qual é a fonte desta imagem?]}
+
     \item \textbf{Tabela de Decisão}.
 \par A Tabela de decisão é um técnica conhecida por testar softwares que envolvem varias condições lógicas e regras de negocio mais complexas. Ela ajuda a organizar e visualizar de maneira clara como o software deve se comportar com diferentes combinação de entradas.
 \par A técnica consiste em apresentar as ações e condições de entrada em um tabela, onde cada linha corresponde a um regra especifica, e as condições são avaliadas como verdadeiras ou falsas. Essa estrutura é bastante útil em cenários com diversas variações de comportamento, pois auxilia na identificação de todos os casos relevantes a serem testados.
@@ -112,6 +114,8 @@ Para isso, são utilizadas técnicas como \textit{Mutation Testing}\footnote{\ur
     \caption{Tabela de Decisão \cite{araujo2015}}
     \label{fig:tabeladecisao}
 \end{figure}
+
+\textcolor{red}{Esta imagem não faz parte desta referência bibliográfica, REVEJA.}
 
 \end{enumerate}
 %adcionar uma imagem e falar um pouco mais e apresentar exemplos 
@@ -139,6 +143,7 @@ Para isso, são utilizadas técnicas como \textit{Mutation Testing}\footnote{\ur
 \par Considerando essas características, os testes estruturais são geralmente aplicados nos níveis de teste unitário e de integração. Sua implementação requer conhecimento detalhado do código-fonte e o uso de ferramentas específicas, sendo portanto de responsabilidade primária do desenvolvedor. Essa abordagem assegura que a verificação da qualidade interna do software ocorra desde as etapas iniciais de desenvolvimento, contribuindo significativamente para a construção de sistemas mais robustos e confiáveis.
 
 \par 
+
 %Adicionar complexidade ciclomatica
 
 % Adicionar exemplos de critérios de teste estrutural
@@ -146,7 +151,6 @@ Para isso, são utilizadas técnicas como \textit{Mutation Testing}\footnote{\ur
 \subsection{Níveis de Teste}
 \label{sec:nivtest}
 
-Exemplo de Citação de Imagem. Figura \ref{fig:modelo-v}
 
 \begin{figure}[!ht]
     \centering
@@ -154,6 +158,8 @@ Exemplo de Citação de Imagem. Figura \ref{fig:modelo-v}
     \caption{Modelo V de desenvolvimento de software \cite{modelov}.}
     \label{fig:modelo-v}
 \end{figure}
+
+\textcolor{red}{O link para esta imagem do Modelo V está quebrado, procure outra imagem cujo link esteja acessĩvel. Complementando, esta imagem não pode ficar solta aqui no texto. Você precisa fazer uma introdução aos níveis de teste e referênciar a imagem como um exemplo destes níveis.}
 
 \subsubsection{Teste Unitário}
 \label{subsub:testunit}

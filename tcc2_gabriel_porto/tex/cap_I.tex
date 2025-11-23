@@ -29,13 +29,13 @@
 \begin{itemize}
     \item   Compreender como a automação de testes pode ser aplicada de forma eficaz em todas as partes de um  software;
     \item   Analisar como a Inteligência Artificial pode ser utilizada para identificar falhas e auxiliar na tomada de decisões durante os ciclos de testes;
-    \item   Apresentar casos práticos onde o uso do \textit{Robot Framework}\footnote{https://robotframework.org/} e do \textit{GitHub Actions} \footnote{https://github.com/features/actions} contribui para a detecção de defeitos e a integração contínua do código;
+    \item   Apresentar casos práticos onde o uso do \textit{Robot Framework}\footnote{https://robotframework.org/} e do \textit{GitHub Actions}\footnote{https://github.com/features/actions} contribui para a detecção de defeitos e a integração contínua do código;
     \item   Avaliar a eficácia da validação automatizada.
 \end{itemize}
 
 \section{Metodologia}
 \par Este trabalho se caracteriza como uma pesquisa aplicada, de natureza qualitativa e exploratória. Sua abordagem metodológica concentra-se na investigação e experimentação prática de técnicas voltadas à detecção e análise de falhas em sistemas web, utilizando ferramentas de automação de testes e plataformas de versionamento de código como elementos centrais do estudo.
-\par  Na  fase inicial da pesquisa, realizou-se uma revisão bibliográfica abrangente, com análise das publicações de \cite{myers2011} sobre testes de software, complementadas por livros, artigos e materiais técnicos atuais sobre testes automatizados
+\par  Na  fase inicial da pesquisa, realizou-se uma revisão bibliográfica abrangente, com análise das publicações de \cite{myers2011} sobre testes de software, complementadas por livros, artigos e materiais técnicos atuais sobre testes automatizados. \textcolor{red}{Não é possível falar em um revisão bibliográfica,tendo em vista a citação de apenas uma fonte de referências bibliográfica. }
 \par  Em seguida, foram desenvolvidos testes automatizados utilizando Robot Framework e \textit{Selenium WebDriver}. Os primeiros testes foram aplicados em um site com cenários de erro proposital\footnote{Disponível em: \href{https://the-internet.herokuapp.com/login}{https://the-internet.herokuapp.com/login}. Acesso em: 22 jun. 2025.}. Esse ambiente foi ideal para validar o funcionamento da estratégia de testes automatizados.
 \par  Depois dessa fase inicial, o projeto será implementada em um sistema real para testar sua eficácia em um ambiente de produção. Os testes foram configurados para rodar automaticamente sempre que um novo \textit{commit} é feito no repositório do projeto no GitHub, ou em horários definidos, com o uso do \textit{GitHub Actions}. Quando uma falha é detectada, o sistema gera automaticamente uma \textit{issue} no próprio \textit{GitHub}, contendo \textit{prints} da tela, \textit{logs} e uma descrição resumida com a ajuda de uma inteligência artificial que interpreta o erro.
 \par    Por fim,  os resultados são analisados, observando os tipos de erros mais frequentes, o tempo ate encontrar  a falha, e a utilidade das informações geradas para os desenvolvedores.
@@ -44,7 +44,7 @@
 \section{Organização do Trabalho}
 \label{sec:organ}
 
-Para facilitar o alcance dos objetivos especificados, o restante deste trabalho está organzado da seguinte forma:
+Para facilitar o alcance dos objetivos especificados, além desta Introdução, o restante deste trabalho está organzado da seguinte forma:
 
 \begin{itemize}
 	\item No Capítulo \ref{cap:fundTeo} é apresentada a fundamentação teórica, que embasa todo este trabalho.
