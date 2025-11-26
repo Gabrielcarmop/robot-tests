@@ -1,4 +1,4 @@
-This is BibTeX, Version 0.99d (TeX Live 2023/Debian)
+This is BibTeX, Version 0.99d (TeX Live 2025)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: tcc2_gabriel_porto.aux
 The style file: abntex2-alf.bst
@@ -22,44 +22,44 @@ Reallocated glb_str_end (elt_size=4) to 20 items from 10.
 | Em caso de dúvidas ou problemas com este estilo procure |
 | http://www.abntex.net.br/                               |
 +---------------------------------------------------------+
-You've used 10 entries,
+You've used 12 entries,
             6714 wiz_defined-function locations,
-            1242 strings with 11221 characters,
-and the built_in function-call counts, 6729 in all, are:
-= -- 611
-> -- 189
-< -- 1
-+ -- 113
-- -- 60
-* -- 415
-:= -- 983
-add.period$ -- 36
-call.type$ -- 10
-change.case$ -- 77
-chr.to.int$ -- 13
-cite$ -- 9
-duplicate$ -- 284
-empty$ -- 571
-format.name$ -- 278
-if$ -- 1608
+            1255 strings with 11406 characters,
+and the built_in function-call counts, 8119 in all, are:
+= -- 712
+> -- 221
+< -- 5
++ -- 124
+- -- 70
+* -- 503
+:= -- 1170
+add.period$ -- 43
+call.type$ -- 12
+change.case$ -- 91
+chr.to.int$ -- 21
+cite$ -- 11
+duplicate$ -- 368
+empty$ -- 694
+format.name$ -- 324
+if$ -- 1938
 int.to.chr$ -- 0
 int.to.str$ -- 0
-missing$ -- 169
-newline$ -- 45
-num.names$ -- 45
-pop$ -- 234
+missing$ -- 206
+newline$ -- 54
+num.names$ -- 55
+pop$ -- 278
 preamble$ -- 1
-purify$ -- 33
+purify$ -- 39
 quote$ -- 0
-skip$ -- 412
+skip$ -- 489
 stack$ -- 1
-substring$ -- 218
-swap$ -- 121
-text.length$ -- 0
+substring$ -- 287
+swap$ -- 161
+text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 56
+while$ -- 71
 width$ -- 0
-write$ -- 136
+write$ -- 168

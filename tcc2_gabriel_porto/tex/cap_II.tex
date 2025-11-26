@@ -67,13 +67,16 @@ Para isso, são utilizadas técnicas como \textit{Mutation Testing}, conforme Fi
 \subsection{Critérios de Teste}
 \label{sub:crittest}
 
-\par Os critérios de testes tem um papel fundamental no processo de validação, sendo responsáveis por determinar as regras e diretrizes que serão utilizadas no processo de analise. Dessa forma, o testador consegue determinar se o conjunto de testes elaborado é suficiente para verificar adequadamente o componente ou funcionalidade em questão, aumentando assim a chance de revelar a presença de defeitos no software.
-\par Existem diferentes tipos de critérios, de acordo com a técnica que foi aplicada. Os principais são, o critérios de teste funcional, que focam principalmente no comportamento externo da aplicação, e os critérios de teste estrutural,  que considera a lógica interna do código-fonte. Cada tipo possui técnicas específicas para auxiliar no planejamento e execução dos testes.
+\par Os critérios de teste desempenham um papel fundamental no processo de validação de software, pois são responsáveis por definir as regras e diretrizes que orientarão a análise da qualidade. Segundo Myers, Sandler e Badgett  \cite{myers2011}, os critérios permitem avaliar se o conjunto de testes elaborado é suficiente para verificar adequadamente o componente ou funcionalidade em questão, aumentando assim a probabilidade de revelar a presença de defeitos no sistema.
+
+\par Existem diferentes tipos de critérios, que variam conforme a técnica de teste utilizada. Entre os principais estão os critérios funcionais, que se concentram no comportamento externo da aplicação, avaliando as entradas e saídas observáveis, e os critérios estruturais, que consideram a lógica interna do código-fonte. Cada categoria possui técnicas específicas que auxiliam o testador no planejamento, na seleção e na execução dos casos de teste, garantindo maior rigor e cobertura no processo de verificação.
+
 
 \subsubsection{Critérios de Teste Funcional}
 \label{subsub:crittestfunc}
 
-\par Para validar se o software atende aos requisitos, os critérios de testes funcional exercem papel fundamental.  Essa abordagem permite que o testador simule diferentes cenários de uso real, avaliando se as funcionalidades respondem corretamente de acordo com o que foi especificado
+\par Para validar se o software atende aos requisitos, os critérios de testes funcional exercem papel fundamental. Segundo Pressman \cite{pressman2002}, o teste funcional procura mostrar que os requisitos funcionais do software são satisfeitos, que a entrada é adequadamente aceita, que a saída esperada é produzida e que a integridade das informações externas é mantida. Essa abordagem permite que o testador simule diferentes cenários de uso real, avaliando se as funcionalidades respondem corretamente de acordo com o que foi especificado.
+
 
 \begin{enumerate}
     \item \textbf{Particionamento por Equivalência};
@@ -98,7 +101,12 @@ Para isso, são utilizadas técnicas como \textit{Mutation Testing}, conforme Fi
 \end{figure}
 
     \item \textbf{Grafo de Causa e Efeito}
-\par O Grafo de Causa e Efeito, Figura \ref{fig:gce} ... \textcolor{red}{Descrever este criterio com base na referência adicionada à imagem. Na versão anterior a descrição aqui era a mesma do critério Análise do Valor Limite.}
+\par O Grafo de Causa e Efeito, Figura \ref{fig:gce}, é uma técnica funcional utilizada para representar relações lógicas entre condições de entrada (causas) e os comportamentos esperados do sistema (efeitos). Segundo Tutorialspoint \cite{points2025}, essa abordagem transforma requisitos escritos em um modelo gráfico que evidencia como diferentes combinações de causas podem ativar ou inibir determinados efeitos, permitindo uma compreensão clara de regras de negócio complexas.
+
+\par Cada causa representa uma condição ou situação de entrada, enquanto cada efeito corresponde a uma ação, resposta ou resultado esperado do sistema. As ligações entre causas e efeitos são definidas por operadores lógicos, como \textit{AND}, \textit{OR} e \textit{NOT}, o que possibilita estruturar cenários em que múltiplas condições precisam ocorrer simultaneamente para que um determinado comportamento seja produzido.
+
+\par Após a construção do grafo, o modelo é convertido em uma tabela de decisão, procedimento também destacado por Tutorialspoint \cite{points2025}. Essa etapa garante que todas as combinações relevantes de causas sejam analisadas e que os casos de teste derivados cubram integralmente as regras descritas. Dessa forma, a técnica auxilia na identificação de inconsistências, omissões ou ambiguidades nos requisitos, aumentando a precisão e abrangência dos testes funcionais.
+
 
 \begin{figure} [!ht]
     \centering
@@ -148,7 +156,8 @@ Para isso, são utilizadas técnicas como \textit{Mutation Testing}, conforme Fi
     \label{fig:gfc}
 \end{figure}
 
-\par Dentre essas métricas,  a Complexidade Ciclomática é uma medida fundamental em Engenharia de Software, introduzida por Thomas McCabe na década de 1970. Seu objetivo principal é quantificar a complexidade de um módulo de software por meio da análise de seus pontos de decisão, os quais determinam a quantidade de caminhos de execução possíveis no código.
+\par Entre as métricas derivadas do Grafo de Fluxo de Controle, a Complexidade Ciclomática destaca-se como uma medida fundamental na Engenharia de Software. Proposta por Thomas McCabe em 1976, essa métrica quantifica o número de caminhos linearmente independentes existentes no código, permitindo estimar seu nível de complexidade lógica \cite{mccabe1976}. A análise baseia-se na contagem de estruturas condicionais, desvios e loops, que influenciam diretamente o esforço necessário para testar e manter o software.
+
 %Fazer uma citação
 \par Quanto maior o valor da complexidade ciclomática, maior a quantidade de ramificações lógicas (como estruturas condicionais e loops), o que tende a aumentar a dificuldade de compreensão, teste e manutenção do software. Por outro lado, valores mais baixos indicam código mais simples, estruturado e confiável, reduzindo a probabilidade de defeitos e facilitando a evolução do sistema.
 %adcionar imagem 

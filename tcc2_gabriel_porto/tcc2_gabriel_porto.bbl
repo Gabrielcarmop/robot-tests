@@ -40,6 +40,12 @@
   \url{https://www.geeksforgeeks.org/software-testing/software-engineering-white-box-testing/}.
   Acesso em: 20/02/2025.}
 
+\bibitem[McCabe 1976]{mccabe1976}
+\abntrefinfo{McCabe}{MCCABE}{1976}
+{MCCABE, T.~J. A complexity measure.
+\emph{IEEE Transactions on Software Engineering}, SE-2, n.~4, p. 308--320,
+  1976.}
+
 \bibitem[Myers, Sandler e Badgett 2011]{myers2011}
 \abntrefinfo{Myers, Sandler e Badgett}{MYERS; SANDLER; BADGETT}{2011}
 {MYERS, G.~J.; SANDLER, C.; BADGETT, T. \emph{The Art of Software Testing}.
@@ -58,6 +64,11 @@ ISBN 1118031962.}
   em:
   \url{https://www.tutorialspoint.com/software_testing_dictionary/cause_effect_graph.htm}.
   Acesso em 23/11/2025., 2025.}
+
+\bibitem[Pressman 2002]{pressman2002}
+\abntrefinfo{Pressman}{PRESSMAN}{2002}
+{PRESSMAN, R.~S. \emph{Engenharia de Software}. 5. ed. Rio de Janeiro: McGraw
+  Hill, 2002.}
 
 \bibitem[Symflower 2023]{synflower2023}
 \abntrefinfo{Symflower}{SYMFLOWER}{2023}
