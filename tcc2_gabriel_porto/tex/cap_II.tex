@@ -17,11 +17,11 @@
 
 % enriquecer um pouco mais esta introdução
 
-\subsection{Técnicas de Teste Funcional}
+\subsection{Técnica de Teste Funcional}
 \label{sub:tectestfunc}
 
-\par A técnica de teste funcional ou teste caixa-preta, Figura \ref{fig:testeCxPreta}, se baseia em verificar o funcionamento do software, sem ter que testar necessariamente o código que foi implementado.  Nesse método, são definidos dados de entrada e os resultados esperados para cada situação. O teste é aprovado quando as respostas obtidas correspondem as respostas esperadas.
-\par Da forma que a técnica foi desenvolvida, ela consegue ser aplicada em diferentes níveis do software, desde um método isolado até a aplicação completa. Além disso, esse modelo permite ao testador ter uma perspectiva mais próxima da experiência do usuário final, avaliando o comportamento do software como ele seria percebido na prática.
+\par A Técnicas de Teste Funcional ou teste caixa-preta, Figura \ref{fig:testeCxPreta}, se baseia em verificar o funcionamento do software, sem ter que testar necessariamente o código que foi implementado.  Nesse método, são definidos dados de entrada e os resultados esperados para cada situação. O teste é aprovado quando as respostas obtidas correspondem as respostas esperadas.
+\par Da forma que a Técnica foi desenvolvida, ela consegue ser aplicada em diferentes níveis do software, desde um método isolado até a aplicação completa. Além disso, esse modelo permite ao testador ter uma perspectiva mais próxima da experiência do usuário final, avaliando o comportamento do software como ele seria percebido na prática.
 
 \begin{figure}[!ht]
     \centering
@@ -30,15 +30,15 @@
     \label{fig:testeCxPreta}
 \end{figure}
 
-\subsection{Técnicas de Teste Estrutural}
+\subsection{Técnica de Teste Estrutural}
 \label{sub:tectestest}
 
-\par A técnica de teste estrutural, Figura \ref{fig:testecxbranca}, também conhecida como teste de caixa-branca, foca na validação do software a partir da análise direta do código-fonte. Diferentemente da abordagem funcional, esse modelo exige que o testador examine as estruturas internas, a lógica de execução e os métodos implementados, garantindo que todos os caminhos possíveis do código sejam devidamente testados.
+\par A Técnica de Teste Estrutural, Figura \ref{fig:testecxbranca}, também conhecida como teste de caixa-branca, foca na validação do software a partir da análise direta do código-fonte. Diferentemente da abordagem funcional, esse modelo exige que o testador examine as estruturas internas, a lógica de execução e os métodos implementados, garantindo que todos os caminhos possíveis do código sejam devidamente testados.
 \par Com base nesse código, são elaborados casos de teste que buscam cobrir toda a execução do requisito avaliado.
 
-\par Os testes de unidade e os testes de integração são exemplos dessa abordagem, sendo amplamente aplicados pelos desenvolvedores ao longo do processo de desenvolvimento. Em um teste de unidade, por exemplo, pode-se verificar se um método responsável por calcular descontos e retorna o valor esperado para diferentes entradas. Já em um teste de integração, a atenção pode estar na interação entre módulos, como a comunicação entre o módulo de autenticação e o módulo de geração de relatórios. Esses testes permitem revelar a presença de defeitos em partes específicas do software e assegurar que cada elemento funcione corretamente em diferentes cenários.
+\par Os Testes de Unidade e os Testes de Integração são exemplos dessa abordagem, sendo amplamente aplicados pelos desenvolvedores ao longo do processo de desenvolvimento. Em um Teste de Unidade, por exemplo, pode-se verificar se um método responsável por calcular descontos e retorna o valor esperado para diferentes entradas. Já em um Teste de Integração, a atenção pode estar na interação entre módulos, como a comunicação entre o módulo de autenticação e o módulo de geração de relatórios. Esses testes permitem revelar a presença de defeitos em partes específicas do software e assegurar que cada elemento funcione corretamente em diferentes cenários.
 
-\par É importante lembrar que a técnica estrutural não substitui a técnica funcional, elas devem se complementar.  Enquanto o teste funcional valida o software a partir da visão do usuário,  o estrutural garante confiabilidade e segurança  do código, contribuindo para uma cobertura de testes mais completa e eficaz.
+\par É importante lembrar que a Técnica Estrutural não substitui a Técnica Funcional, elas devem se complementar.  Enquanto o Teste Funcional valida o software a partir da visão do usuário,  o Estrutural garante confiabilidade e segurança  do código, contribuindo para uma cobertura de testes mais completa e eficaz.
 
 
 \begin{figure}[!ht]
@@ -51,10 +51,10 @@
 
 % Adicionar uma imagem. Enriquecer o teste e apresentar alguns exemplos.
 
-\subsection{Técnicas de Teste Baseada em Defeitos}
+\subsection{Técnica de Teste Baseada em Defeitos}
 \label{sub:tectestdef}
 
-\par A técnica baseada em defeitos é uma abordagem  que visa identificar vulnerabilidades no software por meio da introdução intencional de falhas. Em vez de se basear apenas em requisitos funcionais, essa técnica busca avaliar como o software se comporta diante de erros, explorando suas fragilidades e limites.
+\par A Técnica de Teste Baseada em Defeitos é uma abordagem  que visa identificar vulnerabilidades no software por meio da introdução intencional de falhas. Em vez de se basear apenas em requisitos funcionais, essa Técnica busca avaliar como o software se comporta diante de erros, explorando suas fragilidades e limites.
 Para isso, são utilizadas técnicas como \textit{Mutation Testing}, conforme Figura \ref{fig:testeMutacao}, que realiza pequenas alterações no código, simulando erros comuns  e \textit{Fuzz Testing}, que fornece entradas aleatórias e inesperadas ao software. O objetivo é verificar se os testes conseguem detectar esses problemas e garantir que o softaware  continue operando corretamente mesmo em situações adversas.
 
 \begin{figure}[!ht]
@@ -206,6 +206,9 @@ A descrição dos quatro níveis de teste de software (unitário, integração, 
 %Fazer referencia da imagem com o texto
 
 \subsection{Tipos de Teste}
+
+Diferentes tipos de teste podem ser aplicados ao produto de sofware, nos seus diversos níveis de execução. Dentre os principais tipos de testes, pode-se destacar os seguintes:
+
 \label{sub:tiposteste}
 
 \subsubsection{Teste de Performance}
